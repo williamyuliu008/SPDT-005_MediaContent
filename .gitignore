@@ -1,0 +1,23 @@
+﻿# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Secrets - NEVER commit these
+.env
+*.env
+api_key*
+*_api_key*
+DEEPSEEK_API_KEY
+QWEN_API_KEY
+
+# Node
+node_modules/
+
+# Windows handle locks
+PT-047_SocSciAgent/

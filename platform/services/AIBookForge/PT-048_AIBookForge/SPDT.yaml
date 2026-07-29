@@ -1,0 +1,358 @@
+# PT-048: AI写书修炼场 (AI Book Forging Arena)
+# 为自己写一本书 —— AI时代素养训练项目
+
+pdt_id: PT-048
+pdt_name: AI写书修炼场
+pdt_name_en: AI Book Forging Arena
+parent_sPDT: SPDT-005
+
+owner_agent: agent-4aa6a97aa4ae
+created: 2026-07-26
+version: 0.1
+last_updated: 2026-07-26
+status: construction
+
+description: |
+  基于"AI新智人·认知跃迁方法论"，以"为自己写一本学习用书"为核心任务，
+  构建覆盖"目标品味→过程品味→作品品味→LLM品味→协作品味→伦理品味→元认知品味"
+  的全链路训练平台。
+  与PT-047（社科内容生产）的区别：
+    PT-047 = 内容产品工厂（输出是书稿，面向读者）
+    PT-048 = 素养训练道场（输出是人和书的共同成长，面向学习者本人）
+  核心差异：PT-048的"读者"就是"作者"，AI是认知脚手架，不是代笔者。
+
+# ===== 任务定义 =====
+
+core_task:
+  name: 为自己写一本AI辅助学习手册
+  description: |
+    学员在自己感兴趣但不熟悉的领域，用AI辅助从零构建一本3-5万字的学习用书。
+    不是"用AI写书"，而是"用写书来学习"。书籍是副产品，真正的产出是
+    学习者七个品味维度的系统性提升。
+  target_scale:
+    word_count: "3-5万字"
+    chapters: "至少3层深度（篇→章→节）"
+    duration: "4-8周（可迭代）"
+  uniqueness: |
+    上一时代不可能出现的任务：知识密度可调、成本趋零、迭代速度极快，
+    且天然覆盖七品味——是AI时代"君子不器"教育的最佳载体。
+
+# ===== 七品味覆盖图谱 =====
+
+taste_coverage:
+  - taste: 目标的品味
+    code: T-OBJ
+    description: 定义"我到底想学什么、学到什么程度才算够、这本书填补什么认知空白"
+    key_exercises:
+      - 受众锚定（受众就是自己）
+      - 核心命题定义
+      - 生态位定位（我的书"不同"在哪里）
+      - 验收指标设计
+    gate: 立项书自评清单（10项检查，≥7通过方可进入第二阶段）
+
+  - taste: 过程的品味
+    code: T-PRO
+    description: 设计全书架构、章节依赖、AI驱动写作流水线、检查点体系
+    key_exercises:
+      - 概念图谱绘制
+      - 章节依赖图设计
+      - AI协作协议（指令模板库）
+      - 检查点体系（6个检查点）
+    gate: 架构设计文档（含依赖图+认知坡度表）
+
+  - taste: 作品的品味
+    code: T-ART
+    description: 评估全书概念体系自洽性、认知坡度、逻辑链条完整性、"文以载道"深度
+    key_exercises:
+      - 逻辑压力测试
+      - 体裁质量评审清单建立
+      - 事实核查机制
+      - "赋予灵魂"修改
+    gate: 终稿质量声明（含稳健性说明）
+
+  - taste: LLM的品味
+    code: T-LLM
+    description: 不同章节使用不同模型、设计事实核查机制、压制幻觉、人机分工决策
+    key_exercises:
+      - 任务-模型匹配表
+      - 幻觉防御机制设计
+      - 人机分工红线标注
+      - 成本控制实验
+    gate: AI使用日志（含每次调用的"为什么用这个模型"决策说明）
+
+  - taste: 协作品味
+    code: T-COL
+    description: 多智能体协作（可选延展），或多人协作场景
+    key_exercises:
+      - 智能体分工设计
+      - 交接点设计
+      - 冲突解决机制
+    gate: 可选，基础任务不强制
+
+  - taste: 伦理品味
+    code: T-ETH
+    description: 引用来源标注、知识产权边界、AI辅助透明度声明
+    key_exercises:
+      - 引用管理
+      - AI辅助透明度声明
+      - 知识产权自审
+    gate: 终稿附带的"AI贡献声明"
+
+  - taste: 元认知品味
+    code: T-META
+    description: 写作过程中持续追踪认知变化、识别知识盲区、复盘"我真正学会了什么"
+    key_exercises:
+      - 认知变化轨迹图（写书前→写书后）
+      - 能力缺口自测绘
+      - 决策归因复盘
+    gate: 《四品味自评报告》（每个品味写一段"旧我 vs 新我"反思）
+
+# ===== 四阶段流水线 =====
+
+pipeline_stages:
+  - stage: phase1
+    name: 立项定义
+    duration: 约1周
+    core_deliverable: 书籍立项书.md
+    key_tools:
+      - 书籍立项书模板（含10项自检清单）
+      - 领域背景信息采集框架
+    human_gates:
+      - 立项书自评≥7/10通过
+      - 核心命题一句话说明
+    output_dir: templates/phase1
+    human_gate: true
+
+  - stage: phase2
+    name: 架构设计
+    duration: 约1周
+    core_deliverable: 全书架构蓝图.md
+    key_tools:
+      - 概念图谱绘制模板
+      - 章节依赖图模板
+      - 认知坡度设计表
+      - 素材地图模板
+      - AI协作协议模板
+      - 检查点体系
+    human_gates:
+      - 章节依赖图无循环依赖
+      - 每章有"起点-终点-阶梯"设计
+      - 至少一个章节有降低坡度的具体措施
+    output_dir: templates/phase2
+    human_gate: true
+
+  - stage: phase3
+    name: 写作执行
+    duration: 3-6周
+    core_deliverable: 各章草稿.md + 单章完成记录.md
+    key_tools:
+      - 单章写作七步法（SOP）
+      - AI指令模板库（分体裁/分章节类型）
+      - 逻辑压力测试清单
+      - 事实核查表
+      - 单章完成记录表
+    checkpoints:
+      - CP-1: 立项确认（写作前）
+      - CP-2: 架构确认（第二阶段末）
+      - CP-3: 章节风格复查（每1-2章）
+      - CP-4: 方向一致性复查（全书50%时）
+      - CP-5: 初稿终审（初稿完成后）
+      - CP-6: 终稿终审（终稿完成后）
+    output_dir: templates/phase3
+    human_gate: false
+
+  - stage: phase4
+    name: 整合复盘
+    duration: 约1周
+    core_deliverable: 完整书籍.md + 四品味自评报告.md
+    key_tools:
+      - 全书一致性审查清单
+      - 认知坡度终审表
+      - 认知变化自评模板
+      - 四品味自评报告模板
+    human_gates:
+      - 全书核心问题得到回答
+      - 验收标准逐条核对
+      - 自评报告诚实、具体、有认知跃迁描述
+    output_dir: templates/phase4
+    human_gate: true
+
+# ===== 交付物清单 =====
+
+deliverables:
+  project_deliverables:
+    - id: D-001
+      name: 书籍立项书.md
+      description: 第一阶段核心交付物，含生态位定位、读者定义、结构设计、验收标准
+      type: markdown
+      mandatory: true
+
+    - id: D-002
+      name: 全书架构蓝图.md
+      description: 第二阶段核心交付物，含概念图谱、章节依赖图、认知坡度表、AI协作协议
+      type: markdown
+      mandatory: true
+
+    - id: D-003
+      name: 各章草稿目录/
+      description: 第三阶段产出，每章独立.md文件 + 单章完成记录
+      type: directory
+      mandatory: true
+
+    - id: D-004
+      name: 四品味自评报告.md
+      description: 第四阶段核心交付物，每个品味写"旧我→新我"的认知变化
+      type: markdown
+      mandatory: true
+
+    - id: D-005
+      name: 流程日志/
+      description: 全程记录（含AI使用日志、检查点执行记录、修改决策说明）
+      type: directory
+      mandatory: true
+
+    - id: D-006
+      name: AI贡献声明.md
+      description: 说明AI在各阶段的具体贡献，以及"哪些部分坚决由人完成"
+      type: markdown
+      mandatory: false
+
+    - id: D-007
+      name: 终稿书籍.md
+      description: 经过全部评审、修改、复盘后的最终书籍版本
+      type: markdown
+      mandatory: true
+
+# ===== 智能体集群（最小可行配置） =====
+
+# 说明：PT-048的核心是"人在回路"，不是"全自动"。
+# 智能体的角色是"教练"而非"执行者"——帮人把书的质量提上去，
+# 而非替人把书写出来。
+# 基础版本：3个核心智能体（可按需扩展）
+#
+# 与PT-047的区别：
+#   PT-047 agent: 主编/选材/编排/评审/生成/反思/输出（7个）
+#     → 定位：生产流水线，人是验收者
+#   PT-048 agent: 导师/审计/复盘（3个）
+#     → 定位：训练辅助，人是执行者，AI是脚手架
+
+agent_cluster:
+  core_agents:
+    - agent_id: AG-048-01
+      name: BookMentor
+      name_zh: 写书导师智能体
+      role: |
+        在立项/架构/写作三阶段提供全程陪伴式指导：
+        - 帮助学员理解每个阶段"为什么要这样做"
+        - 对学员的产出提供具体、基于标准的反馈
+        - 识别学员在哪个品味维度有瓶颈并提供针对性练习建议
+        - 识别学员是否在"用AI代写"而非"用AI辅助学习"
+      directory: agents/book_mentor
+      calls_llm: true
+      memory_type: user_progress
+      human_in_loop: true
+      intervention_triggers:
+        - 学员提交立项书后
+        - 学员提交架构设计后
+        - 学员在单章写作中遇到卡点
+        - 检查点执行后
+
+    - agent_id: AG-048-02
+      name: QualityAuditor
+      name_zh: 质量审计智能体
+      role: |
+        对学员各阶段产出进行系统性质量审查：
+        - 逻辑链条完整性检查
+        - 概念体系自洽性检查
+        - 认知坡度合理性检查
+        - 事实核查机制完整性检查
+        - AI使用日志合规性审查
+        不替代学员的质量判断，而是提供结构化的审查框架。
+      directory: agents/quality_auditor
+      calls_llm: true
+      memory_type: quality_baseline
+      human_in_loop: true
+
+    - agent_id: AG-048-03
+      name: MetaReflector
+      name_zh: 元认知复盘智能体
+      role: |
+        在第四阶段（整合复盘）主导元认知复盘：
+        - 引导学员绘制"认知变化轨迹图"
+        - 辅助完成"四品味自评报告"
+        - 帮助学员识别"我真正学会了什么"与"我以为我学会了什么"之间的差距
+        - 提供下一轮训练的建议（同一领域加深 or 新领域迁移）
+      directory: agents/meta_reflector
+      calls_llm: true
+      memory_type: reflection_trace
+      human_in_loop: true
+
+# ===== 与PT-047的核心区别（设计决策文档） =====
+
+vs_pt047_design_decisions:
+  - dimension: 任务定位
+    pt047: 社科通俗作品全自动生产
+    pt048: AI时代素养训练项目
+    implication: PT-048的核心输出不是书稿，而是人的品味提升
+
+  - dimension: 读者是谁
+    pt047: 外部读者（大众/专业人士）
+    pt048: 作者本人（读者=作者）
+    implication: PT-048的验收标准是"我真的搞懂了这个领域"，不是"读者反馈好"
+
+  - dimension: AI角色
+    pt047: 内容生产者（替人写）
+    pt048: 认知脚手架（帮人学）
+    implication: PT-048必须设计"AI不可替代"的红线，否则失去训练意义
+
+  - dimension: 人机分工
+    pt047: 全自动化流程，人工仅在关键节点介入
+    pt048: 全程人在回路，AI提供框架和反馈，执行和决策由人完成
+    implication: PT-048需要更细粒度的人机分工设计
+
+  - dimension: 流程目的
+    pt047: 高效产出内容产品
+    pt048: 高效驱动学习者认知升级
+    implication: PT-048每个阶段都有对应的"品味训练目标"，不只是流程节点
+
+  - dimension: 质量标准
+    pt047: 产出物的准确性、完整性、可读性
+    pt048: 产出物的质量 + 学习者的认知变化幅度
+    implication: PT-048的质量评估必须同时覆盖"书"和"人"两个维度
+
+# ===== KPI =====
+
+kpis:
+  - metric: 立项书自评通过率
+    target: "≥70%"
+    measure: 第一阶段结束时的10项自检≥7项通过
+  - metric: 全程完成率
+    target: "≥50%"
+    measure: 四阶段全部完成并提交终稿
+  - metric: 四品味自评报告质量
+    target: "≥60%有具体认知变化描述"
+    measure: 自评报告中"旧我→新我"描述有具体案例支撑的比例
+  - metric: AI幻觉发现率
+    target: "≥80%"
+    measure: 学员在终稿前主动发现并修正的AI错误数/总错误数
+  - metric: 认知升级自我评估
+    target: "学员报告认知变化"
+    measure: 第四阶段结束时，学员对七个品味的自评层级提升
+
+# ===== 依赖关系 =====
+
+dependencies:
+  upstream_from: []
+  shares_infra_with:
+    - SPDT-005 (共享 autopublish 发布引擎，如需公开出版)
+    - PT-040 (共享深度分析框架，如需)
+  cross_spdt_links: []
+
+# ===== OMAS 注册 =====
+
+omas:
+  pdt_registry: D:\6_agent_project\omas\pdt_registry\PT-048
+  spdt_registry: D:\6_agent_project\omas\spdt_registry\SPDT-005
+  created: 2026-07-26
+  registered_by: agent-4aa6a97aa4ae
+  version: 0.1

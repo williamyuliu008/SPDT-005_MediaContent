@@ -1,0 +1,17 @@
+channel:
+  id: "feishu"
+  name: "飞书消息推送"
+  type: "internal"
+
+publishing:
+  schedule: "0 10 * * *"
+  workflow: "direct_send"
+
+content:
+  primary: "daily_report"
+  output_format: "markdown"
+  max_chars: 5000
+
+error:
+  on_fail: "skip"
+  max_retries: 1

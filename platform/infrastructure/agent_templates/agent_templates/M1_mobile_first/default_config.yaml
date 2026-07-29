@@ -1,0 +1,48 @@
+# M1 默认配置 — Mobile First (移动优先)
+# PWA / 鸿蒙适配 / 离线优先
+# 适用: GaokaoAgent 鸿蒙版, 移动工具 App, 轻量终端
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "M1_mobile_first"
+  description: "{{DESCRIPTION}}"
+
+mobile_config:
+  # ── PWA 配置 ──
+  pwa:
+    enabled: true
+    offline_storage: "indexeddb"
+    cache_strategy: "network_first"
+    manifest: "manifest.json"
+    icons: [72, 96, 128, 144, 152, 192, 384, 512]
+
+  # ── 鸿蒙适配 ──
+  harmony:
+    enabled: false  # 默认关闭，按需开启
+    min_version: "3.0"
+    components: ["webview", "notification", "storage"]
+
+  # ── API 层 ──
+  api:
+    backend: "fastapi"  # 复用 _common/base_api
+    endpoints:
+      - "/health"
+      - "/api/v1/query"
+      - "/api/v1/submit"
+    cors: ["*"]
+
+  # ── 离线策略 ──
+  offline:
+    sync_interval_min: 15
+    conflict_resolution: "server_wins"
+    max_offline_queue: 100
+
+topology:
+  type: "client_server"
+  client: "PWA / 鸿蒙 WebView"
+  server: "FastAPI + _common/base_api"
+
+recommended_cdos:
+  - DESIGN  # UI/UX 设计
+  - INFRA   # 鸿蒙部署环境
+  - MODULE  # PWA 组件复用

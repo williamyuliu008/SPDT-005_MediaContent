@@ -1,0 +1,60 @@
+# T4 默认集群配置 — Game-Collaborative
+# Agent 有各自目标但需协作达成全局最优
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T4_game_collaborative"
+  description: "{{DESCRIPTION}}"
+
+agents:
+  # ── 自治 Agent ──
+  - role: "agent_1"
+    name: "自治主体 1"
+    description: "有独立目标的协作 Agent"
+    local_objective: "{{OBJECTIVE_1}}"
+    position: "autonomous"
+
+  - role: "agent_2"
+    name: "自治主体 2"
+    description: "有独立目标的协作 Agent"
+    local_objective: "{{OBJECTIVE_2}}"
+    position: "autonomous"
+
+  - role: "agent_3"
+    name: "自治主体 3"
+    description: "有独立目标的协作 Agent"
+    local_objective: "{{OBJECTIVE_3}}"
+    position: "autonomous"
+
+  # ── 协调器 ──
+  - role: "coordinator"
+    name: "全局协调器"
+    description: "协调各自治主体，追求帕累托最优"
+    position: "orchestrator"
+    optimization_target: "pareto_optimal"
+
+  # ── 激励分析 ──
+  - role: "incentive_analyzer"
+    name: "激励兼容性分析器"
+    description: "检查各 Agent 的激励是否兼容"
+    position: "observer"
+
+topology:
+  type: "collaborative_mesh"
+  autonomous: ["agent_1", "agent_2", "agent_3"]
+  coordinator: "coordinator"
+  observer: "incentive_analyzer"
+
+orchestration:
+  mode: "distributed"
+  decision_protocol: "consensus"
+  conflict_resolution: "coordinator_arbitration"
+  incentive_mechanism: "shared_reward"
+
+shared_state:
+  backend: "chromadb"
+  collections:
+    - "local_states"
+    - "global_state"
+    - "negotiation_log"
+    - "incentive_metrics"

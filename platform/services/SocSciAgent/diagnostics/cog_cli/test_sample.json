@@ -1,0 +1,16 @@
+{
+  "series_id": "MGSH-EP01-乾元元年",
+  "required_tags": ["#military", "#moral_crisis"],
+  "forbidden_tags": ["#heroic_triumph"],
+  "desired_tension_arcs": ["narrative_hook", "rising_tension", "climax_decision"],
+  "chapter_role_weights": {
+    "anchor_event": 0.30,
+    "deep_dive": 0.25,
+    "counterpoint": 0.20,
+    "macro_frame": 0.15,
+    "synthesis": 0.05,
+    "bridge": 0.05
+  },
+  "target_chapters": 2,
+  "notes": "墨骨山河 Ep01 — 颜真卿 + 安史之乱"
+}

@@ -1,0 +1,21 @@
+campaign:
+  id: "ai_lookout_daily"
+  name: "AI瞭望台每日发布"
+
+  description: >
+    每日自动执行：Radar 扫描 AI 科技情报 →
+    SmartText 生成日报 → AutoPublish 发布到网站
+
+  steps:
+    - radar: {domain: "ai_tech", date: "{date}"}
+    - smartext: {format: "daily_report"}
+    - autopublish: {channel: "website"}
+
+  schedule: "0 10 * * *"
+
+  channels:
+    - website
+
+  on_failure:
+    notify: "owner"
+    fallback: "use_yesterday_content"

@@ -1,0 +1,38 @@
+# 编排智能体 (Orchestration Agent)
+# AG-047-04
+
+agent_id: AG-047-04
+name: Orchestration
+name_zh: 编排智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  接收选材结果，输出 COG 章节级导演分镜脚本。
+  包含：选用模板、章节角色序列、张力曲线、钩子布局、
+  冲击力投放点、主旋律变奏设计。
+
+three_layer_funnel:
+  - Layer 1: 硬性过滤（precondition 不满足则淘汰）
+  - Layer 2: 加权评分（LabelOverlap/StructuralFit/NarrativePotential/SourceRichness/HistoriographyMatch）
+  - Layer 3: 语境修正（章节位置加成/前后文去重/史观参数调整）
+
+pdl_enhancements:
+  - tension_ladder: tension_level (0-1) + pressure_source
+  - climax_design: 唯一高潮，节奏慢沉重
+  - six_hook_slots: 开篇悬念/认知落差/矛盾/信息差/高潮/结尾钩
+  - impact_injection: 四类投放位置（开篇/矛盾升级/高潮静默/结尾）
+  - motif_variation: 每章 4 次变奏（陈述/反问/论断/警句）
+
+validation_engine:
+  - 角色唯一性检查
+  - 张力单调性检查
+  - 过渡合法性检查
+  - 节奏呼吸检查
+  - 史观一致性检查
+
+output: cog_chapter_script_json
+calls_llm: false
+
+milestone_target: "M1 COG脚本三层漏斗实现"

@@ -1,0 +1,36 @@
+﻿# SPDT-005_MediaContent 与 OMAS 衔接配置
+spdt_id: SPDT-005
+spdt_name: 多媒体内容产品线
+category: media
+domains: [media, publishing]
+
+# ── SOP 路由结果 ──
+sop_family: content_manufacturing
+secondary_family: knowledge_creation
+
+# ── 依赖的 OMAS Cell ──
+omas_cells:
+  - cell: Infra
+    capabilities: [model_router]
+  - cell: CMC
+    capabilities: [content_pipeline, multimedia_generation]
+  - cell: SDC
+    capabilities: [template_design, channel_adapter]
+  - cell: QAC
+    capabilities: [quality_gate, media_quality]
+
+# ── 领域本体引用 ──
+ontology:
+  - domain: media_calendar
+    profile: D:/1_omas/toolbox/Ontology/profiles/media/
+
+# ── 复用的 DAG 模板 ──
+dag_templates: []
+
+# ── 知识库 ──
+knowledge_bases:
+  - collection: media_knowledge
+    path_env: SPDT_MEDIA_ROOT
+
+# ── 反哺记录 ──
+feedback: []

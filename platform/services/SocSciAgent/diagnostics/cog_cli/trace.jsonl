@@ -1,0 +1,1 @@
+{"run_id": "COG-20260714-115929", "layer": 1, "stage": "required_tag_filter", "score": null, "candidates": [], "reason": "L1过滤: 必选标签=['#military', '#moral_crisis'], 禁用标签=['#heroic_triumph'] → 0/10 模板通过", "timestamp": "2026-07-14T11:59:29"}

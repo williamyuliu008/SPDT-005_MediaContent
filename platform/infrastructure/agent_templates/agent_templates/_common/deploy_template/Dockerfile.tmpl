@@ -1,0 +1,24 @@
+FROM python:3.12-slim
+
+LABEL project="{{PROJECT_NAME}}"
+LABEL type="{{PROJECT_TYPE}}"
+LABEL pipeline="6_agent_project Delivery Pipeline"
+
+WORKDIR /app
+
+# 系统依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python 依赖
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 应用代码
+COPY cluster/ ./cluster/
+COPY deploy/ ./deploy/
+COPY quality/ ./quality/
+
+# 入口
+CMD ["python", "-m", "cluster.main"]

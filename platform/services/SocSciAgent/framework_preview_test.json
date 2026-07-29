@@ -1,0 +1,22 @@
+{
+  "chapters": [
+    {
+      "title": "墨砚未干，烽烟已起"
+    },
+    {
+      "title": "血染蒲州，忠骨铮铮"
+    },
+    {
+      "title": "墨迹长存，气节永铭"
+    }
+  ],
+  "events": [
+    "安史之乱"
+  ],
+  "approval_options": [
+    "approve",
+    "modify_chapter",
+    "regenerate",
+    "stop"
+  ]
+}

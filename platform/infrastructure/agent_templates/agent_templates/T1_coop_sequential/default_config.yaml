@@ -1,0 +1,54 @@
+# T1 默认集群配置 — Coop-Sequential
+# Agent 按固定顺序接力，前一 Agent 输出 = 后一 Agent 输入
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T1_coop_sequential"
+  description: "{{DESCRIPTION}}"
+
+agents:
+  # ── 输入 Agent ──
+  - role: "input_processor"
+    name: "输入处理器"
+    description: "接收原始输入并标准化"
+    position: 1
+    handoff_to: ["core_processor"]
+
+  # ── 核心处理 Agent ──
+  - role: "core_processor"
+    name: "核心处理器"
+    description: "执行核心业务逻辑"
+    position: 2
+    handoff_from: ["input_processor"]
+    handoff_to: ["output_formatter"]
+
+  # ── 输出 Agent ──
+  - role: "output_formatter"
+    name: "输出格式化器"
+    description: "将处理结果格式化为最终输出"
+    position: 3
+    handoff_from: ["core_processor"]
+
+topology:
+  type: "sequential"
+  edges:
+    - from: "input_processor"
+      to: "core_processor"
+      message_type: "standardized_input"
+    - from: "core_processor"
+      to: "output_formatter"
+      message_type: "processed_result"
+
+orchestration:
+  mode: "sequential"
+  max_parallel: 1
+  handoff_protocol: "direct"
+  retry_on_failure: true
+  max_retries: 3
+
+shared_state:
+  backend: "chromadb"
+  collections:
+    - "inputs"
+    - "intermediate"
+    - "outputs"

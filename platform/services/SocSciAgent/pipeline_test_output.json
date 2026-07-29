@@ -1,0 +1,46 @@
+{
+  "context": {
+    "pipeline_started": "2026-07-14T14:27:30.770710",
+    "stages": [
+      {
+        "stage": "chief_editor",
+        "status": "success",
+        "result_preview": "final_edited_content='{\"intent\": \"epic\", \"chapter_title\": \"乾元元年·蒲州的墨与血\", \"characters\": [\"颜真卿\", \"安禄山\"], \"themes\": [\"忠义\", \"家国\", \"书法\"], \"target_length\": 2000}' editorial_decision_log=[{'stage': 'funnel',"
+      },
+      {
+        "stage": "material_scout",
+        "status": "success",
+        "result_preview": "<coroutine object MaterialScoutAgent.execute at 0x000002B394B374C0>"
+      },
+      {
+        "stage": "orchestration",
+        "status": "success",
+        "result_preview": "{'status': 'ok', 'agent': 'orchestration_v1_2'}"
+      },
+      {
+        "stage": "controlled_generation",
+        "status": "error",
+        "error": "ControlledGenerationAgent.__init__() missing 2 required positional arguments: 'agent_id' and 'config'"
+      }
+    ],
+    "initial_input": {
+      "intent": "epic",
+      "chapter_title": "乾元元年·蒲州的墨与血",
+      "characters": [
+        "颜真卿",
+        "安禄山"
+      ],
+      "themes": [
+        "忠义",
+        "家国",
+        "书法"
+      ],
+      "target_length": 2000
+    },
+    "pipeline_finished": "2026-07-14T14:27:31.830026"
+  },
+  "final_result": {
+    "status": "ok",
+    "agent": "orchestration_v1_2"
+  }
+}

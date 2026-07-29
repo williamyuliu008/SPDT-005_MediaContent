@@ -1,0 +1,36 @@
+# 反思智能体 (Reflection Agent)
+# AG-047-06
+
+agent_id: AG-047-06
+name: Reflection
+name_zh: 反思智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  评审失败后的建设性翻译层。不是对抗，不是创作，专门做"翻译"。
+  将抽象的评审意见翻译为具体的可执行修改指令。
+
+trigger: "review_fail → 主编 reroute → 反思智能体"
+
+capabilities:
+  - "解读 severity: warning（置信度 <0.6）时降级为参考，不要求修改"
+  - "将 location（'sec_02.deep_dive.actor_unit'）映射到具体 slot_id"
+  - "将 suggestion（'调整类比对象'）翻译为具体修改参数"
+  - "生成可执行的 override 指令（replace_adjust/confidence_threshold）"
+
+output_format: |
+  {
+    "edit_instruction": {
+      "target_slot": "sec_02.structure_unit.analogy_slot",
+      "action": "replace_analogy_domain",
+      "old_value": "...",
+      "new_value": "...",
+      "reason": "reviewer + confidence"
+    }
+  }
+
+calls_llm: true  # LLM 辅助解读抽象评审意见
+
+milestone_target: "M2 评审接入阶段"

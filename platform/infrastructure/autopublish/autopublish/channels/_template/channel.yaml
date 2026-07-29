@@ -1,0 +1,27 @@
+# ── 渠道配置模板 ────────────────────────────────────────────
+# 复制此文件到 channels/<your_channel>/channel.yaml 即可注册新渠道。
+# 不需要修改引擎代码。
+
+channel:
+  id: "my_channel"            # 渠道唯一 ID
+  name: "我的渠道"             # 渠道显示名
+  type: "internal"            # internal(自用) | external(对外)
+
+publishing:
+  schedule: "0 9 * * *"       # cron 表达式
+  build_command: ""           # 可选：自定义构建命令
+  deploy_to: ""               # 可选：部署目标路径
+  workflow: "direct_send"     # direct_send | draft_then_publish
+
+content:
+  primary: "daily_report"     # 从 Content Bundle 中取哪个 format
+  output_format: "html"       # html | markdown | plain
+  max_chars: 0                # 0 = 不限制
+
+format:
+  auto_cover: false           # 是否自动生成封面
+  author: ""
+
+error:
+  on_fail: "skip"             # skip | fallback_yesterday | retry
+  max_retries: 0

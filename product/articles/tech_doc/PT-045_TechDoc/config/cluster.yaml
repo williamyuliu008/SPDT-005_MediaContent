@@ -1,0 +1,25 @@
+cluster_id: techdoc_cluster
+description: 技术文档集群 (CLUSTER-D)
+domain: content_production.techdoc
+input_router: SR-TEXT-001
+stages:
+- gate: spec_ready
+  guild: SPEC
+  id: S1_SPEC
+  name: 规格定义
+- gate: research_done
+  guild: RESEARCH
+  id: S2_RESEARCH
+  name: API研究
+- gate: draft_ready
+  guild: WRITE
+  id: S3_WRITE
+  name: 文档撰写
+- gate: approved
+  guild: REVIEW
+  id: S4_REVIEW
+  name: 技术审查
+topology:
+  entry_point: operator
+  type: mesh
+version: 0.1.0

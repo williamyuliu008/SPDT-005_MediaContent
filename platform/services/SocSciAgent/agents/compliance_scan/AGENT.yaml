@@ -1,0 +1,36 @@
+# 合规扫描智能体 (Compliance Scan Agent)
+# AG-047-12
+
+agent_id: AG-047-12
+name: ComplianceScan
+name_zh: 合规扫描智能体
+type: support
+pdt: PT-047
+status: planned
+
+role: |
+  文风包/史观包升级后，自动扫描存量内容是否符合最新配置。
+  防止配置漂移，确保全系列内容一致性。
+
+trigger_modes:
+  - on_demand: "主编手动触发"
+  - scheduled: "每日/每周定时扫描"
+  - on_config_change: "文风包/史观包版本升级时自动触发"
+
+scan_targets:
+  - "存量章节是否使用新版 forbidden_words"
+  - "存量章节是否符合新版史观关键词 policy"
+  - "新版文风包引入的句式偏好是否被遵守"
+
+output:
+  - "affected_chapters_list: [ch01, ch05, ch12, ...]"
+  - "violation_details: [{chapter, dimension, severity, deviation}]"
+  - "fix_suggestions: [suggestion清单]"
+  - "regression_test_plan: 受影响章节需重新过审"
+
+integration:
+  on_config_change: "触发回归测试流程，主编决定是否批量修订"
+
+calls_llm: true  # 配置合规检查
+
+milestone_target: "M3 冷启动体系化阶段"

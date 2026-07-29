@@ -1,0 +1,9 @@
+pdt_id: PT-046
+name: DataNews
+name_zh: 数据新闻制造
+spdt: SPDT-005
+domain: 数据新闻
+content_types: [数据可视化报道, 图表新闻, 数据故事]
+stages: [数据采集, 分析, 叙事, 可视化, 发布]
+status: planned
+created: 2026-07-10

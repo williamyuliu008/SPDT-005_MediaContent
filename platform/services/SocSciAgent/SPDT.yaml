@@ -1,0 +1,230 @@
+# PT-047: 社科类通俗作品创作智能体平台
+# SocSci Agent Cluster Platform for Popular Works
+
+pdt_id: PT-047
+pdt_name: 社科智能体创作平台
+pdt_name_en: Social Science Agent Cluster Platform
+parent_sPDT: SPDT-005
+
+owner_agent: agent-9d726ee1badc (长文本助手)
+created: 2026-07-14
+version: 1.1
+last_updated: 2026-07-14
+status: construction
+
+description: |
+  基于社科类通俗作品全自动生产体系方法论，构建多智能体协作平台。
+  将"强约束 + 受控多样性"理念工程化：主编居中协调，选材/编排/评审/生成各司其职，
+  支撑型智能体按需服务，全部决策链路可审计、可回滚、可扩展。
+
+# ===== 智能体集群定义 =====
+
+agent_cluster:
+  orchestrator:
+    - agent_id: AG-047-01
+      name: ChiefEditor
+      name_zh: 主编智能体
+      role: 全局协调者，控制平面，持有作品上下文快照
+      directory: agents/chief_editor
+      calls_llm: false
+      memory_type: work_context
+
+  pipeline_agents:
+    - agent_id: AG-047-02
+      name: ColdStart
+      name_zh: 冷启动智能体
+      role: 专家经验翻译为可执行配置资产
+      directory: agents/cold_start
+      calls_llm: auxiliary
+
+    - agent_id: AG-047-03
+      name: MaterialScout
+      name_zh: 选材智能体
+      role: 知识节点评分筛选，含挖掘模式（LLM辅助）
+      directory: agents/material_scout
+      calls_llm: auxiliary
+
+    - agent_id: AG-047-04
+      name: Orchestration
+      name_zh: 编排智能体
+      role: 模板选择（三层漏斗+降级策略）+ COG 章节分镜脚本输出
+      directory: agents/orchestration
+      calls_llm: false
+
+    - agent_id: AG-047-05
+      name: AdversarialReview
+      name_zh: 评审智能体
+      role: 5 个对抗 Agent 轮攻，含置信度加权与宽容度参数
+      directory: agents/review
+      calls_llm: true
+
+    - agent_id: AG-047-06
+      name: Reflection
+      name_zh: 反思智能体
+      role: 评审报告→修改指令，建设性翻译层
+      directory: agents/reflection
+      calls_llm: true
+
+    - agent_id: AG-047-07
+      name: ControlledGeneration
+      name_zh: 生成智能体
+      role: LLM 填槽执行，四层注入，上下文感知，流式打断，Token计数
+      directory: agents/generation
+      calls_llm: true
+
+    - agent_id: AG-047-08
+      name: OutputRenderer
+      name_zh: 输出智能体
+      role: 多模态渲染（文本/SSML/动画分镜/知识卡片）
+      directory: agents/output
+      calls_llm: false
+
+  support_agents:
+    - agent_id: AG-047-09
+      name: StyleManager
+      name_zh: 文风包管理智能体
+      role: 文风包注册/版本/逆向工程辅助/版本Diff可视化
+      directory: agents/support/style_manager
+
+    - agent_id: AG-047-10
+      name: HistorioManager
+      name_zh: 史观包管理智能体
+      role: 史观配置校验/多史观冲突分析
+      directory: agents/support/historio_manager
+
+    - agent_id: AG-047-11
+      name: KnowledgeBaseAgent
+      name_zh: 知识库管理智能体
+      role: 节点 CRUD/依赖图维护/类比匹配
+      directory: agents/support/knowledge_base
+
+    - agent_id: AG-047-12
+      name: ComplianceScan
+      name_zh: 合规扫描智能体
+      role: 配置升级后自动扫描存量内容是否符合最新配置
+      directory: agents/compliance_scan
+      calls_llm: true
+
+# ===== 生产资料库 =====
+
+production_assets:
+  knowledge_base:
+    path: kb
+    description: 知识节点（事件/人物/制度/观念四元组）
+    node_schema: kb/node_schema.yaml
+
+  templates:
+    path: templates
+    description: 10 种叙事模板（TPL-01 ~ TPL-10）+ 编排规则
+    template_schema: templates/template_schema.yaml
+
+  style_packs:
+    path: style_packs
+    description: 文风包五层定义（黄仁宇式/费曼式/通俗演义式）
+    style_schema: style_packs/style_pack_schema.yaml
+
+  historio_packs:
+    path: historio_packs
+    description: 史观参数包（结构唯物主义/悲剧宿命论等）
+    historio_schema: historio_packs/historio_schema.yaml
+
+  reader_personas:
+    path: reader_personas
+    description: 读者画像库（认知基线/情感原型/语言亲和度）
+    persona_schema: reader_personas/persona_schema.yaml
+
+# ===== 流水线阶段 =====
+
+pipeline_stages:
+  - stage: cold_start
+    name: 冷启动
+    agents: [ColdStart]
+    output: series_profile_snapshot_id
+    human_gate: true
+
+  - stage: material_selection
+    name: 选材
+    agents: [MaterialScout]
+    input: narrative_intent + historiography_profile + reader_persona
+    output: selected_nodes_json
+    human_gate: false
+
+  - stage: orchestration
+    name: 编排
+    agents: [Orchestration]
+    input: selected_nodes
+    output: cog_chapter_script_json
+    human_gate: false
+
+  - stage: adversarial_review_light
+    name: 评审（轻度）
+    agents: [AdversarialReview]
+    intensity: light
+    output: review_pass_light
+    human_gate: false
+
+  - stage: controlled_generation
+    name: 受控生成
+    agents: [ControlledGeneration]
+    input: cog_script
+    output: rendered_chapter_text
+    human_gate: false
+
+  - stage: adversarial_review_heavy
+    name: 评审（重度）
+    agents: [AdversarialReview]
+    intensity: heavy
+    output: review_pass_heavy
+    human_gate: false
+
+  - stage: reflection
+    name: 反思（修订循环）
+    agents: [Reflection]
+    trigger: "review_fail → 主编 reroute → 反思智能体"
+    output: edit_instruction_json
+    human_gate: false
+
+  - stage: output_rendering
+    name: 多模态输出
+    agents: [OutputRenderer]
+    output: [markdown_text, ssml_audio, animation_tags, knowledge_cards]
+
+  - stage: compliance_scan
+    name: 合规扫描
+    agents: [ComplianceScan]
+    trigger: "on_demand / scheduled / on_config_change"
+    output: affected_chapters_list
+
+# ===== 核心能力指标 =====
+
+kpis:
+  - metric: 知识节点 → 首版文本时长
+    target: ≤15 min
+  - metric: 选材 → 编排全流程
+    target: ≤3 min
+  - metric: 多模态派生（换文风包）
+    target: ≤1 min
+  - metric: 断点续生产能力
+    target: "任意节点重启"
+  - metric: 人为干预占比（稳态）
+    target: ≤15%
+
+# ===== 依赖关系 =====
+
+dependencies:
+  upstream_from:
+    - SPDT-002 (专利情报) → PT-042 (知识科普) / PT-040 (深度长文)
+    - SPDT-003 (论文情报) → PT-042 (知识科普)
+
+  shares_infra_with:
+    - SPDT-005 (共享 SmartText 路由器)
+    - SPDT-005 (共享 autopublish 多渠道发布)
+
+# ===== OMAS 注册信息 =====
+
+omas:
+  pdt_registry: D:\6_agent_project\omas\pdt_registry\PT-047
+  spdt_registry: D:\6_agent_project\omas\spdt_registry\SPDT-005
+  created: 2026-07-14
+  registered_by: agent-9d726ee1badc
+  version: 1.0

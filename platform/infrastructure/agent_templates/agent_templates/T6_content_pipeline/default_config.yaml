@@ -1,0 +1,52 @@
+# T6 默认集群配置 — Content Pipeline (内容管道)
+# 单 Agent 多阶段：采集 → 分析 → 生成 → 发布
+# 适用: AI瞭望台, FlashNews, OpEd, SciPop, TechDoc
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T6_content_pipeline"
+  description: "{{DESCRIPTION}}"
+
+stages:
+  # ── 采集 ──
+  - id: "collect"
+    name: "内容采集"
+    description: "从数据源采集原始内容"
+    sources: []  # RSS / API / Web Scraper
+    schedule: "daily"
+    position: 1
+
+  # ── 分析 ──
+  - id: "analyze"
+    name: "内容分析"
+    description: "分类、摘要、情感分析"
+    depends_on: ["collect"]
+    models: ["llm"]
+    position: 2
+
+  # ── 生成 ──
+  - id: "generate"
+    name: "内容生成"
+    description: "基于分析结果生成格式化内容"
+    depends_on: ["analyze"]
+    templates: ["article", "briefing", "headline"]
+    position: 3
+
+  # ── 发布 ──
+  - id: "publish"
+    name: "内容发布"
+    description: "输出到目标渠道"
+    depends_on: ["generate"]
+    channels: []  # Markdown / HTML / API / Feishu
+    position: 4
+
+topology:
+  type: "pipeline"
+  mode: "sequential"
+  retry_on_failure: true
+  max_retries: 2
+
+recommended_cdos:
+  - RESEARCH  # 内容源调研
+  - DATA      # 数据采集
+  - MODULE    # 发布模块

@@ -1,0 +1,46 @@
+# 输出智能体 (Output Renderer Agent)
+# AG-047-07
+
+agent_id: AG-047-07
+name: OutputRenderer
+name_zh: 输出智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  接收生成智能体的章节文本，输出多模态形态。
+  非流水线强制节点，按需调用。
+
+output_modes:
+  - markdown_text:
+      input: 章节文本 + 情绪弧线标签
+      format: Markdown/HTML
+      behavior: 注入布局标签（类比框/时间轴/人物卡片等）
+
+  - ssml_audio:
+      input: 情绪弧线标签 + 张力曲线
+      mapping:
+        narrative_hook: rate='fast'
+        dramatic_irony: rate='slow', volume='soft'
+        structural_reveal: rate='x-slow', pitch='low', emphasis='strong', break='800ms'
+        reflective_close: rate='medium', break='1000ms'
+        impact_strike: rate='x-slow', break='500ms+800ms'
+        motif_epigram: rate='slow', volume='loud', break='1200ms'
+
+  - animation_tags:
+      input: 模板类型 + 节点类型
+      mapping:
+        TPL_01.structure_unit: institutional_structure_diagram
+        TPL_01.impact: data_pulse
+        TPL_09: timeline_with_data_curve + slow_pan
+        因果链: causal_arrow_propagation
+
+  - knowledge_cards:
+      input: 知识节点 + 冲击力数据
+      format: JSON
+      types: [知识卡片, FAQ问答对, 分步引导式卡片]
+
+calls_llm: false  # 确定性格式转换
+
+milestone_target: "M4 SSML+动画分镜标注"

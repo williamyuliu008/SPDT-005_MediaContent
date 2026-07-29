@@ -1,0 +1,41 @@
+# {{PROJECT_NAME}} — 项目交付包
+# ============================================================================
+# 类型: T1 — Coop-Sequential（协作-顺序型）
+# 生成方式: 6_agent_project Delivery Pipeline
+# 生成日期: {{DATE}}
+# ============================================================================
+
+## 项目概述
+
+{{DESCRIPTION}}
+
+## 集群架构
+
+```
+[Agent_1] → [Agent_2] → [Agent_3] → ... → [Agent_N]
+  输入         处理          分析              输出
+```
+
+## Agent 清单
+
+| 序号 | Agent | 职责 | 来源 | 状态 |
+|:---|:---|:---|:---|:---|
+| {{AGENT_LIST}} | | | | |
+
+## 交付物清单
+
+- [ ] `cluster/cluster.yaml` — 集群配置
+- [ ] `cluster/agents/*/config.yaml` — Agent 配置
+- [ ] `cluster/orchestration.yaml` — 编排配置（顺序链）
+- [ ] `deploy/` — 部署配置
+- [ ] `quality/` — 质量报告
+
+## 采购复盘
+
+| 模块 | 决策 | CDO | 匹配度 | 实际使用评分 |
+|:---|:---|:---|:---|:---|
+| {{MODULE_REVIEWS}} | | | | |
+
+## 已知限制
+
+{{KNOWN_LIMITATIONS}}

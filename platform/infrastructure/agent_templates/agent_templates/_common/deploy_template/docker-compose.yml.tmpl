@@ -1,0 +1,72 @@
+# Docker 部署模板
+# ============================================================================
+# 基于 _agent_os/agent_os_sw_elite 的生产级部署模板
+
+version: '3.8'
+
+services:
+  # ── 主 Agent 服务 ──
+  {{PROJECT_NAME}}:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: {{PROJECT_NAME}}
+    restart: unless-stopped
+    ports:
+      - "{{PORT}}:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./cluster:/app/cluster:ro
+      - ./logs:/app/logs
+      - ./data:/app/data
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── ChromaDB（共享状态）──
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: {{PROJECT_NAME}}_chroma
+    restart: unless-stopped
+    ports:
+      - "{{CHROMA_PORT}}:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── PostgreSQL（可选，T5 混合项目推荐）──
+  postgres:
+    image: postgres:16-alpine
+    container_name: {{PROJECT_NAME}}_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: agent
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-agent_secret}
+      POSTGRES_DB: {{PROJECT_NAME}}_db
+    ports:
+      - "{{PG_PORT}}:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agent -d {{PROJECT_NAME}}_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - full  # 仅 T5 项目启用
+
+volumes:
+  chroma_data:
+  pg_data:

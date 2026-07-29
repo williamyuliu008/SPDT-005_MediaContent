@@ -1,0 +1,153 @@
+phases:
+  phase_0:
+    status: done
+    run_id: SDC-20260714-114953
+    output: diagnostics/cog_cli/cog_diag.py
+    completed_at: 2026-07-14 11:49
+    notes: "SDC cli_diagnostic mode, 397 LOC, JSONL 三层漏斗流水线"
+  phase_1_1:
+    status: done
+    run_id: SDC-20260714-125530
+    output: agents/chief_editor/chief_editor.py
+    completed_at: 2026-07-14 12:56
+    notes: "SDC multi_agent_platform, Qwen API, 138 lines, glue ~68%, Five-step COG+Funnel+Tension pipeline"
+  phase_1_2:
+    status: done
+    run_id: SDC-20260714-125925
+    output: agents/orchestration/orchestration.py
+    completed_at: 2026-07-14 13:01
+    notes: "SDC multi_agent_platform, Qwen API, 187 lines, glue ~56%, ThreeStageFunnel + TensionCurve"
+  phase_1_3:
+    status: done
+    run_id: SDC-20260714-130301
+    output: agents/material_scout/material_scout.py
+    completed_at: 2026-07-14 13:04
+    notes: "SDC multi_agent_platform, Qwen API, ~120 lines, glue ~55%, Five-dimension scoring + Three-constraint filter"
+  phase_2:
+    status: done
+    run_id: SDC-20260714-131700
+    completed_at: 2026-07-14 13:18
+    notes: >
+      2.1 generation/controlled_generation.py (13195B) |
+      2.2 review/adversarial_review.py (15360B) |
+      2.3 reflection/reflection.py (16084B) |
+      2.4 output/output_renderer.py (12676B)
+  phase_3:
+    status: done
+    run_id: SDC-20260714-132413
+    completed_at: 2026-07-14 13:25
+    notes: >
+      3.1 cold_start/cold_start.py (13843B) |
+      3.2 compliance_scan/compliance_scan.py (11733B) |
+      3.3 support/style_manager/style_manager.py |
+      3.4 support/historio_manager/historio_manager.py |
+      3.5 support/knowledge_base/knowledge_base.py
+  phase_4:
+    status: done
+    completed_at: 2026-07-14 15:27
+    notes: >
+      全链路pipeline_runner.py调试完成 (7/7 stages pass) |
+      修复: async/await MaterialScout, AgentContext.extra, config命名冲突, LLMClient.chat,
+      CLIOutput.log, CLIMenu.add, StructuredOutput调用 |
+      关键修复: Pydantic模型用 _cfg 存储 → BaseAgent.config 用 AgentConfig |
+      DeepSeek API真实调用成功 (adversarial_review 5次 + reflection 1次)
+agents:
+  chief_editor:
+    status: built_and_tested
+    file: chief_editor.py
+    lines: 138
+    notes: "Phase1.1, execute() via pipeline"
+  orchestration:
+    status: built_and_tested
+    file: orchestration.py
+    lines: 187
+    notes: "Phase1.2, execute() via pipeline"
+  material_scout:
+    status: built_and_tested
+    file: material_scout.py
+    lines: ~120
+    notes: "Phase1.3, async execute() via pipeline"
+  generation:
+    status: built_and_tested
+    file: controlled_generation.py
+    lines: ~350
+    notes: "Phase2.1, execute() via pipeline, DeepSeek LLM call"
+  review:
+    status: built_and_tested
+    file: adversarial_review.py
+    lines: ~400
+    notes: "Phase2.2, execute() via pipeline, 5x DeepSeek LLM calls"
+  reflection:
+    status: built_and_tested
+    file: reflection.py
+    lines: ~420
+    notes: "Phase2.3, execute() via pipeline, DeepSeek LLM call"
+  output:
+    status: built_and_tested
+    file: output_renderer.py
+    lines: ~330
+    notes: "Phase2.4, execute() via pipeline, tension curve output"
+  cold_start:
+    status: built
+    file: cold_start.py
+    lines: ~360
+    notes: "Phase3.1, not yet in pipeline"
+  compliance_scan:
+    status: built
+    file: compliance_scan.py
+    lines: ~300
+    notes: "Phase3.2, not yet in pipeline"
+  support/style_manager:
+    status: built
+    file: style_manager.py
+    lines: ~400
+    notes: "Phase3.3, support agent"
+  support/historio_manager:
+    status: built
+    file: historio_manager.py
+    lines: ~400
+    notes: "Phase3.4, support agent"
+  support/knowledge_base:
+    status: built
+    file: knowledge_base.py
+    lines: ~420
+    notes: "Phase3.5, support agent"
+
+  # ── Progressive Guide ──────────────────────────────────
+  progressive_guide:
+    status: done
+    completed_at: 2026-07-14 16:17
+    run_id: manual-integrate-20260714
+    modules:
+      taste_sampler:
+        status: built_and_tested
+        file: progressive_guide/taste_sampler.py
+        lines: ~350
+        notes: >
+          Phase 0.5A, 3风格微样章生成（narrative_casual/academic_summary/novel_drama）,
+          DeepSeek LLM调用, 内存缓存(theme+style hash),
+          TastingResult + to_user_facing()
+      framework_preview:
+        status: built_and_tested
+        file: progressive_guide/framework_preview.py
+        lines: ~640
+        notes: >
+          Phase 0.5B, COG+取材→章节大纲+取材摘要,
+          DeepSeek LLM生成真实中文章节标题,
+          ChapterOutline[] + MaterialSummary + to_user_facing() + apply_user_feedback()
+      unified_preview_composer:
+        status: built_and_tested
+        file: progressive_guide/unified_preview_composer.py
+        lines: ~800
+        notes: >
+          Phase 0.5 unified, 整合 TastingSampler + FrameworkPreview,
+          两阶段流程(Phase1风格尝味 → Phase2框架预览),
+          统一用户界面(to_unified_user_facing)同时展示: 风格样章+章节结构+取材摘要+张力曲线,
+          5种操作选项(full_approve/modify_style/modify_framework/regenerate_all/stop),
+          enhanced_context包含16个键可直接注入pipeline,
+          实测: 4次DeepSeek LLM调用(3+1), 全流程PASS
+    notes: >
+      核心问题已解决: 样章(局部品鉴) + 框架(全局骨架) + 取材(内容原料)
+      三者在同一界面同时呈现，用户一次确认后进入全量生成，彻底解决意图对齐问题。
+      与pipeline集成: pipeline_runner.py 中 --progressive flag 启用，
+      build_full_preview()支持CLI batch模式

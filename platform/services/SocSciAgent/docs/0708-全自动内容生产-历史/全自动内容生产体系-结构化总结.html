@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全自动内容生产体系 · 结构化总结</title>
+<style>
+  :root { --bg: #faf9f7; --card-bg: #ffffff; --text: #1a1a1a; --text-secondary: #5f5f5f; --border: #e8e6e1; --accent: #2563eb; --accent-light: #eff6ff; --red: #dc2626; --green: #16a34a; --amber: #d97706; --purple: #7c3aed; --teal: #0d9488; --radius: 10px; --shadow: 0 1px 3px rgba(0,0,0,.06); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem 1.5rem; max-width: 1060px; margin: 0 auto; }
+  header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+  header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: .5rem; }
+  header .meta { color: var(--text-secondary); font-size: .9rem; }
+  .section-title { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 1rem; padding-bottom: .5rem; border-bottom: 3px solid var(--accent); }
+  .round { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; overflow: hidden; }
+  .round-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--accent-light); }
+  .round-header .num { font-size: .75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .3rem; }
+  .round-header h2 { font-size: 1.05rem; font-weight: 650; }
+  .round-body { padding: 1.5rem; }
+  .round-body h3 { font-size: .92rem; font-weight: 650; color: var(--text-secondary); margin: 1rem 0 .5rem; }
+  .round-body h3:first-child { margin-top: 0; }
+  .round-body p, .round-body li { font-size: .88rem; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .7rem; margin: .75rem 0; }
+  .metric { background: #f8f7f4; border: 1px solid var(--border); border-radius: 8px; padding: .7rem .8rem; text-align: center; }
+  .metric .label { font-size: .72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; }
+  .metric .value { font-size: 1.15rem; font-weight: 700; color: var(--accent); margin-top: .2rem; }
+  .metric .value.green { color: var(--green); } .metric .value.amber { color: var(--amber); } .metric .value.purple { color: var(--purple); } .metric .value.teal { color: var(--teal); }
+  .badges { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; }
+  .badge { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; }
+  .badge.green { background: #dcfce7; color: #166534; } .badge.amber { background: #fef3c7; color: #92400e; } .badge.red { background: #fee2e2; color: #991b1b; } .badge.blue { background: #dbeafe; color: #1e40af; } .badge.purple { background: #f3e8ff; color: #6b21a8; } .badge.teal { background: #ccfbf1; color: #115e59; }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; margin: .75rem 0; }
+  thead th { background: #f8f7f4; border-bottom: 2px solid var(--border); padding: .5rem .7rem; text-align: left; font-weight: 650; font-size: .76rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; }
+  tbody td { padding: .5rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; } tbody tr:last-child td { border-bottom: none; }
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: .75rem 0; }
+  .compare-box { background: #f8f7f4; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+  .compare-box h4 { font-size: .85rem; font-weight: 650; margin-bottom: .5rem; }
+  .compare-box ul { padding-left: 1.2rem; font-size: .83rem; color: var(--text-secondary); } .compare-box li { margin-bottom: .25rem; }
+  blockquote { border-left: 3px solid var(--accent); padding: .5rem 1rem; margin: .75rem 0; background: var(--accent-light); border-radius: 0 8px 8px 0; font-style: italic; color: var(--text-secondary); font-size: .88rem; }
+  .tl-step { display: flex; gap: 1rem; margin-bottom: .6rem; }
+  .tl-marker { width: 28px; height: 28px; min-width: 28px; background: var(--accent-light); border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .78rem; color: var(--accent); margin-top: 2px; }
+  .tl-body { flex: 1; } .tl-title { font-weight: 650; font-size: .83rem; margin-bottom: .15rem; } .tl-text { color: var(--text-secondary); font-size: .8rem; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .78rem; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>全自动内容生产体系 · 结构化总结</h1>
+  <div class="meta">~19 轮深度对话 · 从 V2.0 方法论到系列品牌圣经 · 4800+ 行完整记录</div>
+</header>
+
+<!-- 全景 -->
+<div class="round">
+  <div class="round-header"><div class="num">全景概览</div><h2>体系定位与核心哲学</h2></div>
+  <div class="round-body">
+    <blockquote>将专家经验规则化、内容结构模板化、表现力参数化，把大模型从"创作者"降级为"受控执行器"，实现从"单次AI生成"到"工业级AI制造"的范式跃迁。</blockquote>
+    <div class="metrics">
+      <div class="metric"><div class="label">核心哲学</div><div class="value">强约束+受控多样性</div></div>
+      <div class="metric"><div class="label">运行模式</div><div class="value teal">冷启动→全自动</div></div>
+      <div class="metric"><div class="label">覆盖体裁</div><div class="value green">6种</div></div>
+      <div class="metric"><div class="label">历史叙事模板</div><div class="value amber">10种</div></div>
+      <div class="metric"><div class="label">对抗Agent</div><div class="value purple">5个</div></div>
+      <div class="metric"><div class="label">体系版本</div><div class="value">V3.0 交响乐版</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">📍</span> 第一阶段：核心方法论与多体裁验证（R1-R2）</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R1</div><h2>V2.0 核心方法论——六大支柱</h2></div>
+  <div class="round-body">
+    <table>
+      <thead><tr><th>支柱</th><th>核心内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. 底层哲学</strong></td><td>强约束（模型做选择题、填槽位，不做作文题）+ 受控多样性（情绪/文风/结构丰度显性建模为可枚举参数）</td></tr>
+        <tr><td><strong>2. 五大资料库</strong></td><td>统一标签体系 + 动作模板库 + 领域知识库 + 文风包库 + 情绪语音模板库</td></tr>
+        <tr><td><strong>3. 双阶段运行</strong></td><td>冷启动（一次性人工定义规则/模板/文风包）→ 全自动生产（标签驱动→模板匹配→文风/情绪注入→成品渲染，边际成本趋零）</td></tr>
+        <tr><td><strong>4. 四层拆解</strong></td><td>课程→段落→知识点→帧/页面，每层受标签约束</td></tr>
+        <tr><td><strong>5. 双形态输出</strong></td><td>动态可视化（动画/视频）+ 结构化文档（讲义/报告，多文风一键派生）</td></tr>
+        <tr><td><strong>6. 核心壁垒</strong></td><td>决策主体=规则引擎而非模型概率；批量一致性极高；表现力参数化可审计；长期维护只需修改模板/标签而非重写Prompt</td></tr>
+      </tbody>
+    </table>
+    <p>标杆验证：高中数学《函数单调性》——冷启动后，新增一个知识点从入库到全形态输出仅需分钟级。</p>
+  </div>
+</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R1-R2</div><h2>六种体裁适配分析</h2></div>
+  <div class="round-body">
+    <table>
+      <thead><tr><th>体裁</th><th>适配度</th><th>核心增益</th><th>关键改造</th></tr></thead>
+      <tbody>
+        <tr><td><strong>K12课件(已有)</strong></td><td>★★★★★</td><td>基线验证</td><td>—</td></tr>
+        <tr><td><strong>科普长文本</strong></td><td>★★★★☆</td><td>结构+文风包解耦大部头写作</td><td>四层放大为「全书→篇章→小节→说理单元」，叙事张力弧线替代情绪弧线</td></tr>
+        <tr><td><strong>概念几何动画</strong></td><td>★★★★★</td><td>最直接迁移，模板→关键帧</td><td>动作模板库扩展（因果链、流程循环等概念特化模板）</td></tr>
+        <tr><td><strong>合规报告/白皮书</strong></td><td>★★★★★</td><td>高B端商业价值，强ROI</td><td>多版本派生（内部版/公众版/简报版），数据源绑定→改数字→重渲染</td></tr>
+        <tr><td><strong>交互知识卡片</strong></td><td>★★★★☆</td><td>微内容工业化</td><td>最小单元=一个QA，标签驱动选模板</td></tr>
+        <tr><td><strong>音频课/播客脚本</strong></td><td>★★★★☆</td><td>情绪弧线+SSML产业化</td><td>增加听感节奏包（对话体/独白体/访谈复现体）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🎨</span> 第二阶段：文风包逆向工程与历史通俗作品设计（R3-R8）</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R3</div><h2>文风包逆向工程方法论</h2></div>
+  <div class="round-body">
+    <blockquote>从标杆科普文本中系统提取显式可观测的语言特征，编码为规则/池子/权重——不是训练 LoRA，是白盒约束层。</blockquote>
+    <div class="compare-row">
+      <div class="compare-box">
+        <h4>五层形式化维度</h4>
+        <ul>
+          <li><strong>Layer 0 Meta</strong>：适用体裁、受众、禁止项</li>
+          <li><strong>Layer 1 Persona</strong>：叙述者角色（亲切向导/严谨工程师）</li>
+          <li><strong>Layer 2 Lexical Pool</strong>：词汇池（连接词/开场语/类比触发词/禁词表），TF-IDF差分提取</li>
+          <li><strong>Layer 3 Syntactic Bias</strong>：句式偏好（平均句长/问句比例/破折号频率/被动语态比例）</li>
+          <li><strong>Layer 4 Rhetorical Ops</strong>：类比策略/设问模式/数学展示方式</li>
+          <li><strong>Layer 5 Layout/Pacing</strong>：框类型偏好、张力弧线默认映射</li>
+        </ul>
+      </div>
+      <div class="compare-box">
+        <h4>校验与迭代</h4>
+        <ul>
+          <li>样本准备：3-5万字纯文本 + 同期同题材对照样本</li>
+          <li>盲评测试：生成片段混入真实片段，命中率>60%可用，>75%优质</li>
+          <li>定量辅助：词汇分布JS散度、句长分布、破折号频率落入原作95%CI</li>
+          <li>迭代：只改YAML/池子，不改模板逻辑、不碰模型</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R4-R5</div><h2>历史通俗作品设计 & 10种叙事模板</h2></div>
+  <div class="round-body">
+    <h3>四层拆解适配</h3>
+    <p>科普的「说理单元」变为历史版的「叙事块（Narrative Block）」——包含情境单元、事件单元、人物心理/动机单元、结构分析单元、反思/升华单元。</p>
+
+    <h3>10 种叙事模板库（V1.0）</h3>
+    <table>
+      <thead><tr><th>模板ID</th><th>名称</th><th>核心逻辑</th><th>最佳角色</th></tr></thead>
+      <tbody>
+        <tr><td><strong>TPL-01</strong></td><td>小事撬动大局（黄仁宇式）</td><td>微观事件→宏观结构</td><td>anchor_event</td></tr>
+        <tr><td><strong>TPL-02</strong></td><td>命运抉择时刻（通俗传记式）</td><td>压力→抉择→不可逆后果</td><td>anchor_event</td></tr>
+        <tr><td><strong>TPL-03</strong></td><td>制度杀人（悲剧宿命式）</td><td>好人+好意→坏制度→必然毁灭</td><td>deep_dive</td></tr>
+        <tr><td><strong>TPL-04</strong></td><td>文明碰撞（全球史式）</td><td>两种逻辑体系不对称相遇</td><td>macro_frame</td></tr>
+        <tr><td><strong>TPL-05</strong></td><td>技术改变社会（科技史）</td><td>技术突破→社会结构重组</td><td>deep_dive + macro_frame</td></tr>
+        <tr><td><strong>TPL-06</strong></td><td>观念诞生记（思想史）</td><td>知识困境→思想突破→扩散影响</td><td>deep_dive + synthesis</td></tr>
+        <tr><td><strong>TPL-07</strong></td><td>被遗忘的多数（社会史）</td><td>沉默群体视角，精英叙事补充</td><td>counterpoint + bridge</td></tr>
+        <tr><td><strong>TPL-08</strong></td><td>历史反转（修正史学）</td><td>常识→证据→反转→新认知</td><td>counterpoint</td></tr>
+        <tr><td><strong>TPL-09</strong></td><td>长时段缓慢变化（年鉴学派）</td><td>地理/气候/结构的缓慢碾压</td><td>macro_frame</td></tr>
+        <tr><td><strong>TPL-10</strong></td><td>复调历史（多视角并置）</td><td>同一事件→不同立场→不需定论</td><td>counterpoint</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">⚙️</span> 第三阶段：编排语法与心理动力学（R6-R14）</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R6-R9</div><h2>模板选择器 + COG 编排语法 + 角色亲和度矩阵</h2></div>
+  <div class="round-body">
+    <h3>模板选择器评分公式</h3>
+    <p>对每个知识节点，逐模板计算「TemplateScore = α·标签匹配度 + β·史观亲和度 + γ·读者适配度 + δ·戏剧性适配 + ε·前序兼容度」，选最高分。</p>
+
+    <h3>COG 编排语法核心概念</h3>
+    <div class="compare-row">
+      <div class="compare-box">
+        <h4>六大章节角色</h4>
+        <ul>
+          <li><strong>anchor_event</strong>：锚点事件/切入点</li>
+          <li><strong>deep_dive</strong>：深入分析/制度解剖</li>
+          <li><strong>counterpoint</strong>：反常规/对立视角</li>
+          <li><strong>macro_frame</strong>：宏大叙事/长时段结构</li>
+          <li><strong>synthesis</strong>：综合升华/全章总结</li>
+          <li><strong>bridge</strong>：缓冲/过渡</li>
+        </ul>
+      </div>
+      <div class="compare-box">
+        <h4>编排校验引擎</h4>
+        <ul>
+          <li>角色唯一性检查</li>
+          <li>张力曲线单调性（非严格，趋势合理）</li>
+          <li>过渡合法性验证</li>
+          <li>节奏呼吸约束</li>
+          <li>史观一致性检查</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>角色亲和度矩阵：10个模板 × 6个角色逐项打分（0-3分），系统可基于章节角色序列自动选角编排。</p>
+  </div>
+</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R10</div><h2>心理动力学编排层（PDL）</h2></div>
+  <div class="round-body">
+    <blockquote>历史通俗作品追求"有立场的共鸣"而非"共识性正确"——需要价值观/情绪注入和读者连接点挖掘。</blockquote>
+
+    <h3>三大新增参数层</h3>
+    <table>
+      <thead><tr><th>参数层</th><th>解决的问题</th><th>核心设计</th></tr></thead>
+      <tbody>
+        <tr><td><strong>史观参数包</strong></td><td>价值观和立场注入</td><td>立场向量（个人能动性/结构决定论/道德评判/英雄史观/群众能动性）+ 情绪基调 + 价值观关键词 + 模板偏好 + 情绪注入规则</td></tr>
+        <tr><td><strong>读者画像</strong></td><td>知识连接点+情感连接点</td><td>认知基线 + 认知桥梁域 + 情感原型 + 读者阻抗地图 + 深层需求 + 语言亲和度</td></tr>
+        <tr><td><strong>PDL 规则层</strong></td><td>导演情绪、全程无尿点</td><td>悬念构建策略 + 认知落差计算 + 张力阶梯设计 + 高潮设计（唯一最高点、慢节奏） + 呼吸段插入 + 钩子机制</td></tr>
+      </tbody>
+    </table>
+
+    <h3>六大钩子槽位</h3>
+    <p>开篇悬念钩 / 认知落差钩 / 矛盾钩 / 信息差钩 / 高潮钩 / 结尾钩——每章标配「开篇悬念钩 + 结尾钩」+ 中间至少一个「信息差钩」或「矛盾钩」。</p>
+  </div>
+</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R12</div><h2>最小惊艳 Demo——《最后的"董事长令"》</h2></div>
+  <div class="round-body">
+    <p>基于崇祯十七年三月十八日的谕旨事件，严格按照 TPL-01 模板、`tragic_determinism_v1` 史观包、`burned_out_professional_v1` 读者画像和 PDL 规则，自动生成约 800 字的历史章节开头。验证了整套体系从配置到成品的完整闭环：不是编故事（所有史实真实）、不是堆砌知识（类比为现代公司治理语境）、是在导演情绪（从紧张→无力→宿命感）。</p>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🔧</span> 第四阶段：选材引擎与冲击力/主旋律（R13-R14）</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R13</div><h2>选材引擎（Material Selection & Weighting Engine）</h2></div>
+  <div class="round-body">
+    <blockquote>教材=大纲驱动（知识点全集固定）；历史通俗作品=目标驱动（选材有自由度，需主动"挑戏"）。选材结果 = f(服务目标, 史观包, 读者画像)。</blockquote>
+    
+    <h3>六种叙事意图（Narrative Intent）</h3>
+    <p>INTENT_EPIC（宏大叙事）/ INTENT_MICRO（微观史）/ INTENT_TRAGEDY（制度悲剧）/ INTENT_REVISION（翻案修正）/ INTENT_PERSONAL（人物传记）/ INTENT_IDEATIONAL（观念史）</p>
+
+    <p>选材评分公式：S = α·IntentFit + β·DramaticPotential + γ·SourceQuality + δ·ReaderResonance + ε·HistoriographyBias。权重可随作品类型微调（通俗版↑δ，学术版↑γ）。作者可通过手工调权、锁定必选节点、微调权重向量来体现选材品味。</p>
+  </div>
+</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R14</div><h2>冲击力注入层 + 主旋律记忆层</h2></div>
+  <div class="round-body">
+    <div class="compare-row">
+      <div class="compare-box">
+        <h4>冲击力注入层（Impact Injection）</h4>
+        <ul>
+          <li>冲击力 = 反常识密度 × 数据精确性 × 情绪唤醒度</li>
+          <li>四类投放位置：开篇Hook / 矛盾升级点 / 高潮前静默 / 结尾Hook</li>
+          <li>冲击力约束：非"标题党"，有来源，不歪曲史实</li>
+        </ul>
+      </div>
+      <div class="compare-box">
+        <h4>主旋律记忆层（Motif Layer）</h4>
+        <ul>
+          <li>如音乐制作的 hook，让读者最终记住一两句话</li>
+          <li>主旋律 = "一切宏大叙事的崩塌，始于技术治理的缺位"</li>
+          <li>每章三节点（开篇暗线→高潮强奏→结尾变奏）+ 当代映射</li>
+          <li>防空洞：必须落到具体知识点或读者当下问题上</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🛡️</span> 第五阶段：质检层与品牌体系（R15-R19）</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R15-R17</div><h2>五维对抗评审 Agent 体系</h2></div>
+  <div class="round-body">
+    <blockquote>对抗Agent不参与生成，只参与评审和修改建议。它不改变"强约束+受控多样性"的哲学，而是加强约束的有效性。</blockquote>
+
+    <table>
+      <thead><tr><th>Agent</th><th>攻击目标</th><th>核心攻击角度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Historiography Auditor</strong></td><td>史观一致性</td><td>立场漂移、价值关键词违禁、情绪基调不一</td></tr>
+        <tr><td><strong>Reader Advocate</strong></td><td>读者共鸣</td><td>认知门槛过高、类比失效、情感错位</td></tr>
+        <tr><td><strong>Narrative Critic</strong></td><td>叙事质量</td><td>悬念造假、张力虚假、高潮疲软</td></tr>
+        <tr><td><strong>Integrity Guardian</strong></td><td>真实性与冲击力</td><td>数据失真、冲击力廉价、主旋律空洞</td></tr>
+        <tr><td><strong>Perspective Challenger</strong></td><td>选材偏见</td><td>视角单一、证据失衡</td></tr>
+      </tbody>
+    </table>
+
+    <p>对抗评审发生在编排后、渲染前的核心关卡。本身也受审美约束——必须注入史观包、读者画像和审美标准，"不是自由的批评家，而是戴着镣铐的考官"。</p>
+  </div>
+</div>
+
+<div class="round">
+  <div class="round-header"><div class="num">R18-R19</div><h2>系列品牌圣经 + 体系总览架构 V3.0</h2></div>
+  <div class="round-body">
+    <h3>系列品牌圣经（Series Brand Bible）</h3>
+    <p>系列级共享配置（Series Profile）作为所有单部作品的继承父配置：共享史观 + 共享主旋律 + 共享文风包（锁定禁止项）+ 共享模板偏好 + 冲击力政策 + 读者基调 + 品牌标识。通过"受控重复形成辨识度（品牌），通过受控变异保持不平庸（生命力）"。</p>
+    
+    <h3>V3.0 完整体系总览（六层架构）</h3>
+    <div class="tl-step"><div class="tl-marker">1</div><div class="tl-body"><div class="tl-title">顶层：系列品牌定义（Series Profile）</div><div class="tl-text">史观包 | 主旋律 | 文风包 | 模板偏好 | 冲击力政策 | 读者基调 —— 品牌DNA</div></div></div>
+    <div class="tl-step"><div class="tl-marker" style="border-color:var(--purple);color:var(--purple);background:#f3e8ff;">2</div><div class="tl-body"><div class="tl-title">中层：单部作品配置（Book Config）</div><div class="tl-text">叙事意图 | 选材引擎权重 | 读者画像细化 | 章节编排策略</div></div></div>
+    <div class="tl-step"><div class="tl-marker" style="border-color:var(--teal);color:var(--teal);background:#ccfbf1;">3</div><div class="tl-body"><div class="tl-title">执行层：章节编排+心理动力学（COG+PDL）</div><div class="tl-text">模板选择→角色指派→悬念构建→张力阶梯→高潮设计→节奏呼吸→冲击力注入→主旋律复现</div></div></div>
+    <div class="tl-step"><div class="tl-marker" style="border-color:var(--red);color:var(--red);background:#fee2e2;">4</div><div class="tl-body"><div class="tl-title">质检层：五维对抗评审</div><div class="tl-text">史观审计员 | 读者代言人 | 叙事评论家 | 真实性守护者 | 视角挑战者</div></div></div>
+    <div class="tl-step"><div class="tl-marker" style="border-color:var(--amber);color:var(--amber);background:#fef3c7;">5</div><div class="tl-body"><div class="tl-title">生产层：受控生成（LLM as Executor）</div><div class="tl-text">按模板填槽→按文风润色→按情绪弧线标注→按连接点适配读者</div></div></div>
+    <div class="tl-step"><div class="tl-marker" style="border-color:var(--green);color:#166534;background:#dcfce7;">6</div><div class="tl-body"><div class="tl-title">输出层：多模态成品</div><div class="tl-text">结构化文本 | 讲义/电子书 | SSML音频脚本 | 动画分镜标签 —— 同一套内容自动派生</div></div></div>
+  </div>
+</div>
+
+<footer>
+  <p>来源：全自动内容生产体系 · ~19 轮深度对话记录</p>
+  <p>原始文档：C:\Users\willi\Desktop\我的视野\_自动化内容设计\0708-全自动内容生产-历史\（~178KB）</p>
+</footer>
+</body>
+</html>

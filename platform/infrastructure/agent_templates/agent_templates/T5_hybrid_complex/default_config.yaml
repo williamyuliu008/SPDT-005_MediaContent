@@ -1,0 +1,57 @@
+# T5 默认集群配置 — Hybrid-Complex
+# 多种结构嵌套，跨集群编排
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T5_hybrid_complex"
+  description: "{{DESCRIPTION}}"
+
+  # ── Layer 1: 数据采集 (T1 Sequential) ──
+  layer1_collection:
+    type: "T1_coop_sequential"
+    agents:
+      - role: "collector"
+        name: "数据采集器"
+      - role: "cleaner"
+        name: "数据清洗器"
+      - role: "normalizer"
+        name: "数据标准化器"
+
+  # ── Layer 2: 并行分析 (T2 Parallel) ──
+  layer2_analysis:
+    type: "T2_coop_parallel"
+    agents:
+      - role: "analysis_dispatcher"
+        name: "分析任务分发器"
+      - role: "analyst_a"
+        name: "维度 A 分析师"
+      - role: "analyst_b"
+        name: "维度 B 分析师"
+      - role: "analyst_c"
+        name: "维度 C 分析师"
+      - role: "result_aggregator"
+        name: "分析结果聚合器"
+
+  # ── Layer 3: 博弈/决策 (T3/T4) ──
+  layer3_decision:
+    type: "T3_game_adversarial"
+    agents:
+      - role: "strategy_a"
+        name: "策略 A"
+      - role: "strategy_b"
+        name: "策略 B"
+      - role: "decision_broker"
+        name: "决策仲裁器"
+
+orchestration:
+  mode: "layered"
+  layer_order: ["layer1_collection", "layer2_analysis", "layer3_decision"]
+  cross_layer_handoff: true
+  layer_timeouts:
+    layer1_collection: "600s"
+    layer2_analysis: "1800s"
+    layer3_decision: "300s"
+
+shared_state:
+  backend: "chromadb"
+  cross_cluster_bus: true

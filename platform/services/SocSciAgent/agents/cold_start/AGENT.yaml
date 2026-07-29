@@ -1,0 +1,30 @@
+# 冷启动智能体 (Cold Start Agent)
+# AG-047-02
+
+agent_id: AG-047-02
+name: ColdStart
+name_zh: 冷启动智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  将专家经验翻译为可执行配置资产。一次性重投入，定义"什么是好的历史/社科作品"。
+
+sub_agents:
+  - SeriesArchitect: 构建 Series Profile，主旋律变奏策略，品牌标识
+  - ProfileIngestor: 接收结构化史观参数包，校验五维立场向量
+  - StyleReverseEngineer: 从标杆作品逆向提取文风包
+
+capabilities:
+  - Series Profile YAML 生成
+  - 史观参数包注册（5维立场向量）
+  - 读者画像注册（6维参数）
+  - 文风包五层定义注册
+  - 知识节点入库 + 依赖图构建
+
+output: series_profile_snapshot_id
+
+human_gate: true  # 冷启动需人工确认
+
+milestone_target: "M1 最小知识库初始化完成"

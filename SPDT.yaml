@@ -1,0 +1,174 @@
+# SPDT-005: 媒体内容制造 (Media Content Manufacturing)
+
+spdt_id: SPDT-005
+spdt_name: 媒体内容制造
+spdt_name_en: Media Content Manufacturing
+owner_agent: agent-e926h
+created: 2026-07-10
+version: 1.0
+
+description: |
+  以 SmartTextPlatform 1 路由器 + 6 集群架构为核心，覆盖从实时快讯到深度长文、
+  从知识科普到品牌创意的全媒体内容自动制造。配合 autopublish 多渠道发布引擎，
+  实现"数据源 → 成品内容 → 一键分发"的全自动化。
+
+pdt_list:
+  - pdt_id: PT-040
+    name: DeepProd
+    name_zh: 深度长文制造
+    layer: L2 应用
+    role: 6 Stage 深度内容生产：选题→研究→写作→审阅→可视化→交付
+    directory: PT-040_DeepProd
+    status: active
+    registered: 2026-07-10
+    source: D:\92_products\DeepProd
+
+  - pdt_id: PT-041
+    name: FlashNews
+    name_zh: 实时快讯制造
+    layer: L2 应用
+    role: 4 Stage 快反内容：监测→核查→撰稿→发布
+    directory: PT-041_FlashNews
+    status: active
+    registered: 2026-07-10
+    source: D:\92_products\FlashNews
+
+  - pdt_id: PT-042
+    name: SciPop
+    name_zh: 知识科普制造
+    layer: L2 应用
+    role: 4 Stage 科普转化：研究→转化→写作→审查
+    directory: PT-042_SciPop
+    status: active
+    registered: 2026-07-10
+    source: D:\92_products\SciPop
+
+  - pdt_id: PT-043
+    name: OpEd
+    name_zh: 观点评论制造
+    layer: L2 应用
+    role: 4 Stage 论证内容：研究→结构→写作→辩论
+    directory: PT-043_OpEd
+    status: active
+    registered: 2026-07-10
+    source: D:\92_products\OpEd
+
+  - pdt_id: PT-044
+    name: CreativeX
+    name_zh: 品牌创意制造
+    layer: L2 应用
+    role: 4 Stage 创意转化：简报→构思→创作→润色
+    directory: PT-044_CreativeX
+    status: active
+    registered: 2026-07-10
+    source: D:\92_products\CreativeX
+
+  - pdt_id: PT-045
+    name: TechDoc
+    name_zh: 技术文档制造
+    layer: L2 应用
+    role: 4 Stage 技术写作：规格→研究→撰写→审查
+    directory: PT-045_TechDoc
+    status: active
+    registered: 2026-07-10
+    source: D:\92_products\TechDoc
+
+  - pdt_id: PT-046
+    name: DataNews
+    name_zh: 数据新闻制造
+    layer: L2 应用
+    role: 基于数据的自动化新闻与可视化报道
+    directory: PT-046_DataNews
+    status: planned
+    registered: 2026-07-10
+
+  - pdt_id: PT-047
+    name: SocSciAgent
+    name_zh: 社科智能体创作平台
+    layer: L3 智能体平台
+    role: 社科通俗作品全自动生产体系——主编协调，选材/编排/评审/生成多智能体协作，端到端自动化
+    directory: PT-047_SocSciAgent
+    status: construction
+    registered: 2026-07-14
+    source: C:\Users\willi\Desktop\我的视野\0713-基于知识库的高阶备考智能体
+
+  - pdt_id: PT-048
+    name: AIBookForge
+    name_zh: AI写书修炼场
+    layer: L3 智能体平台
+    role: AI时代素养训练项目——以"为自己写一本学习用书"为核心任务，覆盖七品味；与PT-047并列，PT-047=内容工厂，PT-048=训练道场
+    directory: PT-048_AIBookForge
+    status: construction
+    registered: 2026-07-26
+    source: C:\Users\willi\Desktop\我的视野\0725-AI新智人
+
+shared_infrastructure:
+  smarttext_router:
+    name: SmartText 路由引擎
+    role: SPDT-005 内部所有 PDT 共用的入口路由器 + 6 集群架构
+    directory: shared\smarttext_router
+    source: D:\92_products\SmartTextPlatform
+
+  autopublish:
+    name: 多渠道自动发布
+    role: 飞书 / 微信 / 网站 一键分发
+    directory: channels
+    source: D:\9_infra\autopublish
+
+  quality_gate:
+    name: 媒体内容质量门禁
+    role: 事实核查 / 风格一致性 / 合规审查
+    source: D:\6_agent_project\projects\content_quality_gate
+
+  text_templates:
+    name: 文风包与模板库
+    role: 各媒体类型的文风包 / 结构模板 / 格式模板
+    directory: templates
+    source: D:\6_agent_project\projects\cgm_training_factory\_02_assets (部分)
+
+cross_spdt_links:
+  - from: SPDT-002 (专利情报)
+    to: PT-042 (知识科普) / PT-040 (深度长文)
+    data: 专利情报 → 技术科普文章 / 深度行业分析
+    status: planned
+
+  - from: SPDT-003 (论文情报)
+    to: PT-042 (知识科普)
+    data: 前沿论文 → 大众科普内容
+    status: planned
+
+  - from: radar_platform (D:\9_infra)
+    to: PT-041 (实时快讯)
+    data: 实时监测 → 自动撰稿 → 发布
+    status: planned
+
+  - from: SPDT-005
+    to: autopublish (共享基础设施)
+    data: 所有内容 PDT → 飞书/微信/网站 分发
+    status: active
+
+kpis:
+  - metric: PDT 总数（含建设中）
+    current: 8
+    target: 10
+  - metric: 内容年产量
+    current: "~200 篇 (验证)"
+    target: 10000 篇
+  - metric: 全自动比例
+    current: "~40%"
+    target: "≥85%"
+  - metric: 多平台覆盖
+    current: "飞书 / 微信 / 网站"
+    target: "5+ 平台"
+
+tech_stack:
+  router: TextClassifier (10维结构化)
+  llm: GLM series
+  storage: JSON + MD 输出
+  publishing: autopublish (飞书/微信/网站)
+  quality: content_quality_gate + fact-check pipeline
+  template: YAML-driven prompt templates
+
+omas:
+  spdt_registry: D:\6_agent_project\omas\spdt_registry\SPDT-005
+  pdt_registry: D:\6_agent_project\omas\pdt_registry

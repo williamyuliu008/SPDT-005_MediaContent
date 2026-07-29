@@ -1,0 +1,49 @@
+# 生成智能体 (Controlled Generation Agent)
+# AG-047-06
+
+agent_id: AG-047-06
+name: ControlledGeneration
+name_zh: 生成智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  执行 LLM 填槽。核心原则：LLM 不创作，只填空。
+  系统中唯一直接调用大语言模型的环节。
+
+four_layer_injection:
+  Layer 1: 史观注入 → system_prompt
+    - HP.stance_vector 描述
+    - HP.forbidden → negative_prompt
+    - HP.emotional_tone → tone_guidance
+    - HP.emotion_injection 规则
+
+  Layer 2: 读者连接点注入 → cognitive_bridge_slot + emotional_bridge_slot
+    - analogy_pool 搜索匹配类比
+    - emotional_tone 匹配共鸣标签
+
+  Layer 3: 文风包注入 → fill_instruction
+    - Lexical Pool → 词汇约束
+    - Syntactic Bias → 句式约束
+    - Rhetorical Ops → 修辞约束
+    - Layout/Pacing → 格式约束
+
+  Layer 4: 冲击力+主旋律注入 → specific_slots
+    - impact_strike 槽位格式化
+    - motif_variation 按类型生成
+
+post_generation_checks:
+  - forbidden_keywords_hit → 自动替换 → 重新校验 → 阻断
+  - style_deviation (JS散度 > 0.15) → 降低文风包自由度
+  - slot_length_compliance → 截断至 max_chars
+
+slot_coordination:
+  - 维护填槽进度状态
+  - 按依赖顺序调度
+  - 聚合所有 slot 输出为完整章节文本
+  - 格式错误 → 重试 2 次 → fallback 文本
+
+calls_llm: true
+
+milestone_target: "M1 LLM填槽+四层注入验证"

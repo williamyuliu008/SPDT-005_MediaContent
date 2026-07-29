@@ -1,0 +1,130 @@
+{
+  "context": {
+    "pipeline_started": "2026-07-14T15:26:28.824516",
+    "stages": [
+      {
+        "stage": "chief_editor",
+        "status": "success",
+        "result_preview": "final_edited_content='{\"intent\": \"epic\", \"chapter_title\": \"乾元元年·蒲州的墨与血\", \"characters\": [\"颜真卿\", \"安禄山\"], \"themes\": [\"忠义\", \"家国\", \"书法\"], \"target_length\": 2000}' editorial_decision_log=[{'stage': 'funnel',"
+      },
+      {
+        "stage": "material_scout",
+        "status": "success",
+        "result_preview": "candidate_materials=[{'name': 'PEEK', 'strength_mpa': 100, 'cost_usd_kg': 50, 'sustainability_score': 6.2}, {'name': 'Ti-6Al-4V', 'strength_mpa': 900, 'cost_usd_kg': 320, 'sustainability_score': 3.1},"
+      },
+      {
+        "stage": "orchestration",
+        "status": "success",
+        "result_preview": "=== Orchestration Result ===\n{\n  \"result\": [],\n  \"cog\": {\n    \"name\": \"cog_from_input\",\n    \"nodes\": [\n      \"input_parse\",\n      \"intent_classify\",\n      \"candidates\"\n    ],\n    \"edges\": [\n      {\n  "
+      },
+      {
+        "stage": "controlled_generation",
+        "status": "success",
+        "result_preview": "{'agent_id': 'controlled_gen_001', 'request_id': 'd04f427a-846f-4e2b-90fc-1529a68939d5', 'generated_text': \"I'll generate content based on a pipeline configuration. However, I don't see a specific pip"
+      },
+      {
+        "stage": "adversarial_review",
+        "status": "success",
+        "result_preview": "{'review_id': '8fa31909-7e16-4bd0-9de0-fb227a2deeac', 'content_id': 'content_adversarial_review', 'overall_score': 0.5900000000000001, 'tension_score': 0.41, 'funnel_results': {'surface': {'stage': 's"
+      },
+      {
+        "stage": "reflection",
+        "status": "success",
+        "result_preview": "{'result': {'final_insights': ['No surface patterns found', 'Deep analysis yielded no additional insights', 'Core analysis complete - no critical insights', 'Here are several refined and expanded vers"
+      },
+      {
+        "stage": "output_renderer",
+        "status": "success",
+        "result_preview": "{'agent_id': 'output_renderer_agent', 'timestamp': '2026-07-14T07:27:48.779076+00:00', 'tension_curve': [{'x': 0.0, 'y': 0.0, 'label': 'Point_0', 'tension_value': 0.0}, {'x': 0.1, 'y': 0.0199999999999"
+      }
+    ],
+    "initial_input": {
+      "intent": "epic",
+      "chapter_title": "乾元元年·蒲州的墨与血",
+      "characters": [
+        "颜真卿",
+        "安禄山"
+      ],
+      "themes": [
+        "忠义",
+        "家国",
+        "书法"
+      ],
+      "target_length": 2000
+    },
+    "pipeline_finished": "2026-07-14T15:27:48.779517"
+  },
+  "final_result": {
+    "agent_id": "output_renderer_agent",
+    "timestamp": "2026-07-14T07:27:48.779076+00:00",
+    "tension_curve": [
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "label": "Point_0",
+        "tension_value": 0.0
+      },
+      {
+        "x": 0.1,
+        "y": 0.019999999999999997,
+        "label": "Point_1",
+        "tension_value": 0.019999999999999997
+      },
+      {
+        "x": 0.2,
+        "y": 0.04000000000000001,
+        "label": "Point_2",
+        "tension_value": 0.04000000000000001
+      },
+      {
+        "x": 0.3,
+        "y": 0.06,
+        "label": "Point_3",
+        "tension_value": 0.06
+      },
+      {
+        "x": 0.4,
+        "y": 0.08000000000000002,
+        "label": "Point_4",
+        "tension_value": 0.08000000000000002
+      },
+      {
+        "x": 0.5,
+        "y": 0.1,
+        "label": "Point_5",
+        "tension_value": 0.1
+      },
+      {
+        "x": 0.6,
+        "y": 0.08000000000000002,
+        "label": "Point_6",
+        "tension_value": 0.08000000000000002
+      },
+      {
+        "x": 0.7,
+        "y": 0.06000000000000001,
+        "label": "Point_7",
+        "tension_value": 0.06000000000000001
+      },
+      {
+        "x": 0.8,
+        "y": 0.039999999999999994,
+        "label": "Point_8",
+        "tension_value": 0.039999999999999994
+      },
+      {
+        "x": 0.9,
+        "y": 0.019999999999999997,
+        "label": "Point_9",
+        "tension_value": 0.019999999999999997
+      }
+    ],
+    "summary": {
+      "total_points": 10,
+      "max_tension": 0.1,
+      "min_tension": 0.0,
+      "avg_tension": 0.05
+    },
+    "format": "json"
+  }
+}

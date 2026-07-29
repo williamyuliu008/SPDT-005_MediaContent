@@ -1,0 +1,33 @@
+{
+  "cluster_id": "scipop_cluster",
+  "generated_at": "2026-07-13T19:21:55.891145",
+  "stages": {
+    "S1_RESEARCH": {
+      "gate_passed": true,
+      "gate_score": 5.0,
+      "gate_message": "无门控要求"
+    },
+    "S2_TRANSLATE": {
+      "gate_passed": true,
+      "gate_score": 5.0,
+      "gate_message": "无门控要求"
+    },
+    "S3_WRITE": {
+      "gate_passed": true,
+      "gate_score": 5.0,
+      "gate_message": "无门控要求"
+    },
+    "S4_REVIEW": {
+      "gate_passed": true,
+      "gate_score": 5.0,
+      "gate_message": "无门控要求"
+    }
+  },
+  "article": "{\"topic\": \"为什么北极冰川融化会导致海平面上升，但冰川融化本身也反映地球在'自我调节'？\", \"audience_level\": \"L2\", \"curiosity_gap_score\": 8.5, \"trend_evidence\": \"近30天'冰川融化'搜索量上升42%，知乎相关提问超5000条\", \"target_concepts\": [\"冰川融化\", \"海平面上升\", \"地球辐射平...",
+  "review_verdict": "unknown",
+  "review_scores": {
+    "accuracy": null,
+    "accessibility": null,
+    "engagement": null
+  }
+}

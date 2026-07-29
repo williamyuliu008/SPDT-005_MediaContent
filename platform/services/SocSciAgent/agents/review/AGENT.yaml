@@ -1,0 +1,52 @@
+# 评审智能体 (Adversarial Review Agent)
+# AG-047-05
+
+agent_id: AG-047-05
+name: AdversarialReview
+name_zh: 评审智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  多角色容器，内含 5 个专门评审 Agent。
+  用预设规则和 LLM 判断编排脚本或生成文本是否达到质量门槛。
+
+five_review_agents:
+  - historiography_auditor:
+      attack: forbidden_keywords使用/立场漂移/情绪基调不一致
+      severity: error
+      source: 当前史观参数包
+
+  - reader_advocate:
+      attack: 知识门槛过高/类比失效/情感错位/抵触触发
+      severity: error/warning
+      source: 当前读者画像
+
+  - narrative_critic:
+      attack: 张力曲线不合理/高潮不唯一/高潮疲软/悬念造假/呼吸段缺失
+      severity: warning
+      source: PDL 规则
+
+  - integrity_guardian:
+      attack: 数据无source标注/主旋律空洞/标题党化/争议史实未标注
+      severity: error/warning
+      source: 冲击力硬约束
+
+  - perspective_challenger:
+      attack: 视角单一/翻案过度/单史观偏见
+      severity: warning
+      source: 史观包 + 对立视角
+
+intensity_levels:
+  light: 规则引擎（关键词/张力曲线），标记警告允许继续
+  medium: 规则 + 史观审计员 + 读者代言人，返回修改建议需人工确认
+  heavy: 全部5个Agent，不通过阻断渲染
+
+revision_loop:
+  max_attempts: 3
+  fallback: 人工干预通道
+
+calls_llm: true  # 中/重度对抗使用LLM
+
+milestone_target: "M2 轻度对抗评审规则编码"

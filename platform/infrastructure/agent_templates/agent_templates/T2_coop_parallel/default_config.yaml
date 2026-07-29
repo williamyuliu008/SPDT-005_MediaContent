@@ -1,0 +1,64 @@
+# T2 默认集群配置 — Coop-Parallel
+# 多个 Agent 并行工作，通过共享状态/消息总线协调
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T2_coop_parallel"
+  description: "{{DESCRIPTION}}"
+
+agents:
+  # ── 分发器 ──
+  - role: "dispatcher"
+    name: "任务分发器"
+    description: "接收任务并按类型分发给并行 Worker"
+    position: 1
+    handoff_to: ["worker_a", "worker_b", "worker_c"]
+
+  # ── 并行 Worker ──
+  - role: "worker_a"
+    name: "Worker A"
+    description: "处理类型 A 的子任务"
+    position: 2
+    handoff_from: ["dispatcher"]
+    handoff_to: ["aggregator"]
+
+  - role: "worker_b"
+    name: "Worker B"
+    description: "处理类型 B 的子任务"
+    position: 2
+    handoff_from: ["dispatcher"]
+    handoff_to: ["aggregator"]
+
+  - role: "worker_c"
+    name: "Worker C"
+    description: "处理类型 C 的子任务"
+    position: 2
+    handoff_from: ["dispatcher"]
+    handoff_to: ["aggregator"]
+
+  # ── 聚合器 ──
+  - role: "aggregator"
+    name: "结果聚合器"
+    description: "汇总所有 Worker 的输出，生成综合结果"
+    position: 3
+    handoff_from: ["worker_a", "worker_b", "worker_c"]
+
+topology:
+  type: "hub_spoke"
+  hub: "dispatcher"
+  spokes: ["worker_a", "worker_b", "worker_c"]
+  sink: "aggregator"
+
+orchestration:
+  mode: "parallel"
+  max_parallel: 5
+  handoff_protocol: "message_bus"
+  wait_policy: "all"           # all | any | majority
+  timeout_per_worker: "300s"
+
+shared_state:
+  backend: "chromadb"
+  collections:
+    - "tasks"
+    - "worker_results"
+    - "final_output"

@@ -1,0 +1,57 @@
+# T3 默认集群配置 — Game-Adversarial
+# Agent 之间存在对抗目标，需要博弈均衡
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T3_game_adversarial"
+  description: "{{DESCRIPTION}}"
+
+agents:
+  # ── 博弈双方 ──
+  - role: "player_a"
+    name: "博弈方 A"
+    description: "博弈中的一个竞争主体"
+    position: 1
+    strategy: "aggressive"
+    observes: ["player_b", "shared_environment"]
+
+  - role: "player_b"
+    name: "博弈方 B"
+    description: "博弈中的对立方"
+    position: 1
+    strategy: "defensive"
+    observes: ["player_a", "shared_environment"]
+
+  # ── 环境/裁判 ──
+  - role: "environment"
+    name: "博弈环境"
+    description: "维护博弈规则和公共状态"
+    position: 2
+    rules: "{{GAME_RULES}}"
+
+  # ── 均衡分析 ──
+  - role: "equilibrium_analyzer"
+    name: "均衡分析器"
+    description: "分析博弈结果，检查是否达到纳什均衡"
+    position: 3
+    observes: ["player_a", "player_b", "environment"]
+
+topology:
+  type: "adversarial"
+  sides:
+    side_a: ["player_a"]
+    side_b: ["player_b"]
+  neutral: ["environment", "equilibrium_analyzer"]
+
+orchestration:
+  mode: "turn_based"
+  max_rounds: 100
+  convergence_threshold: 0.01
+  handoff_protocol: "environment_broker"
+
+shared_state:
+  backend: "chromadb"
+  collections:
+    - "game_state"
+    - "move_history"
+    - "equilibrium_metrics"

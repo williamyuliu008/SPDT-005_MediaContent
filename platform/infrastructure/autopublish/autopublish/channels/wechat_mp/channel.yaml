@@ -1,0 +1,21 @@
+channel:
+  id: "wechat_mp"
+  name: "AI瞭望台公众号"
+  type: "external"              # external(对外发布)
+
+publishing:
+  schedule: "0 8 * * *"
+  workflow: "draft_then_publish"   # 先草稿，人工确认后发布
+
+content:
+  primary: "wechat_article"
+  output_format: "markdown"
+  max_chars: 3000
+
+format:
+  auto_cover: true
+  author: "AI瞭望台"
+
+error:
+  on_fail: "skip"
+  max_retries: 0

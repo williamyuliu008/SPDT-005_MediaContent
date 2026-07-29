@@ -1,0 +1,52 @@
+# T7 默认集群配置 — Data Terminal (数据终端)
+# 实时数据 → 可视化 → 交互查询
+# 适用: 股票终端, 量化看板, 数据驾驶舱
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T7_data_terminal"
+  description: "{{DESCRIPTION}}"
+
+layers:
+  # ── 数据层 ──
+  - id: "data_layer"
+    name: "数据接入层"
+    description: "多源实时数据采集与缓存"
+    sources: []  # API endpoints
+    cache: "redis"
+    refresh_interval_s: 300
+    fallback_sources: 2
+
+  # ── 计算层 ──
+  - id: "compute_layer"
+    name: "计算引擎"
+    description: "指标计算、策略执行、异常检测"
+    indicators: []  # MA/MACD/RSI...
+    strategies: []  # BDT/XGBoost...
+    batch_size: 100
+
+  # ── 展示层 ──
+  - id: "display_layer"
+    name: "展示层"
+    description: "Web 终端 / API / 看板"
+    type: "web"  # web / cli / api
+    charts: ["kline", "volume", "indicator"]
+    realtime: true
+
+  # ── 推送层 ──
+  - id: "notify_layer"
+    name: "预警推送"
+    description: "异常事件实时通知"
+    channels: []  # dingtalk / feishu / email
+    rules: []  # 触发条件
+
+topology:
+  type: "layered"
+  mode: "parallel_dataflow"
+  data_flow: "data_layer → compute_layer → display_layer"
+  event_flow: "compute_layer → notify_layer"
+
+recommended_cdos:
+  - DATA    # 数据源
+  - ALGO    # 量化策略
+  - DESIGN  # 终端 UI

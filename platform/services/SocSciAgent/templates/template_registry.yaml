@@ -1,0 +1,117 @@
+# 叙事模板库 — TPL-01 ~ TPL-10 注册表
+
+templates:
+  - template_id: TPL-01
+    name: 小事撬动大局
+    name_en: Micro Triggers Macro
+    core_logic: 微观事件 → 宏观结构跃升
+    required_tags: ['#micro_event', '#institutional_constraint']
+    forbidden_tags: ['#heroic_triumph']
+    struct_units: [context, event, actor, structure, reflection]
+    tension_arc: [narrative_hook, slow_buildup, dramatic_irony, structural_reveal]
+    chapter_role_affinity: { anchor_event: 3, deep_dive: 2, counterpoint: 1, macro_frame: 2, synthesis: 0, bridge: 2 }
+    status: defined
+
+  - template_id: TPL-02
+    name: 命运抉择时刻
+    name_en: Decisive Moment
+    core_logic: 压力 → 抉择 → 不可逆后果
+    required_tags: ['#decision_point', '#character_trait']
+    struct_units: [context, actor, event, consequence, reflection]
+    tension_arc: [narrative_hook, rising_tension, climax_decision, reflective_close]
+    chapter_role_affinity: { anchor_event: 3, deep_dive: 2, counterpoint: 0, macro_frame: 0, synthesis: 1, bridge: 1 }
+    status: defined
+
+  - template_id: TPL-03
+    name: 制度杀人
+    name_en: System Kills Individual
+    core_logic: 好人 + 好意 → 坏制度 → 必然毁灭
+    required_tags: ['#idealistic_actor', '#rigid_institution']
+    struct_units: [character, context, event, structure, consequence, reflection]
+    tension_arc: [character_intro, hope_buildup, dramatic_irony, tragic_climax]
+    chapter_role_affinity: { anchor_event: 2, deep_dive: 3, counterpoint: 1, macro_frame: 1, synthesis: 0, bridge: 1 }
+    status: defined
+
+  - template_id: TPL-04
+    name: 文明碰撞
+    name_en: Civilizational Clash
+    core_logic: 两种逻辑体系的不对称相遇
+    required_tags: ["#civilization_A", "#civilization_B", "#asymmetric_encounter"]
+    struct_units: [context_A, context_B, event, analysis, consequence, reflection]
+    tension_arc: [curiosity_hook, cultural_shock, analytical_expansion, reflective_close]
+    chapter_role_affinity: { anchor_event: 2, deep_dive: 2, counterpoint: 2, macro_frame: 3, synthesis: 1, bridge: 1 }
+    status: defined
+
+  - template_id: TPL-05
+    name: 技术改变社会
+    name_en: Technology Reshapes Society
+    core_logic: 技术突破 → 社会结构重组
+    required_tags: ["#technological_breakthrough", "#social_restructuring"]
+    struct_units: [context, event, analysis, structure, reflection]
+    tension_arc: [status_quo, disruptive_event, structural_shift, philosophical_reflection]
+    chapter_role_affinity: { anchor_event: 1, deep_dive: 3, counterpoint: 1, macro_frame: 3, synthesis: 2, bridge: 1 }
+    status: defined
+
+  - template_id: TPL-06
+    name: 观念诞生记
+    name_en: Birth of Ideas
+    core_logic: 旧观念危机 → 新思想 → 社会接受/排斥
+    required_tags: ["#intellectual_crisis", "#new_paradigm"]
+    struct_units: [context, character, event, analysis, consequence, reflection]
+    tension_arc: [intellectual_discomfort, breakthrough_moment, social_resistance, long_term_impact]
+    chapter_role_affinity: { anchor_event: 1, deep_dive: 3, counterpoint: 2, macro_frame: 2, synthesis: 3, bridge: 1 }
+    status: defined
+
+  - template_id: TPL-07
+    name: 被遗忘的多数
+    name_en: Forgotten Majority
+    core_logic: 宏大叙事之外普通人的真实生存逻辑
+    required_tags: ["#ordinary_people", "#daily_life"]
+    struct_units: [context, event, actor, analysis, reflection]
+    tension_arc: [quiet_daily_life, disruption, resilience, historiographical_reflection]
+    chapter_role_affinity: { anchor_event: 2, deep_dive: 2, counterpoint: 3, macro_frame: 1, synthesis: 1, bridge: 3 }
+    status: defined
+
+  - template_id: TPL-08
+    name: 历史反转
+    name_en: Historical Reversal
+    core_logic: 常识认知 → 新证据 → 认知反转
+    required_tags: ["#popular_myth", "#revisionist_evidence"]
+    struct_units: [context, event, analysis, structure, reflection]
+    tension_arc: [familiar_narrative, cognitive_conflict, paradigm_shift, nuanced_conclusion]
+    chapter_role_affinity: { anchor_event: 1, deep_dive: 2, counterpoint: 3, macro_frame: 1, synthesis: 2, bridge: 2 }
+    status: defined
+
+  - template_id: TPL-09
+    name: 长时段缓慢变化
+    name_en: Longue Duree
+    core_logic: 几乎不变 → 缓慢积累 → 突然显现
+    required_tags: ["#longue_duree", "#gradual_accumulation"]
+    struct_units: [context, analysis, event, structure, reflection]
+    tension_arc: [stasis, slow_acceleration, sudden_emergence, macro_reflection]
+    chapter_role_affinity: { anchor_event: 0, deep_dive: 2, counterpoint: 0, macro_frame: 3, synthesis: 2, bridge: 1 }
+    status: defined
+
+  - template_id: TPL-10
+    name: 复调历史
+    name_en: Polyphonic History
+    core_logic: 同一事件，不同立场，各自合理
+    required_tags: ["#multiple_perspectives", "#structural_conflict"]
+    struct_units: [context, actor_A, actor_B, analysis, reflection]
+    tension_arc: [neutral_setup, divergent_views, structural_inevitability, tragic_ambiguity]
+    chapter_role_affinity: { anchor_event: 1, deep_dive: 1, counterpoint: 3, macro_frame: 2, synthesis: 2, bridge: 2 }
+    status: defined
+
+# 章内角色亲和度矩阵（3=首选，2=次选，1=勉强，0=违和）
+chapter_role_matrix:
+  # template_id: [anchor_event, deep_dive, counterpoint, macro_frame, synthesis, bridge]
+  TPL-01: [3, 2, 1, 2, 0, 2]
+  TPL-02: [3, 2, 0, 0, 1, 1]
+  TPL-03: [2, 3, 1, 1, 0, 1]
+  TPL-04: [2, 2, 2, 3, 1, 1]
+  TPL-05: [1, 3, 1, 3, 2, 1]
+  TPL-06: [1, 3, 2, 2, 3, 1]
+  TPL-07: [2, 2, 3, 1, 1, 3]
+  TPL-08: [1, 2, 3, 1, 2, 2]
+  TPL-09: [0, 2, 0, 3, 2, 1]
+  TPL-10: [1, 1, 3, 2, 2, 2]

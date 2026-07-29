@@ -1,0 +1,26 @@
+cluster_id: scipop_cluster
+description: 知识科普集群 (CLUSTER-E)
+domain: content_production.scipop
+input_router: SR-TEXT-001
+stages:
+  - id: S1_RESEARCH
+    name: 知识研究
+    gate: RESEARCH_GATE
+    description: 选题 + 权威来源收集 + 概念图谱
+  - id: S2_TRANSLATE
+    name: 术语降维（核心）
+    gate: TRANSLATE_GATE
+    description: 三层降维策略（L1术语替换/L2类比/L3极致简化）
+  - id: S3_WRITE
+    name: 科普写作
+    gate: CREATIVE_GATE
+    description: 问题驱动写作 + Markdown格式 + 800-1500字
+  - id: S4_REVIEW
+    name: 审校
+    gate: REVIEW_GATE
+    description: 准确性×可读性×趣味性 三维审查
+topology:
+  entry_point: S1_RESEARCH
+  type: sequential
+  failure_mode: abort_on_gate_fail
+version: 1.0.0

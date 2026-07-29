@@ -1,0 +1,151 @@
+# SPDT-005 PDT 详细注册表
+# 自动扫描: 每日 08:00 CST
+# 通知: spdt-005-updates → agent-e926h
+
+pdt_list:
+  - pdt_id: PT-040
+    name: DeepProd
+    name_zh: 深度长文制造
+    type: 深度分析
+    audience: 专业人士 / 投资者 / 研究者
+    content_types: [深度分析, 行业报告, 技术白皮书]
+    stages: [选题, 研究, 写作, 审阅, 可视化, 交付]
+    source_project: D:\92_products\DeepProd
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-040_DeepProd
+    status: active
+    maturity: 0.6
+    publish_frequency: "1 篇/天"
+    registered: 2026-07-10
+
+  - pdt_id: PT-041
+    name: FlashNews
+    name_zh: 实时快讯制造
+    type: 实时新闻
+    audience: 大众
+    content_types: [短新闻, 动态速递, 简报]
+    stages: [监测, 核查, 撰稿, 发布]
+    source_project: D:\92_products\FlashNews
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-041_FlashNews
+    status: active
+    maturity: 0.5
+    publish_frequency: "实时触发, 15分钟内"
+    registered: 2026-07-10
+
+  - pdt_id: PT-042
+    name: SciPop
+    name_zh: 知识科普制造
+    type: 大众科普
+    audience: 大众 / 知识爱好者
+    content_types: [科普文章, 图解, 短视频脚本]
+    stages: [研究, 转化, 写作, 审查]
+    source_project: D:\92_products\SciPop
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-042_SciPop
+    status: active
+    maturity: 0.3
+    publish_frequency: "1-2 篇/天"
+    registered: 2026-07-10
+
+  - pdt_id: PT-043
+    name: OpEd
+    name_zh: 观点评论制造
+    type: 评论/论证
+    audience: 思想读者
+    content_types: [评论, 社论, 辩论文]
+    stages: [研究, 结构, 写作, 辩论]
+    source_project: D:\92_products\OpEd
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-043_OpEd
+    status: active
+    maturity: 0.25
+    publish_frequency: "3-5 篇/周"
+    registered: 2026-07-10
+
+  - pdt_id: PT-044
+    name: CreativeX
+    name_zh: 品牌创意制造
+    type: 创意/营销
+    audience: 品牌方 / 营销团队
+    content_types: [广告文案, 社媒内容, 品牌故事, slogans]
+    stages: [简报, 构思, 创作, 润色]
+    source_project: D:\92_products\CreativeX
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-044_CreativeX
+    status: active
+    maturity: 0.25
+    publish_frequency: "3-5 篇/周"
+    registered: 2026-07-10
+
+  - pdt_id: PT-045
+    name: TechDoc
+    name_zh: 技术文档制造
+    type: 技术写作
+    audience: 开发者 / 工程师
+    content_types: [API文档, 技术手册, 教程, 变更日志]
+    stages: [规格, 研究, 撰写, 审查]
+    source_project: D:\92_products\TechDoc
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-045_TechDoc
+    status: active
+    maturity: 0.35
+    publish_frequency: "1-2 篇/天"
+    registered: 2026-07-10
+
+  - pdt_id: PT-046
+    name: DataNews
+    name_zh: 数据新闻制造
+    type: 数据新闻
+    audience: 大众 / 数据爱好者
+    content_types: [数据可视化报道, 图表新闻, 数据故事]
+    stages: [数据采集, 分析, 叙事, 可视化, 发布]
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-046_DataNews
+    status: planned
+    registered: 2026-07-10
+
+shared_assets:
+  - asset: smarttext_router
+    path: D:\92_products\SPDT-005_MediaContent\shared\smarttext_router
+    source: D:\92_products\SmartTextPlatform
+    description: TextClassifier (10维结构化) + 6 集群路由引擎
+
+  - asset: autopublish
+    path: D:\92_products\SPDT-005_MediaContent\channels
+    source: D:\9_infra\autopublish
+    description: 飞书 / 微信 / 网站 多渠道发布引擎
+
+  - asset: style_templates
+    path: D:\92_products\SPDT-005_MediaContent\templates
+    description: 各媒体类型的文风包与结构模板
+
+  - pdt_id: PT-047
+    name: SocSciAgent
+    name_zh: 社科智能体创作平台
+    type: 智能体平台 / 社科内容
+    audience: 内容创作者 / 出版社 / 内容机构 / 内容运营团队
+    content_types: [历史通俗长文, 社科分析, 深度报告]
+    stages: [冷启动, 选材, 编排, 评审, 生成, 输出]
+    agent_cluster: [主编, 冷启动, 选材, 编排, 评审, 生成, 输出, 文风包管理, 史观包管理, 知识库管理]
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-047_SocSciAgent
+    source_project: C:\Users\willi\Desktop\我的视野\0713-基于知识库的高阶备考智能体
+    design_doc: docs/平台设计需求.md
+    status: construction
+    maturity: 0.05
+    phase_target: Phase 1 核心闭环（主编+选材+编排+生成）
+    registered: 2026-07-14
+    registered_by: agent-9d726ee1badc
+
+  - pdt_id: PT-048
+    name: AIBookForge
+    name_zh: AI写书修炼场
+    type: 素养训练平台 / 内容教育
+    audience: 大学生 / 转岗者 / 终身学习者 / AI教育机构
+    content_types: [学习用书, 立项书, 架构蓝图, 流程日志, 四品味自评报告]
+    stages: [立项定义, 架构设计, 写作执行, 整合复盘]
+    core_task: 为自己写一本AI辅助学习手册（3-5万字，覆盖七品味）
+    target_dir: D:\92_products\SPDT-005_MediaContent\PT-048_AIBookForge
+    source_project: C:\Users\willi\Desktop\我的视野\0725-AI新智人
+    design_doc: docs/平台设计需求.md
+    status: construction
+    maturity: 0.05
+    phase_target: Phase 1 手工SOP模式（四阶段模板可独立使用）
+    relationship: 与PT-047并列；PT-047=内容产品工厂（输出是书稿），PT-048=素养训练道场（输出是人的品味提升）；两者架构理念不同，不共享代码
+    registered: 2026-07-26
+    registered_by: agent-4aa6a97aa4ae
+
+last_updated: 2026-07-26

@@ -1,0 +1,38 @@
+# 选材智能体 (Material Scout Agent)
+# AG-047-03
+
+agent_id: AG-047-03
+name: MaterialScout
+name_zh: 选材智能体
+type: pipeline
+pdt: PT-047
+status: planned
+
+role: |
+  从知识库中按叙事意图挑选最适合的知识点组合。只决定"讲什么"，
+  不决定"怎么讲"。
+
+inputs:
+  - narrative_intent (INTENT_EPIC/MICRO/TRAGEDY/REVISION/PERSONAL/IDEATIONAL)
+  - historiography_profile
+  - reader_persona
+  - chapter_requirements
+
+algorithm:
+  - Step 1: 候选节点召回（按标签）
+  - Step 2: 五维加权评分（IntentFit/DramaticPotential/SourceQuality/ReaderResonance/HistoriographyBias）
+  - Step 3: 五项约束过滤（覆盖均衡/时间顺序/多视角/戏剧密度/来源最低要求）
+  - Step 4: 作者干预接口（boost/pinned/excluded）
+
+output_schema: |
+  {
+    selection_id: string,
+    selected_nodes: [{ node_id, score, score_breakdown }],
+    constraints_passed: [],
+    author_overrides: [],
+    confidence: float
+  }
+
+calls_llm: false  # 纯规则引擎
+
+milestone_target: "M1 选材引擎评分公式实现"

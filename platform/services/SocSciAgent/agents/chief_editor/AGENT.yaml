@@ -1,0 +1,38 @@
+# 主编智能体 (Chief Editor Agent)
+# AG-047-01
+
+agent_id: AG-047-01
+name: ChiefEditor
+name_zh: 主编智能体
+type: orchestrator
+pdt: PT-047
+status: planned
+
+role: |
+  全局协调者，控制平面。持有作品上下文快照，决定"谁在什么条件下做什么"。
+  不直接写内容，但控制所有流水线节点之间的路由决策。
+
+capabilities:
+  - 作品上下文快照读写
+  - 流水线阶段路由决策
+  - 作者干预指令接收
+  - 冲突仲裁
+  - 审计日志写入
+
+memory_type: work_context
+
+not_allowed:
+  - 直接读写知识库
+  - 直接调用 LLM 生成内容
+  - 修改文风包/史观包配置
+
+handoff_rules:
+  selection_completed → Orchestration
+  orchestration_completed → AdversarialReview(light)
+  review_pass_light → ControlledGeneration
+  review_fail → Orchestration (revision)
+  generation_completed → AdversarialReview(heavy)
+  review_pass_heavy → OutputRenderer
+  review_fail → ControlledGeneration (revision)
+
+milestone_target: "M1 主编协调逻辑完成"

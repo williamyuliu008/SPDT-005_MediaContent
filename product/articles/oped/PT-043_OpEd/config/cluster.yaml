@@ -1,0 +1,25 @@
+cluster_id: oped_cluster
+description: 观点论证集群 (CLUSTER-F)
+domain: content_production.oped
+input_router: SR-TEXT-001
+stages:
+- gate: evidence_ok
+  guild: RESEARCH
+  id: S1_RESEARCH
+  name: 论点研究
+- gate: structure_ok
+  guild: STRUCTURE
+  id: S2_STRUCTURE
+  name: 论证结构
+- gate: draft_ok
+  guild: WRITE
+  id: S3_WRITE
+  name: 观点写作
+- gate: debate_ok
+  guild: DEBATE
+  id: S4_DEBATE
+  name: 反方检验
+topology:
+  entry_point: operator
+  type: mesh
+version: 0.1.0

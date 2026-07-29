@@ -1,0 +1,20 @@
+channel:
+  id: "website"
+  name: "AI瞭望台网站"
+  type: "internal"              # internal(自用) | external(对外)
+
+publishing:
+  schedule: "0 10 * * *"
+  build_command: "python build.py --date {date}"
+  deploy_to: "D:/92_products/SmartTextPlatform/canvas/ai-lookout/"
+
+content:
+  primary: "daily_report"       # 主内容：日报全文
+  output_format: "html"         # html | markdown | plain
+  archive:                      # 归档内容
+    - "weekly_brief"
+    - "monthly_review"
+
+error:
+  on_fail: "fallback_yesterday"
+  max_retries: 1

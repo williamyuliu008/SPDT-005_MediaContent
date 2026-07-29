@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>generated_full_book.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="乾元元年蒲州的墨与血">乾元元年·蒲州的墨与血</h1>
+<p><strong>风格</strong>：通俗故事化
+<strong>章节数</strong>：3章
+<strong>取材</strong>：安史之乱、颜季明殉国、马嵬驿兵变、《祭侄文稿》写成、颜季明、安禄山</p>
+<hr>
+<h2 id="第1章烽火蒲州">第1章「烽火蒲州」</h2>
+<p><em>墨香未散，铁骑已至</em></p>
+<h1 id="烽火蒲州墨香未散铁骑已至">烽火蒲州：墨香未散，铁骑已至</h1>
+<p>天宝十四载深秋，蒲州城的清晨总是来得格外慢。</p>
+<p>颜真卿站在书案前，手中的毛笔悬而未落。窗外，汾河的水声隔着城墙传来，混着早市小贩的叫卖声。他深吸一口气，笔尖落下，墨汁在宣纸上晕开——又是一个“祭”字。</p>
+<p>“使君，该用早膳了。”</p>
+<p>老仆张安端着托盘进来，上面是一碗粟米粥和两块胡饼。颜真卿没有抬头，只是轻轻摆了摆手。</p>
+<p>“放那儿吧。”</p>
+<p>张安叹了口气，将托盘放在旁边的矮几上。他跟随颜真卿二十余年，深知这位主人的脾气——一旦提笔，便是不写完不肯罢休的。</p>
+<p>颜真卿写的是祭文。</p>
+<p>三个月前，他的堂兄颜杲卿在常山郡殉国。安禄山的叛军攻破城池时，颜杲卿率部死守，最终被俘。据说，叛军将他押到安禄山面前，他破口大骂，被割去了舌头，仍含糊不清地喊着“大唐万岁”，直到气绝。</p>
+<p>而他的侄儿颜季明，更是死得惨烈。</p>
+<p>颜真卿闭上眼睛，脑海中浮现出那个总是笑容灿烂的年轻人。去年冬天，季明还专程从常山赶来蒲州，带了一坛他最爱喝的河东酒。酒过三巡，季明拍着胸脯说：“叔父放心，只要有侄儿在，常山便永远是朝廷的常山！”</p>
+<p>那时，安禄山还在范阳装病，玄宗皇帝还在华清宫与杨贵妃赏花。</p>
+<p>谁能想到，仅仅一年光景，一切都变了。</p>
+<p>“使君！”张安的声音突然变得急促，“有信使到！”</p>
+<p>颜真卿睁开眼睛，看到张安手中捧着一封已经被汗水浸湿的信。信封上的火漆已经破损，显然是经过了长途跋涉。</p>
+<p>“哪里来的？”</p>
+<p>“范阳。”</p>
+<p>颜真卿的手猛地一颤，毛笔掉落在宣纸上，墨迹瞬间洇开，染黑了他刚刚写好的“祭”字。</p>
+<p>范阳——那是安禄山的老巢。</p>
+<p>他接过信，撕开封口。信纸很薄，上面的字迹潦草而急促，像是匆忙写就的。他逐字看下去，脸色渐渐变得苍白。</p>
+<p>信是安禄山手下的一名小吏偷偷送来的。上面写着：安禄山已在范阳称帝，国号大燕，任命史思明为范阳节度使，不日将南下攻打蒲州。</p>
+<p>“史思明……”颜真卿喃喃道。</p>
+<p>这个名字他太熟悉了。安禄山麾下最凶残的将领，人称“史屠夫”。他攻下的城池，从不留活口。</p>
+<p>“使君，我们怎么办？”张安的声音在颤抖。</p>
+<p>颜真卿没有回答。他转身看向窗外，蒲州城的街道上，百姓们还在正常地生活——卖布的吆喝声，孩童的嬉闹声，妇人们闲聊的声音，一切都那么平静。</p>
+<p>他们还不知道，死亡正在逼近。</p>
+<p>“张安，”颜真卿的声音很平静，“去把城门关了。”</p>
+<p>“是。”</p>
+<p>“另外，把城里的青壮年都召集起来，分发兵器。”</p>
+<p>“使君，我们……能守得住吗？”</p>
+<p>颜真卿沉默了片刻。蒲州城只有三千守军，而史思明至少带来五万大军。兵力悬殊，几乎是必死之局。</p>
+<p>但他别无选择。</p>
+<p>“守不住也要守，”他缓缓说道，“这天下，总要有人来守。”</p>
+<p>张安转身离去，脚步声在走廊里渐渐远去。颜真卿重新拿起笔，看着宣纸上那个被墨迹染黑的“祭”字，忽然觉得讽刺——他刚刚还在写祭文，悼念死去的亲人，现在却要为自己准备后事了。</p>
+<p>他蘸了蘸墨，在宣纸的空白处，缓缓写下——</p>
+<p>“蒲州刺史颜真卿，谨以清酌庶羞之奠，告于天地神明……”</p>
+<p>这是他给自己写的祭文。</p>
+<p>写完最后一笔，他放下笔，走出书房。院子里，阳光正好，槐树的叶子已经开始泛黄。他抬头看向远方，城墙上的旗帜在风中猎猎作响，士兵们正在搬运守城器械。</p>
+<p>远处，隐约传来了马蹄声。</p>
+<p>那是史思明的先锋部队，已经抵达蒲州城外二十里。</p>
+<p>颜真卿深吸一口气，整了整衣冠，向城门走去。</p>
+<p>他的身后，书案上的宣纸被风吹起，轻轻飘落在地上。上面的字迹还未干透，在阳光下泛着幽暗的光。</p>
+<p>那是血的颜色。</p>
+<p><em>字数：约 1451 字 | 张力：30%（）</em></p>
+<hr>
+<h2 id="第2章血染常山">第2章「血染常山」</h2>
+<p><em>一门忠烈，生死抉择</em></p>
+<h1 id="第二章-血染常山">第二章 血染常山</h1>
+<h2 id="一门忠烈生死抉择">一门忠烈，生死抉择</h2>
+<p>天宝十五载正月初八，常山郡的城墙在寒风中发抖。</p>
+<p>颜杲卿站在城楼上，手中的长剑已经卷了刃。他的铠甲上沾满了血，有敌人的，也有自己的。城下，安禄山的军队像潮水一样涌来，攻城槌撞击城门的声音震耳欲聋。</p>
+<p>“使君，东门破了！”</p>
+<p>副将袁履谦踉跄着跑上城楼，脸上满是烟熏火燎的痕迹。他的左臂被箭矢射穿，鲜血顺着衣袖滴落，在青砖上绽开一朵朵暗红的花。</p>
+<p>颜杲卿没有回头，只是死死盯着城下那面绣着“安”字的大旗。旗下，安禄山的部将史思明骑在马上，正冷冷地望着这座即将陷落的城池。</p>
+<p>“季明呢？”颜杲卿的声音嘶哑得像砂纸摩擦。</p>
+<p>袁履谦低下头：“三公子……还在西门守着。”</p>
+<p>颜杲卿闭上眼。那是他的儿子，才二十三岁，本该在长安读书，却被他拉到了这修罗场。</p>
+<p>三天前，叛军围城。颜杲卿派出信使向太原求救，可太原的王承业按兵不动。他又派人去平原郡找堂弟颜真卿，可平原距离常山三百里，远水救不了近火。</p>
+<p>“父亲！”</p>
+<p>一声呼喊让颜杲卿猛地睁开眼。颜季明踉跄着跑上城楼，身上的白袍已经染成了红色，手中握着一柄断剑。</p>
+<p>“西门守不住了，”颜季明喘着粗气，“史思明亲自督战，兄弟们……兄弟们死了一大半。”</p>
+<p>他说话时，嘴里喷出血沫。颜杲卿这才发现，儿子的胸口插着一支箭，箭尾的羽毛已被鲜血浸透。</p>
+<p>“你怎么不早说！”颜杲卿一把扶住儿子。</p>
+<p>颜季明笑了，露出一口被血染红的牙齿：“父亲教过，为将者，当死战不退。”</p>
+<p>城下传来一声巨响，南门被撞开了。叛军的喊杀声如潮水般涌入城中，夹杂着百姓的哭喊声和惨叫声。</p>
+<p>“使君，快走！”袁履谦拉住颜杲卿的衣袖，“后山有条小路，末将护您杀出去！”</p>
+<p>颜杲卿摇了摇头，将儿子交给袁履谦：“带季明走。”</p>
+<p>“不！”颜季明挣扎着要站起来，“儿子不走！儿子要与父亲共存亡！”</p>
+<p>“糊涂！”颜杲卿一巴掌扇在儿子脸上，眼泪却夺眶而出，“你活着，就有人记得今日的仇！记得常山郡的血！”</p>
+<p>他转向袁履谦，声音低沉却坚定：“替我告诉平原的颜真卿，告诉他，常山没有降将，只有战死的鬼。”</p>
+<p>袁履谦跪倒在地，重重磕了三个头。他拉起颜季明，跌跌撞撞地往城楼下跑去。</p>
+<p>颜杲卿转身，面对蜂拥而至的叛军，拔出了腰间的佩刀。</p>
+<p>“颜杲卿在此！谁人与我一战！”</p>
+<p>他的声音在城楼上回荡，竟让冲在最前面的叛军停住了脚步。</p>
+<p>史思明骑着马缓缓上前，在城楼下勒住缰绳：“颜使君，安大帅敬你是条汉子，只要你降了，保你全家富贵。”</p>
+<p>颜杲卿大笑，笑声中满是悲凉：“告诉安禄山那个狗贼，我颜家世代忠良，岂会与反贼为伍！”</p>
+<p>他举起佩刀，正要冲下城楼，却被身后一阵脚步声打断了。</p>
+<p>回头一看，十几个叛军已经爬上了城楼，为首的是一个满脸横肉的校尉，手中提着一颗人头。</p>
+<p>“颜使君，认得此人否？”</p>
+<p>那颗人头被高高举起。颜杲卿看清了那张脸——是袁履谦。他的眼睛还睁着，死不瞑目。</p>
+<p>颜杲卿只觉得眼前一黑，手中的佩刀掉在地上，发出清脆的响声。</p>
+<p>“季明……季明呢？”他喃喃道。</p>
+<p>那校尉咧嘴一笑：“那个小崽子？被史将军一箭射穿了喉咙，尸体扔到护城河里喂鱼了。”</p>
+<p>颜杲卿猛地抬头，眼中血丝密布。</p>
+<p>他弯腰捡起佩刀，怒吼一声冲向了叛军。刀光闪过，两个叛军倒下了。但更多的刀枪刺来，穿透了他的铠甲，刺进了他的身体。</p>
+<p>他倒下了，倒在常山郡城楼的青砖上。血从身下蔓延开，染红了砖缝里的青苔。</p>
+<p>史思明走上城楼，看着地上奄奄一息的颜杲卿，叹了口气：“绑了，押往洛阳。大帅要活的。”</p>
+<p>叛军七手八脚地架起颜杲卿，拖下城楼。他的血在青石台阶上拖出一条长长的红痕，像一条蜿蜒的血河。</p>
+<p>城楼上，风卷起残破的旗帜，猎猎作响。</p>
+<p>远处，夕阳西下，将整座常山城染成了血红色。</p>
+<p>三日后，洛阳。</p>
+<p>安禄山坐在大殿上，看着被押上来的颜杲卿。这个曾经的名将如今浑身是伤，一条腿被铁链拖着，断骨刺破了皮肉，露出森森白骨。</p>
+<p>“颜杲卿，”安禄山的声音在空旷的大殿中回荡，“你本是范阳户曹参军，是我提拔你当了常山太守。你不思报恩，反而起兵反我，是何道理？”</p>
+<p>颜杲卿抬起头，眼中的血已经凝固，却依然透着倔强的光。他笑了，笑声中满是嘲讽。</p>
+<p>“安禄山，你本是营州一胡儿，天子待你不薄，让你兼领三镇节度使。你不思报效，反而举兵造反，是何道理？”</p>
+<p>安禄山的脸色沉了下来。</p>
+<p>“你可知你儿子是怎么死的？”安禄山冷冷道，“史思明将他射成了刺猬，最后挂在城墙上示众。你女儿、你妻子、你全家上下三十余口，一个不留。”</p>
+<p>颜杲卿的身体在发抖，却不是恐惧，而是愤怒。</p>
+<p>“我颜氏一门，生是大唐的人，死是大唐的鬼。”他的声音沙哑却坚定，“你杀我全家，可你杀不尽天下忠义之士。我堂弟颜真卿还在平原，他会替我报仇的。”</p>
+<p>安禄山怒极反笑：“好，好！我倒要看看，你这个忠臣能硬气到几时！”</p>
+<p>他挥了挥手，两个侍卫上前，将颜杲卿按倒在地。</p>
+<p>“割了他的舌头。”安禄山说。</p>
+<p>刀光闪过，鲜血喷涌。颜杲卿发出一声闷哼，却依然昂着头，用含混不清的声音喊着什么。</p>
+<p>没人听得清他说的是什么，但所有人都看懂了。</p>
+<p>他的嘴在动，说的只有两个字——</p>
+<p>“大唐。”</p>
+<p>安禄山的脸色铁青，猛地站起身：“凌迟！给我凌迟处死！”</p>
+<p>那一天的洛阳百姓都听到了刑场上传来的惨叫声，一声接一声，从清晨一直持续到黄昏。</p>
+<p>但直到最后一刀落下，那个被绑在木桩上的男人，始终没有求饶，没有哭喊，甚至没有流泪。</p>
+<p>他只是用那双已经失去光彩的眼睛，望着东方的天空。</p>
+<p>那里，是常山的方向。</p>
+<p>是家的方向。</p>
+<p>也是他儿子倒下的地方。</p>
+<p><em>字数：约 2272 字 | 张力：70%（）</em></p>
+<hr>
+<h2 id="第3章祭侄泣血">第3章「祭侄泣血」</h2>
+<p><em>墨痕如泪，家国同悲</em></p>
+<h1 id="第3章-祭侄泣血">第3章 祭侄泣血</h1>
+<p>墨痕如泪，家国同悲</p>
+<p>天宝十五载深秋，蒲州城的秋风裹着黄土，卷过刺史府的庭院。颜真卿跪在书案前，面前的宣纸已经铺了整整三幅，每一幅都写满了字，又被他揉成团，扔在脚边。</p>
+<p>“季明……”他喃喃地念着这个侄儿的名字，喉头一紧，再也说不出话来。</p>
+<p>窗外传来急促的脚步声。参军王进在门外禀报：“使君，长安来的急报——马嵬驿兵变，杨国忠被诛，杨贵妃……赐死了。”</p>
+<p>颜真卿抬起头，目光空洞地望着门外。马嵬驿，那是皇上西逃入蜀的必经之路啊。他缓缓站起身，走到窗前。远处的城墙在暮色中显得格外苍凉，汾河的水声呜咽着，像在为这个风雨飘摇的王朝哭泣。</p>
+<p>“皇上呢？”他问。</p>
+<p>“太子殿下留在灵武监国，皇上……已入蜀地。”</p>
+<p>颜真卿闭上眼睛。入蜀，入蜀，这锦绣江山，竟要弃之如敝履吗？他想起三个月前，堂兄颜杲卿在常山郡被俘时的情形——叛军将他押到洛阳，安禄山亲自审问，要他说降平原郡。</p>
+<p>“我颜氏满门忠烈，岂有降贼之理？”颜杲卿在堂上怒斥安禄山，“你本是朝廷命官，却举兵反叛，有何面目见天下人？”</p>
+<p>安禄山恼羞成怒，命人割下他的舌头。颜杲卿满口鲜血，仍大骂不止，直至气绝。</p>
+<p>而他的侄儿颜季明，那个才二十出头的少年郎，在常山城破时，手持长剑，杀敌数十人，最终力竭被俘。史思明亲自监刑，要他在降书和死亡之间做选择。</p>
+<p>“我姓颜！”颜季明高喊着，声音在刑场上回荡，“我父亲是颜杲卿，我叔父是颜真卿，颜氏子弟，只知忠义，不知降贼！”</p>
+<p>刀光闪过，少年倒在血泊中。</p>
+<p>颜真卿回到书案前，重新铺开宣纸。他提起笔，笔尖在砚台里蘸了又蘸，却迟迟落不下去。那些字，每一个都像刀子一样扎在心上。</p>
+<p>“维乾元元年，岁次戊戌，九月庚午朔，三日壬申……”</p>
+<p>他写下祭文的开头，手在颤抖。窗外传来寺庙的钟声，一声接一声，沉闷而悠长。他继续写，笔下的字越来越潦草，墨迹越来越浓，像是要把所有的悲愤都倾注在纸上。</p>
+<p>“尔父竭诚，常山作郡。余时受命，亦在平原……”</p>
+<p>他想起堂兄临别时的嘱托：“真卿，你我兄弟，一文一武，当为朝廷守住这河东之地。”可是如今，常山已失，平原孤悬，连长安都落入叛军之手。</p>
+<p>“贼臣不救，孤城围逼。父陷子死，巢倾卵覆……”</p>
+<p>写到这一句，颜真卿再也控制不住，泪水夺眶而出，滴在宣纸上，墨迹洇开，化成一团模糊的泪痕。他索性不再控制，任由泪水纵横，手中的笔却一刻不停。</p>
+<p>“天不悔祸，谁为荼毒？念尔遘残，百身何赎？”</p>
+<p>他仿佛看到侄儿季明倒在血泊中的身影，看到堂兄被割舌后仍怒目圆睁的面容，看到常山城中那些死战不退的将士。他们用血肉筑成的城墙，最终还是没有挡住叛军的铁蹄。</p>
+<p>“呜呼哀哉！尚飨！”</p>
+<p>写完最后一个字，颜真卿瘫坐在椅子上，手中的笔掉落在地。窗外秋风骤起，吹动案上的宣纸，那篇《祭侄文稿》上的字迹在风中微微颤动，像是活了过来。</p>
+<p>张安走进来，看到主人满脸泪痕，欲言又止。他默默地收拾起地上的纸团，突然发现其中一张纸上，颜真卿用颤抖的笔迹写着一行字：</p>
+<p>“安有忠义之士，当此乱世而求全者乎？”</p>
+<p>张安轻轻叹了口气，将纸团收进袖中。他知道，这个答案，主人已经用一生去回答了。</p>
+<p>夜色渐深，蒲州城里的灯火一盏接一盏熄灭。颜真卿独自坐在书房里，望着案上那篇墨迹未干的《祭侄文稿》。月光透过窗棂，照在宣纸上，那些字时而清晰，时而模糊，像是隔着千年的时光，在诉说着什么。</p>
+<p>他忽然想起少年时，父亲教他写字时说过的话：“字如其人，心正则笔正。真卿，你要记住，书法不只是技艺，更是承载忠义之道的载体。”</p>
+<p>如今，他终于懂了。</p>
+<p>那篇《祭侄文稿》，后来被世人称为“天下第二行书”，仅次于王羲之的《兰亭序》。但人们不知道的是，在蒲州的那个秋夜里，颜真卿写下的不只是书法，更是一个家族的血泪，一个王朝的悲歌，一个时代的忠义。</p>
+<p>千年之后，当人们再看到这篇文稿时，依然能感受到那份悲愤。那墨痕里，有血，有泪，有家国，有天下。</p>
+<p>而蒲州的秋风，还在吹着。</p>
+<p><em>字数：约 1616 字 | 张力：100%（）</em></p>
+<hr>
+<p><em>全稿字数：约 5339 字</em>
+<em>生成时间：2026-07-14 16:48:09</em>
+<em>由 PT-047 社科智能体创作平台生成</em></p>
+
+</body>
+</html>

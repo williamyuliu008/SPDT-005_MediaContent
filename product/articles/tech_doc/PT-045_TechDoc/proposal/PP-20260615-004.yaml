@@ -1,0 +1,34 @@
+﻿# ProductProposal — Batch 2/3
+proposal:
+  id: "PP-20260615-004"
+  title: "技术文档集群 (Cluster)"
+  slug: "techdoc"
+  status: "proposed"
+  created: "2026-06-15"
+  author: "MKT Org"
+  version: 1
+  market:
+    track_id: "TR-003"
+    gate1_score: 4.0
+    gate1_pass: true
+  competitive:
+    differentiation:
+      positioning: "文字创作集团军技术文档集群——接收SR-001路由器输出"
+    gate2_score: 4.0
+    gate2_pass: true
+  technical:
+    project_type: "T2"
+    cdos_needed:
+      - { org: "CDO-DESIGN-001", service: "AgentClusterDesign", priority: "P0" }
+    cdos_coverage: 95
+    estimated_cycle: "1-2天"
+    gate3_score: 4.5
+    gate3_pass: true
+  handoff:
+    target_org: "6_agent_project"
+    product_dir: "D:\\92_products\\TechDoc"
+    special_constraints:
+      - "接收SR-001路由器输出"
+      - "优先级: P1"
+    attachments:
+      - { file: "references/SR-TEXT-005.md", desc: "完整SR规格" }

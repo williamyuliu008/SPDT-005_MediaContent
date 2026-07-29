@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TextClassifier 重定位方案</title>
+<style>
+  :root {
+    --bg: #f8f9fc;
+    --card-bg: #ffffff;
+    --text: #1a1d2e;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --border: #e5e7eb;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --amber: #d97706;
+    --amber-light: #fffbeb;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem; max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; }
+  .meta { color: var(--muted); font-size: 0.875rem; margin-bottom: 1.5rem; }
+  p { margin-bottom: 0.75rem; }
+
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem; }
+  .card-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--text); }
+  .card.accent { border-left: 4px solid var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.75rem 0; }
+  th { background: var(--accent-light); color: var(--accent); padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge-ok { background: var(--green-light); color: var(--green); }
+  .badge-warn { background: var(--amber-light); color: var(--amber); }
+  .badge-err { background: var(--red-light); color: var(--red); }
+
+  .steps { counter-reset: step; }
+  .step { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
+  .step-marker { flex-shrink: 0; width: 2rem; height: 2rem; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .step-text { font-size: 0.875rem; color: var(--muted); }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .compare-col { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+  .compare-col.keep { border-top: 3px solid var(--green); }
+  .compare-col.drop { border-top: 3px solid var(--red); }
+  .compare-col ul { list-style: none; padding: 0; }
+  .compare-col li { padding: 0.35rem 0; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
+  .compare-col li:last-child { border-bottom: none; }
+
+  .tag { display: inline-block; background: var(--accent-light); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.25rem; margin-bottom: 0.25rem; }
+  code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<h1>TextClassifier 重定位方案</h1>
+<div class="meta">2026-07-12 · 决策：纳入 SPDT-005 shared/smarttext_router/router/</div>
+
+<h2>背景</h2>
+<p>TextClassifier 创建于 2026-06-15（PP-20260615-001），定位为"文字产品生产线的统一入口路由器"。当时 SPDT 体系尚未建立（SPDT-005 成立于 2026-07-10），6 集群定义未与 PDT 对齐。</p>
+
+<h2>问题诊断</h2>
+
+<h3>三方命名不一致</h3>
+<table>
+<tr><th>集群</th><th>classifier.py</th><th>smarttext README</th><th>SPDT-005 PDT</th><th>对齐</th></tr>
+<tr><td>A</td><td>快讯/短消息</td><td>实时快反</td><td>PT-041 FlashNews</td><td><span class="badge badge-ok">✅</span></td></tr>
+<tr><td>B</td><td>深度分析/报告</td><td>深度生产</td><td>PT-040 DeepProd</td><td><span class="badge badge-ok">✅</span></td></tr>
+<tr><td>C</td><td>科普/<strong>教育</strong></td><td>知识科普(E)</td><td>PT-042 SciPop</td><td><span class="badge badge-err">❌</span></td></tr>
+<tr><td>D</td><td>技术文档</td><td>技术文档</td><td>PT-045 TechDoc</td><td><span class="badge badge-ok">✅</span></td></tr>
+<tr><td>E</td><td>创意/评论</td><td>观点论证(F)</td><td>PT-043 OpEd</td><td><span class="badge badge-err">❌</span></td></tr>
+<tr><td>F</td><td>营销/商业文案</td><td>创意转化(C)</td><td>PT-044 CreativeX</td><td><span class="badge badge-err">❌</span></td></tr>
+</table>
+
+<h3>覆盖范围过大</h3>
+<ul>
+  <li>C 集群包含"教育"：SPDT-004 才是教育内容的归属，TextClassifier 不应替教育产线做路由</li>
+  <li>E/F 边界模糊：PT-043(OpEd) 和 PT-044(CreativeX) 的分界线更清晰</li>
+  <li>缺少跨 SPDT 路由：无法甄别教育类需求并转发 SPDT-004</li>
+</ul>
+
+<h2>决策</h2>
+<div class="card accent">
+  <div class="card-title">纳入 SPDT-005，作为 smarttext_router 的 router 子系统。不新建 SPDT。</div>
+</div>
+
+<h3>集群重新映射</h3>
+<table>
+<tr><th>集群</th><th>新名称</th><th>对应 PDT</th><th>说明</th></tr>
+<tr><td>A</td><td>FlashNews</td><td><span class="tag">PT-041</span></td><td>实时快讯/短消息，≤500字</td></tr>
+<tr><td>B</td><td>DeepProd</td><td><span class="tag">PT-040</span></td><td>深度分析/报告/白皮书</td></tr>
+<tr><td>C</td><td>SciPop</td><td><span class="tag">PT-042</span></td><td>知识科普（<strong>不含教育</strong>）</td></tr>
+<tr><td>D</td><td>TechDoc</td><td><span class="tag">PT-045</span></td><td>技术文档/API文档/用户手册</td></tr>
+<tr><td>E</td><td>OpEd</td><td><span class="tag">PT-043</span></td><td>观点评论/社论/深度思考</td></tr>
+<tr><td>F</td><td>CreativeX</td><td><span class="tag">PT-044</span></td><td>品牌创意/营销文案/品牌故事</td></tr>
+</table>
+
+<h3>新增：跨 SPDT 路由</h3>
+<div class="card">
+  <p style="font-family: monospace; font-size: 0.875rem; color: var(--muted);">
+    输入检测到 <span class="tag">教育</span><span class="tag">学生</span><span class="tag">备考</span><span class="tag">课件</span> 标签<br>
+    → 不进入 C 集群<br>
+    → 输出 <code>cross_spdt_route: SPDT-004</code><br>
+    → SPDT-004 PT-031(通识教育) 接单
+  </p>
+</div>
+
+<h2>迁移步骤</h2>
+<div class="steps">
+  <div class="step">
+    <div class="step-marker">1</div>
+    <div class="step-body">
+      <div class="step-title">物理迁移</div>
+      <div class="step-text">复制 <code>src/</code> → <code>smarttext_router/router/</code>，替换现有占位</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-marker">2</div>
+    <div class="step-body">
+      <div class="step-title">集群标签重命名</div>
+      <div class="step-text">classifier.py 中 A-F 集群改为 FlashNews/DeepProd/SciPop/TechDoc/OpEd/CreativeX</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-marker">3</div>
+    <div class="step-body">
+      <div class="step-title">裁剪 Cluster C + 添加跨路由</div>
+      <div class="step-text">C 集群移除"教育"标签匹配；新增 cross_spdt_route 检测逻辑</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-marker">4</div>
+    <div class="step-body">
+      <div class="step-title">更新 golden tests</div>
+      <div class="step-text">15 测试用例按新集群重新标注；增加教育类 → SPDT-004 的 case</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-marker">5</div>
+    <div class="step-body">
+      <div class="step-title">同步 README</div>
+      <div class="step-text">smarttext_router/README.md 集群名称一致化</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-marker">6</div>
+    <div class="step-body">
+      <div class="step-title">归档原目录</div>
+      <div class="step-text"><code>D:\92_products\TextClassifier</code> 归档；SR-TEXT-001 迁移到 smarttext_router/docs/</div>
+    </div>
+  </div>
+</div>
+
+<h2>保留 vs 丢弃</h2>
+<div class="compare">
+  <div class="compare-col keep">
+    <div class="card-title" style="color: var(--green);">✅ 保留</div>
+    <ul>
+      <li>4-step pipeline</li>
+      <li>10 维 StructuredSpec</li>
+      <li>7-rule 决策树</li>
+      <li>2s 目标延迟</li>
+      <li>15 golden tests + 5 edge cases</li>
+      <li>L2 配置模板体系</li>
+    </ul>
+  </div>
+  <div class="compare-col drop">
+    <div class="card-title" style="color: var(--red);">❌ 丢弃/修改</div>
+    <ul>
+      <li>"教育"从 C 集群彻底移除</li>
+      <li>E/F 集群模糊边界 → OpEd / CreativeX</li>
+      <li>独立项目身份</li>
+      <li>与 PDT 不一致的集群编号</li>
+      <li>group_army_test 命名混淆</li>
+    </ul>
+  </div>
+</div>
+
+<h2>一句话总结</h2>
+<div class="card accent">
+  <p style="margin: 0;">TextClassifier 的归宿是 SPDT-005 的 <code>smarttext_router/router/</code>——它是聪明的路由大脑，不是独立的产品线。唯二要做的：6 集群 1:1 对齐 PDT，砍掉越界的"教育"触角并加上指向 SPDT-004 的跨产品线路由。</p>
+</div>
+
+</body>
+</html>

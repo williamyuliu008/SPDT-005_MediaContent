@@ -1,0 +1,35 @@
+# 支撑型智能体（StyleManager / HistorioManager / KnowledgeBaseAgent）
+# AG-047-08 / 09 / 10
+
+agents:
+  - agent_id: AG-047-08
+    name: StyleManager
+    name_zh: 文风包管理智能体
+    directory: support/style_manager
+    operations:
+      - register_style_pack(yaml) → 校验五层完整性
+      - extract_style_pack_from_samples(text_corpus) → 逆向工程辅助
+      - validate_style_pack_conflict(pack_a, pack_b) → JS散度冲突检测
+      - style_pack_version_diff(v1, v2) → 版本对比
+
+  - agent_id: AG-047-09
+    name: HistorioManager
+    name_zh: 史观包管理智能体
+    directory: support/historio_manager
+    operations:
+      - register_historio_profile(yaml) → 校验五维立场向量
+      - validate_value_keyword_consistency(profile) → approved/discouraged/forbidden 不冲突
+      - cross_profile_conflict_analysis(profile_a, profile_b) → 多史观冲突报告
+
+  - agent_id: AG-047-10
+    name: KnowledgeBaseAgent
+    name_zh: 知识库管理智能体
+    directory: support/knowledge_base
+    operations:
+      - ingest_node(node_yaml) → 入库 + 依赖图更新
+      - query_nodes_by_intent(intent, constraints) → 按意图召回
+      - update_dependency_graph(node_id, relations) → 依赖关系变更
+      - find_analogy_bridge(knowledge_node, reader_analogy_domain) → 类比匹配
+
+status: planned
+milestone_target: "M1/M3 分阶段接入"

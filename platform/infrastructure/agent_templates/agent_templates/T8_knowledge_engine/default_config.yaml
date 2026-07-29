@@ -1,0 +1,50 @@
+# T8 默认集群配置 — Knowledge Engine (知识引擎)
+# 领域建模 → 图谱构建 → 推理查询
+# 适用: 专利智能审查, 科技情报, 行业知识库
+
+cluster:
+  name: "{{PROJECT_NAME}}"
+  type: "T8_knowledge_engine"
+  description: "{{DESCRIPTION}}"
+
+phases:
+  # ── Phase 1: 领域建模 ──
+  - id: "domain_modeling"
+    name: "领域建模"
+    description: "定义实体类型、关系类型、属性 schema"
+    entities: []     # 公司/技术/专利/人物...
+    relations: []    # 竞争/供应/引用/投资...
+    schema_file: "domain/schema.yaml"
+
+  # ── Phase 2: 知识抽取 ──
+  - id: "knowledge_extraction"
+    name: "知识抽取"
+    description: "从非结构化文本中提取实体和关系"
+    sources: []      # 专利/论文/新闻/财报
+    methods: ["ner", "relation_extraction", "entity_linking"]
+    confidence_threshold: 0.7
+
+  # ── Phase 3: 图谱构建 ──
+  - id: "graph_construction"
+    name: "图谱构建"
+    description: "实体消歧 + 关系融合 + 图谱存储"
+    storage: "neo4j"  # neo4j / networkx
+    vector_index: "chromadb"  # 混合检索
+    merge_strategy: "confidence_weighted"
+
+  # ── Phase 4: 推理查询 ──
+  - id: "reasoning"
+    name: "推理查询"
+    description: "路径查询、子图发现、趋势预测"
+    query_types: ["path", "subgraph", "centrality", "trend"]
+    visualization: true
+
+topology:
+  type: "phased"
+  mode: "sequential_with_feedback"
+  feedback_loop: "Phase 4 → Phase 1 (schema refinement)"
+
+recommended_cdos:
+  - KG        # 知识图谱核心
+  - RESEARCH  # 领域调研
+  - DESIGN    # 图可视化设计

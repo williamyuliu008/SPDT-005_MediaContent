@@ -1,0 +1,33 @@
+{
+  "cluster_id": "scipop_cluster",
+  "generated_at": "2026-07-13T19:45:22.950439",
+  "stages": {
+    "S1_RESEARCH": {
+      "gate_passed": true,
+      "gate_score": 10,
+      "gate_message": "✓ 权威源≥3个; ✓ 概念图谱完整"
+    },
+    "S2_TRANSLATE": {
+      "gate_passed": true,
+      "gate_score": 10,
+      "gate_message": "✓ 术语覆盖充分; ✓ 所有术语有L1通俗化; ✓ 所有术语有L2类比"
+    },
+    "S3_WRITE": {
+      "gate_passed": true,
+      "gate_score": 10,
+      "gate_message": "✓ 文章字数980; ✓ 有问题开头; ✓ 有章节结构"
+    },
+    "S4_REVIEW": {
+      "gate_passed": true,
+      "gate_score": 25.5,
+      "gate_message": "审校结果: APPROVED"
+    }
+  },
+  "article": "# 你有没有想过：冰川融化越多，地球就越热，地球越热，冰川融化越多\n\n你有没有想过，为什么冰川融化会让海平面上升，但同时地球好像也在\"自我调节\"——这到底是怎么回事？\n\n## 先搞清楚一个问题：冰川融化和水变热\n\n首先，冰川是什么？冰川就是陆地上长期积累、压实形成的巨量冰体。南极冰盖、格陵兰冰盖，以及喜马拉雅山脉的冰川，都属于这一类。\n\n冰川融化很简单：当温度升高到冰点以上，冰就会变成水。这些水流...",
+  "review_verdict": "APPROVED",
+  "review_scores": {
+    "accuracy": 9.0,
+    "accessibility": 8.5,
+    "engagement": 8.0
+  }
+}
