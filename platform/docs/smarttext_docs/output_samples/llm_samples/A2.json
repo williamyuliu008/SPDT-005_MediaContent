@@ -1,0 +1,14 @@
+{
+  "case_id": "A2",
+  "cluster": "A",
+  "input": "某芯片巨头宣布突破3nm制程，写一条300字快讯，含股价反应",
+  "classification": {
+    "cluster": "ClusterType.A_NEWS_FLASH",
+    "confidence": 0.5800000000000001,
+    "reasoning": "产品类型=新闻/快讯 | 深度=快讯级 (≤500字) | → Rule 1: 短文本 + 高时效 → Cluster A"
+  },
+  "l2_config": "{'template': 'news_flash_v1', 'max_length': 500, 'tone': 'concise', 'citation': False, 'writer_config': 'speed_optimized'}",
+  "output": "**快讯：某芯片巨头突破3nm制程，股价应声大涨**\n\n某芯片巨头今日正式宣布，已成功突破3纳米（nm）制程技术，预计将于明年实现量产。该技术将显著提升芯片性能与能效，有望在高端计算、人工智能及移动设备领域引发新一轮革新。\n\n受此消息提振，该公司股价在早盘交易中一度飙升逾8%，截至发稿时涨幅收窄至6.5%，报收于每股XX美元（注：可根据实际市场数据补充）。分析师指出，这一技术突破巩固了其在全球半导体市场的领先地位，并对竞争对手形成技术压制。\n\n市场反应热烈，投资者对该公司未来营收增长预期乐观，但需关注量产成本及良率挑战。",
+  "output_length": 263,
+  "elapsed_sec": 3.1
+}

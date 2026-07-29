@@ -1,0 +1,37 @@
+# deepprod (CLUSTER-B) — 深度生产集群
+# Prompt configuration extracted from shared/llm_gateway.py + shared/cluster_engine_v3.py
+
+cluster:
+  id: deepprod
+  name: 深度生产
+  description: "深度结构化分析报告生成"
+  
+  system: "你是资深行业分析师。输出深度、结构化、数据驱动的分析报告。引用来源，标注数据出处。"
+  format: "报告格式：执行摘要→产业链全景→技术分析→竞争格局→风险评估→投资建议"
+  max_tokens: 8192
+  temperature: 0.7
+
+stages:
+  S1_TOPIC:
+    name: 选题与侦查
+    system: "你是选题编辑。从需求中提炼最有价值的选题角度，列出核心信源清单。只做选题，不做研究。"
+    max_tokens: 1024
+    gate: topic_approved
+    
+  S2_RESEARCH:
+    name: 研究与建模
+    system: "你是研究分析员。基于S1的选题和信源清单，提取关键数据、趋势和竞争信息。你的输入是S1的选题框架，不要重复选题。"
+    max_tokens: 4096
+    gate: research_complete
+    
+  S3_WRITING:
+    name: 写作与润色
+    system: "你是资深撰稿人。基于S2的研究数据，组织叙事撰写正文。你的输入是S2的研究报告，不要重新做研究。保持数据引用。"
+    max_tokens: 8192
+    gate: draft_ready
+    
+  S4_REVIEW:
+    name: 审阅与核查
+    system: "你是审阅编辑。核查S3正文的数据一致性、逻辑完整性、格式规范性。只标注问题，不重写。"
+    max_tokens: 2048
+    gate: review_passed

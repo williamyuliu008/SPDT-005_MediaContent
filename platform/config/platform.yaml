@@ -1,0 +1,59 @@
+# SmartTextPlatform — 集团军级配置
+
+platform:
+  name: "SmartTextPlatform"
+  version: "1.0.0"
+  description: "文字创作智能体集团军 — 1 Router + 6 Clusters"
+
+router:
+  id: "text_classifier"
+  module: "router/classifier.py"
+  class: "TextClassifier"
+  description: "NL需求 → 10维结构化 → 6集群路由"
+
+clusters:
+  - id: "deepprod"
+    name: "深度生产集群"
+    code: "CLUSTER-B"
+    priority: "P0"
+    stages: 6
+    
+  - id: "flashnews"
+    name: "实时快反集群"
+    code: "CLUSTER-A"
+    priority: "P1"
+    stages: 4
+    
+  - id: "techdoc"
+    name: "技术文档集群"
+    code: "CLUSTER-D"
+    priority: "P1"
+    stages: 4
+    
+  - id: "creativex"
+    name: "创意转化集群"
+    code: "CLUSTER-C"
+    priority: "P2"
+    stages: 4
+    
+  - id: "scipop"
+    name: "知识科普集群"
+    code: "CLUSTER-E"
+    priority: "P2"
+    stages: 4
+    
+  - id: "oped"
+    name: "观点论证集群"
+    code: "CLUSTER-F"
+    priority: "P2"
+    stages: 4
+
+shared:
+  modules:
+    - "shared/decision_log.py"
+    - "shared/artifact.py"
+
+message_bus:
+  type: "router_managed"
+  protocols: ["classify", "route", "track"]
+  decision_log: true

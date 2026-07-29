@@ -1,0 +1,25 @@
+{
+  "entity_id": "google",
+  "name": "Google DeepMind",
+  "type": "company",
+  "domains": [
+    "大模型",
+    "搜索",
+    "云计算"
+  ],
+  "key_products": [
+    "Gemini",
+    "Gemma",
+    "Vertex AI"
+  ],
+  "competitors": [
+    "OpenAI",
+    "Microsoft",
+    "Anthropic"
+  ],
+  "suppliers": [
+    "自研TPU"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

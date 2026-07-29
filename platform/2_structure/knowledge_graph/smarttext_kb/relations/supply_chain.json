@@ -1,0 +1,47 @@
+[
+  {
+    "source": "nvidia",
+    "target": "tsmc",
+    "relation": "代工"
+  },
+  {
+    "source": "nvidia",
+    "target": "sk_hynix",
+    "relation": "HBM供应"
+  },
+  {
+    "source": "nvidia",
+    "target": "samsung",
+    "relation": "HBM供应"
+  },
+  {
+    "source": "microsoft",
+    "target": "openai",
+    "relation": "云服务"
+  },
+  {
+    "source": "anthropic",
+    "target": "google",
+    "relation": "云服务"
+  },
+  {
+    "source": "baidu",
+    "target": "nvidia",
+    "relation": "芯片采购"
+  },
+  {
+    "source": "alibaba",
+    "target": "nvidia",
+    "relation": "芯片采购"
+  },
+  {
+    "source": "tencent",
+    "target": "nvidia",
+    "relation": "芯片采购"
+  },
+  {
+    "source": "bytedance",
+    "target": "nvidia",
+    "relation": "芯片采购"
+  }
+]

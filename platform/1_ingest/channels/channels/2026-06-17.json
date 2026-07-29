@@ -1,0 +1,153 @@
+{
+  "bundle_id": "content_20260617_daily_report",
+  "format": "daily_report",
+  "format_name": "AI 瞭望台日报",
+  "generated_at": "2026-06-24T10:30:12.898880",
+  "source_bundle_id": "ai_tech_20260617",
+  "date": "2026-06-17",
+  "sections": [
+    {
+      "section_id": "compete",
+      "label": "竞争态势",
+      "cluster": "deepprod",
+      "signals_count": 3,
+      "content": "## 竞争态势\n\n### 1. OpenAI向SEC秘密提交S-1招股书，正式启动IPO进程\n\nOpenAI已向美国SEC秘密提交S-1招股说明书草案，标志着从非营利向营利转型后IPO正式启动。这将是AI行业最大规模IPO，为整个赛道估值提供新参照系，可能引发Anthropic、xAI等竞相上市。\n\n> 来源: openai | 影响力: 0.89\n\n### 2. NVIDIA发布RTX Spark超级芯片：1 Petaflop AI性能，重塑Windows PC为个人AI代理平台\n\nNVIDIA在Computex GTC Taipei发布RTX Spark超级芯片，集成Blackwell RTX GPU(6144 CUDA核心)与20核Grace CPU，通过NVLink-C2C互联。提供最高1 petaflop AI算力、128GB统一内存。支持本地运行120B参数LLM、1M token上下文。与Microsoft合作提供Windows原生Agent安全基础设施。今年秋季\n\n> 来源: nvidia | 影响力: 0.89\n\n### 3. Anthropic发布Claude Fable 5 / Mythos 5：首个公开Mythos级模型，1M上下文窗口\n\nAnthropic于6月9日正式推出Claude Fable 5，这是首个面向公众开放的Mythos级模型。同时向受信任组织提供完整版Claude Mythos 5。关键参数：1M上下文窗口、128K最大输出；公开版输入$10/百万token、输出$50/百万token。在软件工程、知识工作、视觉、科研等几乎所有基准测试上达到SOTA。\n\n> 来源: anthropic | 影响力: 0.86\n",
+      "word_count": 739,
+      "signals": [
+        "",
+        "",
+        ""
+      ],
+      "stage_results": {}
+    },
+    {
+      "section_id": "chips",
+      "label": "芯事",
+      "cluster": "flashnews",
+      "signals_count": 0,
+      "content": "## 芯事\n",
+      "word_count": 6,
+      "signals": [],
+      "stage_results": {}
+    },
+    {
+      "section_id": "oss",
+      "label": "开源雷达",
+      "cluster": "scipop",
+      "signals_count": 0,
+      "content": "## 开源雷达\n",
+      "word_count": 8,
+      "signals": [],
+      "stage_results": {}
+    },
+    {
+      "section_id": "design",
+      "label": "设计前线",
+      "cluster": "creativex",
+      "signals_count": 2,
+      "content": "## 设计前线\n\n### 1. OpenAI向SEC秘密提交S-1招股书，正式启动IPO进程\n\nOpenAI已向美国SEC秘密提交S-1招股说明书草案，标志着从非营利向营利转型后IPO正式启动。这将是AI行业最大规模IPO，为整个赛道估值提供新参照系，可能引发Anthropic、xAI等竞相上市。\n\n> 来源: openai | 影响力: 0.89\n\n### 2. NVIDIA发布RTX Spark超级芯片：1 Petaflop AI性能，重塑Windows PC为个人AI代理平台\n\nNVIDIA在Computex GTC Taipei发布RTX Spark超级芯片，集成Blackwell RTX GPU(6144 CUDA核心)与20核Grace CPU，通过NVLink-C2C互联。提供最高1 petaflop AI算力、128GB统一内存。支持本地运行120B参数LLM、1M token上下文。与Microsoft合作提供Windows原生Agent安全基础设施。今年秋季\n\n> 来源: nvidia | 影响力: 0.89\n",
+      "word_count": 472,
+      "signals": [
+        "",
+        ""
+      ],
+      "stage_results": {}
+    }
+  ],
+  "heat": {
+    "total_signals": 16,
+    "top_tags": [
+      {
+        "tag": "platform",
+        "count": 3
+      },
+      {
+        "tag": "enterprise",
+        "count": 2
+      },
+      {
+        "tag": "pricing",
+        "count": 2
+      },
+      {
+        "tag": "copilot",
+        "count": 2
+      },
+      {
+        "tag": "agent",
+        "count": 2
+      },
+      {
+        "tag": "agent_platform",
+        "count": 2
+      },
+      {
+        "tag": "open_source",
+        "count": 2
+      },
+      {
+        "tag": "mythos",
+        "count": 1
+      },
+      {
+        "tag": "model_release",
+        "count": 1
+      },
+      {
+        "tag": "safety",
+        "count": 1
+      }
+    ],
+    "top_companies": [
+      {
+        "company": "nvidia",
+        "count": 3
+      },
+      {
+        "company": "microsoft",
+        "count": 3
+      },
+      {
+        "company": "openai",
+        "count": 2
+      },
+      {
+        "company": "tencent",
+        "count": 2
+      },
+      {
+        "company": "anthropic",
+        "count": 1
+      },
+      {
+        "company": "google",
+        "count": 1
+      },
+      {
+        "company": "bytedance",
+        "count": 1
+      },
+      {
+        "company": "baidu",
+        "count": 1
+      },
+      {
+        "company": "perplexity",
+        "count": 1
+      },
+      {
+        "company": "alibaba",
+        "count": 1
+      }
+    ]
+  },
+  "meta": {
+    "signals_processed": 16,
+    "sections_generated": 4,
+    "total_words": 1225,
+    "total_latency_ms": 0.2,
+    "mock_mode": true,
+    "output_format": "markdown"
+  },
+  "rendered": "# 🔭 AI 瞭望台 · 2026-06-17 周三\n\n> 信号 16 条 · 覆盖 1/10 家公司\n\n## 竞争态势\n\n### 1. OpenAI向SEC秘密提交S-1招股书，正式启动IPO进程\n\nOpenAI已向美国SEC秘密提交S-1招股说明书草案，标志着从非营利向营利转型后IPO正式启动。这将是AI行业最大规模IPO，为整个赛道估值提供新参照系，可能引发Anthropic、xAI等竞相上市。\n\n> 来源: openai | 影响力: 0.89\n\n### 2. NVIDIA发布RTX Spark超级芯片：1 Petaflop AI性能，重塑Windows PC为个人AI代理平台\n\nNVIDIA在Computex GTC Taipei发布RTX Spark超级芯片，集成Blackwell RTX GPU(6144 CUDA核心)与20核Grace CPU，通过NVLink-C2C互联。提供最高1 petaflop AI算力、128GB统一内存。支持本地运行120B参数LLM、1M token上下文。与Microsoft合作提供Windows原生Agent安全基础设施。今年秋季\n\n> 来源: nvidia | 影响力: 0.89\n\n### 3. Anthropic发布Claude Fable 5 / Mythos 5：首个公开Mythos级模型，1M上下文窗口\n\nAnthropic于6月9日正式推出Claude Fable 5，这是首个面向公众开放的Mythos级模型。同时向受信任组织提供完整版Claude Mythos 5。关键参数：1M上下文窗口、128K最大输出；公开版输入$10/百万token、输出$50/百万token。在软件工程、知识工作、视觉、科研等几乎所有基准测试上达到SOTA。\n\n> 来源: anthropic | 影响力: 0.86\n\n\n## 芯事\n\n\n## 开源雷达\n\n\n## 设计前线\n\n### 1. OpenAI向SEC秘密提交S-1招股书，正式启动IPO进程\n\nOpenAI已向美国SEC秘密提交S-1招股说明书草案，标志着从非营利向营利转型后IPO正式启动。这将是AI行业最大规模IPO，为整个赛道估值提供新参照系，可能引发Anthropic、xAI等竞相上市。\n\n> 来源: openai | 影响力: 0.89\n\n### 2. NVIDIA发布RTX Spark超级芯片：1 Petaflop AI性能，重塑Windows PC为个人AI代理平台\n\nNVIDIA在Computex GTC Taipei发布RTX Spark超级芯片，集成Blackwell RTX GPU(6144 CUDA核心)与20核Grace CPU，通过NVLink-C2C互联。提供最高1 petaflop AI算力、128GB统一内存。支持本地运行120B参数LLM、1M token上下文。与Microsoft合作提供Windows原生Agent安全基础设施。今年秋季\n\n> 来源: nvidia | 影响力: 0.89\n\n\n## 📊 今日信号热度\n\n`platform` ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ 3\n\n`enterprise` ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ 2\n\n`pricing` ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ 2\n\n`copilot` ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ 2\n\n`agent` ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ 2\n\n`agent_platform` ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ 2\n\n`open_source` ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ 2\n\n`mythos` ▓▓▓▓▓▓░░░░░░░░░░░░░░ 1\n\n\n---\n*AI 瞭望台 · SmartTextPlatform 自动生成 · 2026-06-17 · 追踪 10 家 AI 核心公司*"
+}

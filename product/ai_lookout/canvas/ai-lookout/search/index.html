@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全文搜索 — AI 瞭望台</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="../" class="logo">
+            <span class="icon">🔭</span> AI 瞭望台
+            <span class="subtitle">· AI 产业情报自动化</span>
+        </a>
+        <nav>
+            <a href="../">首页</a>
+            <a href="../channels/chips/">📡 芯事</a>
+            <a href="../channels/oss/">🔬 开源</a>
+            <a href="../channels/compete/">📊 竞争</a>
+            <a href="../channels/design/">🏗 设计</a>
+            <a href="../channels/monthly/">🌐 月报</a>
+            <a href="../timeline/">📅 时间线</a>
+            <a href="../search/">🔍 搜索</a>
+            <a href="../knowledge/">🧠 知识</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<div class="channel-page-header">
+    <div class="ch-icon">🔍</div>
+    <h1>全文搜索</h1>
+    <div class="ch-desc">跨频道 · 跨日期 · 即时搜索</div>
+</div>
+
+<div class="search-container">
+    <input type="text" class="search-input" id="search-input"
+           placeholder="搜索 AI 产业情报...（如：OpenAI、GPT-5、TSMC）" autofocus>
+    <div class="search-results" id="search-results">
+        <div class="empty-state">
+            <p>输入关键词开始搜索全部 5 条内容。</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.bundle.js"></script>
+<script>
+const DOCS = [{"id": 0, "channel": "AI 竞争态势", "icon": "📊", "date": "2026-06-17", "title": "AI 竞争态势日报 — 2026-06-17", "summary": "> 🎯 B 深产赛道 + F 观点赛道 | Stage 差异度 0.73 | 16 条原始事件 共追踪 10 家 AI 核心公司，今日捕获重大信号如下： **NVIDIA发布RTX Spark超级芯片：1 Petaflop AI性能，重塑Windows PC为个人AI代理平台**", "path": "../channels/compete/2026-06-17.html"}, {"id": 1, "channel": "AI 芯事", "icon": "📡", "date": "2026-06-17", "title": "AI 芯事日报 — 2026-06-17", "summary": "> 🎯 A 快反赛道 + B 深产赛道 | Stage 差异度 0.75 | 5 条芯片信号 GPU/CoWoS/HBM 产能与价格变化： NVIDIA在Computex GTC Taipei发布RTX Spark超级芯片，集成Blackwell RTX GPU(6144 CUDA核心)与20核Grace CPU，通过NVLink-C2C互联。提供最高1 petaflop AI算力、128GB统一", "path": "../channels/chips/2026-06-17.html"}, {"id": 2, "channel": "AI 开源雷达", "icon": "🔬", "date": "2026-06-17", "title": "AI 开源雷达日报 — 2026-06-17", "summary": "> 🎯 A 快反赛道 + D 技术文档赛道 | Stage 差异度 0.73 | 14 条生态信号 | 含 ModLib 外部扫描数据 Top 5 新开源项目，每项含简介、⭐趋势、主要语言： 来源：ModLib Navigator | 领域：discovery", "path": "../channels/oss/2026-06-17.html"}, {"id": 3, "channel": "AI 设计前线", "icon": "🏗", "date": "2026-06-17", "title": "AI 设计前线周报 — 2026-06-17", "summary": "> 🎯 C 创意赛道 + D 技术文档赛道 + E 科普赛道 | Stage 差异度 0.94（C-D: 0.94 C-E: 0.93 D-E: 0.95）| 12 条设计信号 | App Scanner: producthunt (5 产品) AI 产品 UI/UX 新范式与设计语言演进： NVIDIA在Computex GTC Taipei发布RTX Spark超级芯片，集成Blackwell", "path": "../channels/design/2026-06-17.html"}, {"id": 4, "channel": "AI 瞭望台月报", "icon": "🌐", "date": "2026-06", "title": "AI 瞭望台月报 — 2026-06", "summary": "> ⚠️ Phase 2 频道 — 将聚合四大频道的月度产出 + CI Engine 月报", "path": "../channels/monthly/2026-06.html"}];
+
+const index = new FlexSearch.Document({
+    document: {
+        id: "id",
+        index: ["title", "summary", "channel"],
+        store: ["title", "summary", "channel", "icon", "date", "path"]
+    }
+});
+
+DOCS.forEach(doc => index.add(doc));
+
+document.getElementById('search-input').addEventListener('input', function(e) {
+    const q = e.target.value.trim();
+    const container = document.getElementById('search-results');
+
+    if (q.length < 2) {
+        container.innerHTML = '<div class="empty-state"><p>输入至少 2 个字符开始搜索。</p></div>';
+        return;
+    }
+
+    const results = index.search(q, { limit: 20, enrich: true });
+
+    // Merge and deduplicate
+    const seen = new Set();
+    const merged = [];
+    for (const r of results) {
+        for (const item of r.result) {
+            if (!seen.has(item.id)) {
+                seen.add(item.id);
+                merged.push(item.doc);
+            }
+        }
+    }
+
+    if (merged.length === 0) {
+        container.innerHTML = '<div class="empty-state"><h3>未找到结果</h3><p>尝试不同的关键词。</p></div>';
+        return;
+    }
+
+    container.innerHTML = merged.map(doc => `
+        <a href="${doc.path}" class="search-result-item" style="display: block; text-decoration: none; color: inherit;">
+            <div class="sr-channel">${doc.icon} ${doc.channel} · ${doc.date}</div>
+            <div class="sr-title">${doc.title}</div>
+            <div class="sr-snippet">${doc.summary?.slice(0, 150) || ''}</div>
+        </a>
+    `).join('');
+});
+</script>
+
+</main>
+
+<footer>
+    <p>AI 瞭望台 · SmartTextPlatform 自动化运营 · 生成时间 2026-06-18 10:59</p>
+    <p style="margin-top: 4px;">追踪 10 家 AI 核心公司 · 5 大频道 · 每日自动更新</p>
+</footer>
+</body>
+</html>

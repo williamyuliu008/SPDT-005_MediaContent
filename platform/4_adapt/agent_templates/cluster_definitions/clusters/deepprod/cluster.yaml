@@ -1,0 +1,138 @@
+cluster_id: deepprod_cluster_b
+version: 0.1.0
+description: >
+  深度生产智能体集群 (文字生产线 · 集群 B)
+  DESIGN SOP T2 生成创作型 — 多 Guild 协同
+  6 Guild: Scout→Research→Writing→Review→Visual→Operator
+
+domain: content_production.deep
+input_router: SR-TEXT-001 (TextClassifier)
+
+agents:
+  # Guild 1: Scout & Topic
+  - agent_id: scout_topic_lead
+    role: 选题侦察长
+    guild: SCOUT_TOPIC
+    priority: P0
+    config: config/agents/scout_topic_lead.yaml
+  - agent_id: scout_source_collector
+    role: 信源采集员
+    guild: SCOUT_TOPIC
+    priority: P1
+    config: config/agents/scout_collector.yaml
+
+  # Guild 2: Research
+  - agent_id: research_lead
+    role: 研究组长
+    guild: RESEARCH
+    priority: P0
+    config: config/agents/research_lead.yaml
+  - agent_id: research_analyst
+    role: 研究分析员
+    guild: RESEARCH
+    priority: P1
+    config: config/agents/research_analyst.yaml
+
+  # Guild 3: Writing
+  - agent_id: writer_architect
+    role: 写作架构师
+    guild: WRITING
+    priority: P0
+    config: config/agents/writer_architect.yaml
+  - agent_id: writer_drafter
+    role: 初稿撰写员
+    guild: WRITING
+    priority: P1
+    config: config/agents/writer_drafter.yaml
+  - agent_id: writer_polisher
+    role: 润色编辑
+    guild: WRITING
+    priority: P2
+    config: config/agents/writer_polisher.yaml
+
+  # Guild 4: Review
+  - agent_id: reviewer_factcheck
+    role: 事实核查员
+    guild: REVIEW
+    priority: P0
+    config: config/agents/reviewer_factcheck.yaml
+  - agent_id: reviewer_consistency
+    role: 一致性审查员
+    guild: REVIEW
+    priority: P1
+    config: config/agents/reviewer_consistency.yaml
+
+  # Guild 5: Visual
+  - agent_id: visual_designer
+    role: 可视化设计师
+    guild: VISUAL
+    priority: P1
+    config: config/agents/visual_designer.yaml
+
+  # Guild 0: Operator (编排)
+  - agent_id: operator
+    role: 集群编排官
+    guild: OPERATOR
+    priority: P0
+    config: config/agents/operator.yaml
+
+topology:
+  type: mesh
+  entry_point: operator
+  guilds:
+    - id: SCOUT_TOPIC
+      order: 1
+      output: "选题方案 + 信源清单"
+    - id: RESEARCH
+      order: 2
+      input_from: SCOUT_TOPIC
+      output: "研究报告 + 数据包"
+    - id: WRITING
+      order: 3
+      input_from: RESEARCH
+      output: "初稿 + 润色稿"
+    - id: REVIEW
+      order: 4
+      input_from: WRITING
+      output: "审阅报告 + 通过/驳回"
+    - id: VISUAL
+      order: 5
+      input_from: REVIEW
+      output: "图表 + 可视化素材"
+
+stages:
+  - id: S1_TOPIC
+    name: 选题与侦查
+    guild: SCOUT_TOPIC
+    gate: topic_approved
+  - id: S2_RESEARCH
+    name: 研究与建模
+    guild: RESEARCH
+    gate: research_complete
+  - id: S3_WRITING
+    name: 写作与润色
+    guild: WRITING
+    gate: draft_ready
+  - id: S4_REVIEW
+    name: 审阅与核查
+    guild: REVIEW
+    gate: review_passed
+  - id: S5_VISUAL
+    name: 可视化
+    guild: VISUAL
+    gate: assets_ready
+  - id: S6_DELIVER
+    name: 交付
+    guild: OPERATOR
+    gate: delivered
+
+message_bus:
+  type: operator_managed
+  protocols:
+    - task_assign
+    - artifact_submit
+    - gate_check
+    - guild_handoff
+  decision_log: true
+  timeout: 600
+  retry: { max_attempts: 3, backoff: exponential }

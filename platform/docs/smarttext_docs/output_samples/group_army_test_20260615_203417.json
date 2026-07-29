@@ -1,0 +1,138 @@
+{
+  "test_date": "2026-06-15T20:34:17.326441",
+  "total": 12,
+  "results": [
+    {
+      "case_id": "A1_午间快讯",
+      "cluster": "A_FlashNews",
+      "input": "写一条A股午间简讯，覆盖三大指数涨跌和热点板块，150字以内",
+      "classification": "ClusterType.A_NEWS_FLASH",
+      "confidence": 0.51,
+      "rule": "Rule 1: 短文本 + 高时效 → Cluster A",
+      "l2_config": "{'template': 'news_flash_v1', 'max_length': 500, 'tone': 'concise', 'citation': False, 'writer_config': 'speed_optimized'}",
+      "reasoning": "产品类型=新闻/快讯 | 深度=快讯级 (≤500字) | → Rule 1: 短文本 + 高时效 → Cluster A",
+      "elapsed_ms": 3.7674903869628906
+    },
+    {
+      "case_id": "A2_突发新闻",
+      "cluster": "A_FlashNews",
+      "input": "某芯片巨头宣布突破3nm制程，写一条300字快讯，含股价反应",
+      "classification": "ClusterType.A_NEWS_FLASH",
+      "confidence": 0.5800000000000001,
+      "rule": "Rule 1: 短文本 + 高时效 → Cluster A",
+      "l2_config": "{'template': 'news_flash_v1', 'max_length': 500, 'tone': 'concise', 'citation': False, 'writer_config': 'speed_optimized'}",
+      "reasoning": "产品类型=新闻/快讯 | 深度=快讯级 (≤500字) | → Rule 1: 短文本 + 高时效 → Cluster A",
+      "elapsed_ms": 0.06461143493652344
+    },
+    {
+      "case_id": "B1_行业分析",
+      "cluster": "B_DeepProd",
+      "input": "写一篇中国半导体设备国产化进程深度分析，含市场份额和技术路线对比，面向投资人群，5000字",
+      "classification": "ClusterType.B_DEEP_ANALYSIS",
+      "confidence": 0.65,
+      "rule": "Rule 4: 数据驱动 + 分析报告 → Cluster B",
+      "l2_config": "{'template': 'deep_analysis_v1', 'min_length': 2000, 'tone': 'analytical', 'citation': True, 'writer_config': 'quality_optimized'}",
+      "reasoning": "产品类型=分析/报告 | 受众=投资人群 | 风格=论证导向 | 深度=深度 (≥5000字) | → Rule 4: 数据驱动 + 分析报告 → Cluster B",
+      "elapsed_ms": 0.5261898040771484
+    },
+    {
+      "case_id": "B2_政策解读",
+      "cluster": "B_DeepProd",
+      "input": "解读最新AI监管政策对科技行业的影响，要有正反方观点，面向决策者",
+      "classification": "ClusterType.E_CREATIVE",
+      "confidence": 0.51,
+      "rule": "Rule 3: 评论/观点 → Cluster E",
+      "l2_config": "{'template': 'creative_v1', 'tone': 'expressive', 'citation': False, 'style_guide': 'literary', 'writer_config': 'creative_optimized'}",
+      "reasoning": "产品类型=评论/观点 | 受众=决策者 | → Rule 3: 评论/观点 → Cluster E",
+      "elapsed_ms": 0.051975250244140625
+    },
+    {
+      "case_id": "C1_营销文案",
+      "cluster": "C_CreativeX",
+      "input": "写一条双十一促销活动营销文案，面向25-35岁女性，强调性价比和限时优惠",
+      "classification": "ClusterType.F_COMMERCIAL",
+      "confidence": 0.5800000000000001,
+      "rule": "Rule 6: 营销文案 → Cluster F",
+      "l2_config": "{'template': 'commercial_v1', 'tone': 'persuasive', 'cta': True, 'audience_targeting': True, 'writer_config': 'conversion_optimized'}",
+      "reasoning": "产品类型=营销文案 | 风格=叙事为主 | 深度=短篇 (500-2000字) | → Rule 6: 营销文案 → Cluster F",
+      "elapsed_ms": 0.05269050598144531
+    },
+    {
+      "case_id": "C2_品牌故事",
+      "cluster": "C_CreativeX",
+      "input": "为一个新能源车企写一篇品牌故事，强调环保使命和技术创新",
+      "classification": "ClusterType.B_DEEP_ANALYSIS",
+      "confidence": 0.38000000000000006,
+      "rule": "Rule 7: Default fallback → B",
+      "l2_config": "{'template': 'deep_analysis_v1', 'min_length': 2000, 'tone': 'analytical', 'citation': True, 'writer_config': 'quality_optimized'}",
+      "reasoning": "受众=技术人群 | 风格=叙事为主 | 深度=短篇 (500-2000字) | → Rule 7: Default fallback → B",
+      "elapsed_ms": 0.06842613220214844
+    },
+    {
+      "case_id": "D1_API文档",
+      "cluster": "D_TechDoc",
+      "input": "写一份Python REST API接口文档，含认证/端点/错误码/示例代码",
+      "classification": "ClusterType.D_TECH_DOC",
+      "confidence": 0.65,
+      "rule": "Rule 5: 技术文档 + 代码示例 → Cluster D",
+      "l2_config": "{'template': 'tech_doc_v1', 'format': 'structured', 'code_examples': True, 'citation': True, 'writer_config': 'precision_optimized'}",
+      "reasoning": "产品类型=技术文档 | 风格=技术准确 | 深度=短篇 (500-2000字) | → Rule 5: 技术文档 + 代码示例 → Cluster D",
+      "elapsed_ms": 0.04553794860839844
+    },
+    {
+      "case_id": "D2_用户手册",
+      "cluster": "D_TechDoc",
+      "input": "写一份智能家居APP用户手册，含安装/配置/常见问题",
+      "classification": "ClusterType.D_TECH_DOC",
+      "confidence": 0.51,
+      "rule": "Rule 5: 技术文档 + 代码示例 → Cluster D",
+      "l2_config": "{'template': 'tech_doc_v1', 'format': 'structured', 'code_examples': True, 'citation': True, 'writer_config': 'precision_optimized'}",
+      "reasoning": "产品类型=技术文档 | 风格=技术准确 | → Rule 5: 技术文档 + 代码示例 → Cluster D",
+      "elapsed_ms": 0.03933906555175781
+    },
+    {
+      "case_id": "E1_量子科普",
+      "cluster": "E_SciPop",
+      "input": "写一篇科普文章解释量子计算，面向高中生，用生活中的类比帮助理解",
+      "classification": "ClusterType.C_KNOWLEDGE_POP",
+      "confidence": 0.65,
+      "rule": "Rule 2: 科普/教程 + 通俗受众 → Cluster C",
+      "l2_config": "{'template': 'knowledge_pop_v1', 'tone': 'conversational', 'analogies': True, 'citation': False, 'writer_config': 'education_optimized'}",
+      "reasoning": "产品类型=科普/教程 | 受众=学生 | 风格=通俗易懂 | 深度=短篇 (500-2000字) | → Rule 2: 科普/教程 + 通俗受众 → Cluster C",
+      "elapsed_ms": 0.04410743713378906
+    },
+    {
+      "case_id": "E2_AI科普",
+      "cluster": "E_SciPop",
+      "input": "用通俗语言解释什么是大语言模型，面向非技术人群，2000字",
+      "classification": "ClusterType.C_KNOWLEDGE_POP",
+      "confidence": 0.5800000000000001,
+      "rule": "Rule 2: 科普/教程 + 通俗受众 → Cluster C",
+      "l2_config": "{'template': 'knowledge_pop_v1', 'tone': 'conversational', 'analogies': True, 'citation': False, 'writer_config': 'education_optimized'}",
+      "reasoning": "产品类型=科普/教程 | 受众=技术人群 | 风格=通俗易懂 | → Rule 2: 科普/教程 + 通俗受众 → Cluster C",
+      "elapsed_ms": 0.03743171691894531
+    },
+    {
+      "case_id": "F1_科技评论",
+      "cluster": "F_OpEd",
+      "input": "写一篇关于AI替代人类工作的评论文章，要有深度思考和批判性，不要泛泛而谈",
+      "classification": "ClusterType.E_CREATIVE",
+      "confidence": 0.51,
+      "rule": "Rule 3: 评论/观点 → Cluster E",
+      "l2_config": "{'template': 'creative_v1', 'tone': 'expressive', 'citation': False, 'style_guide': 'literary', 'writer_config': 'creative_optimized'}",
+      "reasoning": "产品类型=评论/观点 | 深度=深度 (≥5000字) | → Rule 3: 评论/观点 → Cluster E",
+      "elapsed_ms": 0.04172325134277344
+    },
+    {
+      "case_id": "F2_投资观点",
+      "cluster": "F_OpEd",
+      "input": "写一篇对2026年下半年A股走势的观点文章，基于数据和逻辑论证",
+      "classification": "ClusterType.E_CREATIVE",
+      "confidence": 0.65,
+      "rule": "Rule 3: 评论/观点 → Cluster E",
+      "l2_config": "{'template': 'creative_v1', 'tone': 'expressive', 'citation': False, 'style_guide': 'literary', 'writer_config': 'creative_optimized'}",
+      "reasoning": "产品类型=评论/观点 | 受众=技术人群 | 风格=数据驱动 | 深度=短篇 (500-2000字) | → Rule 3: 评论/观点 → Cluster E",
+      "elapsed_ms": 0.036716461181640625
+    }
+  ]
+}

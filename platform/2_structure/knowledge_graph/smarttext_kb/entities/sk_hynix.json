@@ -1,0 +1,20 @@
+{
+  "entity_id": "sk_hynix",
+  "name": "SK海力士",
+  "type": "company",
+  "domains": [
+    "存储芯片",
+    "HBM"
+  ],
+  "key_products": [],
+  "competitors": [],
+  "suppliers": [],
+  "timeline": [
+    {
+      "date": "2026-06-17",
+      "event": "TSMC / ASML / SK海力士 / 三星 / 中芯国际 等关键动态：",
+      "source": "channels/chips/2026-06-17.md"
+    }
+  ],
+  "last_updated": "2026-06-22"
+}

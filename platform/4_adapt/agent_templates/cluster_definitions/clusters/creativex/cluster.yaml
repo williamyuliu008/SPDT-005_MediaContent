@@ -1,0 +1,25 @@
+cluster_id: creativex_cluster
+description: 创意转化集群 (CLUSTER-C)
+domain: content_production.creative
+input_router: SR-TEXT-001
+stages:
+- gate: brief_ok
+  guild: BRIEF
+  id: S1_BRIEF
+  name: 创意简报
+- gate: concept_ok
+  guild: IDEATION
+  id: S2_IDEATION
+  name: 创意构思
+- gate: draft_ok
+  guild: CREATE
+  id: S3_CREATE
+  name: 内容创作
+- gate: final_ok
+  guild: POLISH
+  id: S4_POLISH
+  name: 润色定稿
+topology:
+  entry_point: operator
+  type: mesh
+version: 0.1.0

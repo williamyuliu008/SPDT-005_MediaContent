@@ -1,0 +1,59 @@
+# ProductProposal — Text Classifier Agent
+# 7_MKT → 6_agent_project | 源: SR-TEXT-001 (CDO-CONTENT)
+
+proposal:
+  id: "PP-20260615-001"
+  title: "TextClassifier — 文字作品分类智能体"
+  slug: "text-classifier"
+  status: "proposed"
+  created: "2026-06-15"
+  author: "MKT Org"
+  version: 1
+  source: "SR-TEXT-001 (CDO-CONTENT → CDO-DESIGN-001)"
+
+  market:
+    track_id: "TR-003"
+    track_name: "AI知识管理"
+    gate1_score: 4.0
+    gate1_pass: true
+
+  competitive:
+    differentiation:
+      positioning: "文字生产线的统一入口路由器——NL需求→结构化→6集群分类→L2配置推荐"
+      unique_points:
+        - "四步闭环: 结构化→分类→配置→低置信度反问"
+        - "7规则决策树覆盖6集群+默认fallback"
+        - "2s目标延迟, 不能成为生产瓶颈"
+    gate2_score: 4.0
+    gate2_pass: true
+
+  technical:
+    project_type: "T1"
+    estimated_agents: 1
+    description: "SingleAgent——不是集群, 是意图路由器"
+    cdos_needed:
+      - { org: "CDO-DESIGN-001", service: "SingleAgentDesign", priority: "P0" }
+    cdos_coverage: 95
+    estimated_cycle: "0.5天"
+    gate3_score: 4.5
+    gate3_pass: true
+
+  handoff:
+    target_org: "6_agent_project"
+    product_dir: "D:\\92_products\\TextClassifier"
+    orchestrator_hints:
+      domain: "text_classification"
+      special_constraints:
+        - "SingleAgent, 4步骤: 结构化→分类→配置→反问"
+        - "2s目标延迟, 不准超5s"
+        - "分类置信度<0.85触发反问"
+        - "15 golden tests + 5 edge cases"
+        - "7规则决策树覆盖A-F六集群"
+    acceptance_criteria:
+      - "A1: 10维度全部提取 (structure_completeness)"
+      - "A2: 与人工标注一致率≥95% (classification_accuracy)"
+      - "A3: 决策路径可解释 (explainability)"
+      - "A4: 低置信度触发反问 (low_confidence_interrogate)"
+      - "A5: 处理延迟≤5s"
+    attachments:
+      - { file: "references/SR-TEXT-001.md", desc: "完整SR规格(4步+7规则+输出Schema+15测试)" }

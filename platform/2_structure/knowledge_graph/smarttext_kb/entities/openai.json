@@ -1,0 +1,26 @@
+{
+  "entity_id": "openai",
+  "name": "OpenAI",
+  "type": "company",
+  "domains": [
+    "大模型",
+    "基础研究",
+    "API平台"
+  ],
+  "key_products": [
+    "GPT-5",
+    "Sora",
+    "ChatGPT",
+    "Codex"
+  ],
+  "competitors": [
+    "Google DeepMind",
+    "Anthropic",
+    "Meta AI"
+  ],
+  "suppliers": [
+    "Microsoft Azure"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

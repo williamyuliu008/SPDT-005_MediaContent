@@ -1,0 +1,14 @@
+{
+  "case_id": "A1",
+  "cluster": "A",
+  "input": "写一条A股午间简讯，覆盖三大指数涨跌和热点板块，150字以内",
+  "classification": {
+    "cluster": "ClusterType.A_NEWS_FLASH",
+    "confidence": 0.51,
+    "reasoning": "产品类型=新闻/快讯 | 深度=快讯级 (≤500字) | → Rule 1: 短文本 + 高时效 → Cluster A"
+  },
+  "l2_config": "{'template': 'news_flash_v1', 'max_length': 500, 'tone': 'concise', 'citation': False, 'writer_config': 'speed_optimized'}",
+  "output": "【A股午间简讯】截至午盘，沪指跌0.45%，深成指跌0.64%，创业板指跌0.87%。板块方面，贵金属、煤炭逆势走强，AI概念股回调明显，半导体、算力板块跌幅居前。",
+  "output_length": 82,
+  "elapsed_sec": 1.6
+}

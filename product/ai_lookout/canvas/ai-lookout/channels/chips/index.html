@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 芯事 — AI 瞭望台</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="../../" class="logo">
+            <span class="icon">🔭</span> AI 瞭望台
+            <span class="subtitle">· AI 产业情报自动化</span>
+        </a>
+        <nav>
+            <a href="../../">首页</a>
+            <a href="../../channels/chips/">📡 芯事</a>
+            <a href="../../channels/oss/">🔬 开源</a>
+            <a href="../../channels/compete/">📊 竞争</a>
+            <a href="../../channels/design/">🏗 设计</a>
+            <a href="../../channels/monthly/">🌐 月报</a>
+            <a href="../../timeline/">📅 时间线</a>
+            <a href="../../search/">🔍 搜索</a>
+            <a href="../../knowledge/">🧠 知识</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<div class="channel-page-header">
+    <div class="ch-icon">📡</div>
+    <h1>AI 芯事</h1>
+    <div class="ch-desc">芯片与算力日报 · A/B赛道 · 每日</div>
+</div>
+
+<div class="archive-list">
+
+    <a href="2026-06-17.html" class="archive-item">
+        <span class="headline">AI 芯事日报 — 2026-06-17</span>
+        <span class="date">2026-06-17</span>
+    </a>
+</div>
+</main>
+
+<footer>
+    <p>AI 瞭望台 · SmartTextPlatform 自动化运营 · 生成时间 2026-06-18 10:59</p>
+    <p style="margin-top: 4px;">追踪 10 家 AI 核心公司 · 5 大频道 · 每日自动更新</p>
+</footer>
+<script>
+(async function() {
+    try {
+        const resp = await fetch('../../search/index.json');
+        const data = await resp.json();
+        const chData = data.channels && data.channels['chips'];
+        if (!chData || !chData.items) return;
+        const dateMap = {};
+        for (const item of chData.items) {
+            const date = item.date;
+            if (!date || dateMap[date]) continue;
+            dateMap[date] = item;
+        }
+        document.querySelectorAll('.archive-item').forEach(item => {
+            const dateEl = item.querySelector('.date');
+            if (!dateEl) return;
+            const date = dateEl.textContent.trim();
+            const topSignal = dateMap[date];
+            if (topSignal && topSignal.title) {
+                const summary = document.createElement('div');
+                summary.className = 'archive-summary';
+                summary.textContent = topSignal.title;
+                item.appendChild(summary);
+            }
+        });
+    } catch(e) {}
+})();
+</script>
+</body>
+</html>

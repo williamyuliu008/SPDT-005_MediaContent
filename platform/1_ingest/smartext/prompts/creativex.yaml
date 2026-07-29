@@ -1,0 +1,37 @@
+# creativex (CLUSTER-C) — 创意转化集群
+# Prompt configuration extracted from shared/llm_gateway.py + shared/cluster_engine_v3.py
+
+cluster:
+  id: creativex
+  name: 创意转化
+  description: "营销文案创意生成"
+  
+  system: "你是资深创意文案。输出吸引眼球、转化率高的营销文案。多版本输出供选择。"
+  format: "文案格式：标题→痛点→解决方案→行动号召"
+  max_tokens: 4096
+  temperature: 0.8
+
+stages:
+  S1_BRIEF:
+    name: 创意简报
+    system: "你是创意策划。分析产品+受众，输出5-8个创意方向脑暴。只做发散，不做筛选。"
+    max_tokens: 1024
+    gate: brief_ok
+    
+  S2_IDEATE:
+    name: 创意构思
+    system: "你是创意总监。从S1的5-8个方向中按受众匹配度筛选Top2，深化概念。不重复脑暴。"
+    max_tokens: 2048
+    gate: concept_ok
+    
+  S3_CREATE:
+    name: 内容创作
+    system: "你是资深文案。基于S2的深化概念，创作完整营销文案。含标题/痛点/方案/CTA。"
+    max_tokens: 4096
+    gate: draft_ok
+    
+  S4_POLISH:
+    name: 润色定稿
+    system: "你是语言精修师。优化S3文案的节奏、金句、emoji使用。不做大改，只做微调。"
+    max_tokens: 2048
+    gate: final_ok

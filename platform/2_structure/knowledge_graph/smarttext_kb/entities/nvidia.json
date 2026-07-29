@@ -1,0 +1,28 @@
+{
+  "entity_id": "nvidia",
+  "name": "NVIDIA / 英伟达",
+  "type": "company",
+  "domains": [
+    "AI芯片",
+    "GPU",
+    "AI计算"
+  ],
+  "key_products": [
+    "H200",
+    "B200",
+    "CUDA",
+    "DGX"
+  ],
+  "competitors": [
+    "AMD",
+    "Intel",
+    "华为昇腾"
+  ],
+  "suppliers": [
+    "TSMC",
+    "SK海力士",
+    "三星"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

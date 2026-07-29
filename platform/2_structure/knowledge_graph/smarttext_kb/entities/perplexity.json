@@ -1,0 +1,23 @@
+{
+  "entity_id": "perplexity",
+  "name": "Perplexity",
+  "type": "company",
+  "domains": [
+    "AI搜索",
+    "Agent"
+  ],
+  "key_products": [
+    "Perplexity Pro",
+    "Perplexity API"
+  ],
+  "competitors": [
+    "Google",
+    "OpenAI",
+    "You.com"
+  ],
+  "suppliers": [
+    "Google Cloud"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

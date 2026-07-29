@@ -1,0 +1,57 @@
+[
+  {
+    "source": "openai",
+    "target": "anthropic",
+    "relation": "模型竞争"
+  },
+  {
+    "source": "openai",
+    "target": "google",
+    "relation": "模型竞争"
+  },
+  {
+    "source": "google",
+    "target": "microsoft",
+    "relation": "云+AI竞争"
+  },
+  {
+    "source": "nvidia",
+    "target": "amd",
+    "relation": "GPU竞争"
+  },
+  {
+    "source": "nvidia",
+    "target": "huawei",
+    "relation": "AI芯片竞争"
+  },
+  {
+    "source": "bytedance",
+    "target": "baidu",
+    "relation": "国内大模型竞争"
+  },
+  {
+    "source": "bytedance",
+    "target": "tencent",
+    "relation": "应用层竞争"
+  },
+  {
+    "source": "alibaba",
+    "target": "tencent",
+    "relation": "云+AI竞争"
+  },
+  {
+    "source": "alibaba",
+    "target": "baidu",
+    "relation": "国内大模型竞争"
+  },
+  {
+    "source": "perplexity",
+    "target": "google",
+    "relation": "AI搜索竞争"
+  },
+  {
+    "source": "perplexity",
+    "target": "openai",
+    "relation": "搜索Agent竞争"
+  }
+]

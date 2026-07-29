@@ -1,0 +1,192 @@
+{
+  "$schema": "ux_definition.v0.3.json",
+  "version": "0.3.1",
+  "meta": {
+    "project_name": "ai_lookout",
+    "description": "AI 瞭望台 · AI 产业情报日报网站。每日自动生成一篇完整的AI产业日报，包含竞争态势、芯事、开源雷达、设计前线四个板块。单页到底，日期切换，搜索，知识底座。深色科技风，高信息密度，对标 Stratechery 纯文字美学。"
+  },
+  "uxPattern": {
+    "primary": "list-browse",
+    "secondary": [
+      "daily-report",
+      "search",
+      "knowledge"
+    ],
+    "label": "列表浏览",
+    "sub_patterns": []
+  },
+  "derivedFrom": {
+    "D1_functional_semantics": "",
+    "D2_user_role": "decision_maker",
+    "D3_usage_frequency": "high",
+    "D4_risk_level": "low",
+    "D5_information_density": "high",
+    "D5_scene_refinement": "knowledge_graph",
+    "derivation_trace": {
+      "layout": {
+        "step1_density": "high",
+        "step1_candidates": [
+          "L2",
+          "L3"
+        ],
+        "step2_d1_override": null,
+        "step3_role_override": null,
+        "final": "L2"
+      },
+      "style": {
+        "step1_density": "high",
+        "step1_candidates": [
+          "S1",
+          "S3"
+        ],
+        "step2_role": "decision_maker",
+        "step2_after_role": "S1",
+        "step3_scene_override": "S3",
+        "final": "S3"
+      }
+    }
+  },
+  "layout": {
+    "id": "L2",
+    "name": "L2",
+    "variant": "",
+    "config": {
+      "variant": "L2",
+      "sidebar_width": "240px",
+      "isImmersive": false,
+      "grid_columns": 3
+    },
+    "responsive": {},
+    "template_source": "templates/layouts/L2.yaml"
+  },
+  "style": {
+    "id": "S3",
+    "name": "Tech",
+    "气质": "",
+    "overridden_by_brand": false,
+    "template_source": "templates/styles/S3.yaml",
+    "brand_primary": "#0ea5e9",
+    "brand_override_fields": [
+      "button_background",
+      "link_color",
+      "active_tab_indicator",
+      "focus_ring",
+      "progress_bar_fill",
+      "switch_checked_background"
+    ]
+  },
+  "components": [
+    {
+      "id": "search_bar",
+      "required": true,
+      "layout_zone": null,
+      "template": null
+    },
+    {
+      "id": "list_or_cards",
+      "required": true,
+      "layout_zone": null,
+      "template": null
+    }
+  ],
+  "interactions": [
+    {
+      "id": "navigate",
+      "trigger": "click",
+      "effect": "route_push"
+    },
+    {
+      "id": "search",
+      "trigger": "input_debounced",
+      "effect": "filter_list"
+    }
+  ],
+  "errorStates": {
+    "mandatory": [
+      "network_failure",
+      "loading",
+      "data_empty",
+      "operation_failed"
+    ],
+    "declared": [
+      "network_failure",
+      "loading",
+      "data_empty",
+      "operation_failed"
+    ],
+    "handling": {
+      "network_failure": {
+        "display": "友好网络异常提示",
+        "action": "重试按钮"
+      },
+      "loading": {
+        "display": "骨架屏",
+        "action": "进度指示"
+      },
+      "data_empty": {
+        "display": "空状态插图+引导文案",
+        "action": "创建入口"
+      }
+    }
+  },
+  "app_shell": {
+    "sidebar": {
+      "type": "collapsible_sidebar",
+      "width_expanded": "240px",
+      "width_collapsed": "56px",
+      "initial_state": "expanded"
+    },
+    "topbar": {
+      "type": "fixed_header",
+      "height": "56px",
+      "visible": true
+    },
+    "toast": {
+      "type": "floating_notification",
+      "position": "top-right"
+    },
+    "room_shell": {
+      "type": "content_wrapper",
+      "max_width": "none",
+      "padding": "24px"
+    },
+    "is_immersive": false
+  },
+  "brand_colors": {
+    "primary": "#0ea5e9",
+    "secondary": "#6366f1",
+    "accent": "#f59e0b"
+  },
+  "grid_columns": 3,
+  "multi_view": {},
+  "slot_fill": {
+    "schema": {
+      "slots": [
+        "header",
+        "sidebar",
+        "main",
+        "status"
+      ],
+      "main_sub_slots": [
+        "toolbar",
+        "content",
+        "footer"
+      ]
+    },
+    "filled": {
+      "header": [],
+      "sidebar": [],
+      "main": [],
+      "status": [],
+      "main.toolbar": [
+        "search_bar"
+      ],
+      "main.content": [
+        "list_or_cards"
+      ],
+      "main.footer": []
+    },
+    "multi_view": {},
+    "default_view": ""
+  }
+}

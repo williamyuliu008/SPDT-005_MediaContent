@@ -1,0 +1,26 @@
+{
+  "entity_id": "bytedance",
+  "name": "字节跳动",
+  "type": "company",
+  "domains": [
+    "大模型",
+    "应用",
+    "推荐"
+  ],
+  "key_products": [
+    "豆包",
+    "火山引擎",
+    "Coze"
+  ],
+  "competitors": [
+    "百度",
+    "阿里巴巴",
+    "腾讯"
+  ],
+  "suppliers": [
+    "NVIDIA",
+    "华为"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

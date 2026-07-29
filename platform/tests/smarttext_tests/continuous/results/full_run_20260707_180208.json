@@ -1,0 +1,830 @@
+{
+  "timestamp": "2026-07-07T18:02:08.729599",
+  "layers": [
+    {
+      "layer": 1,
+      "name": "分类回归",
+      "golden_tests": [
+        {
+          "id": 1,
+          "input": "我需要一篇关于新能源电池技术路线的深度分析，面向投资人群，要求数据驱动",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 2,
+          "input": "帮我写一篇今日A股收盘快评，300字以内，面向散户",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 3,
+          "input": "写一份面向开发者的 REST API 接口文档，需要包含认证、端点、错误码",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "confidence": 0.72,
+          "latency_ms": 0
+        },
+        {
+          "id": 4,
+          "input": "写一篇科普文章解释量子计算，面向高中生，要有类比",
+          "expected": "C",
+          "actual": "C",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 5,
+          "input": "帮我写一篇关于AI伦理的评论文章，要有深度思考和批判性",
+          "expected": "E",
+          "actual": "E",
+          "passed": true,
+          "confidence": 0.51,
+          "latency_ms": 0
+        },
+        {
+          "id": 6,
+          "input": "写一份面向C端用户的新产品上市营销文案，强调性价比",
+          "expected": "F",
+          "actual": "F",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 7,
+          "input": "生成一份关于2026年Q2芯片行业的季度分析报告，含市场份额和趋势预测",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 8,
+          "input": "写一条A股午间简讯，覆盖三大指数和热点板块，150字",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "confidence": 0.51,
+          "latency_ms": 0
+        },
+        {
+          "id": 9,
+          "input": "写一个Python Flask用户认证模块的README文档，含安装和使用示例",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 10,
+          "input": "用通俗语言解释什么是机器学习，面向小学生，用生活中的例子",
+          "expected": "C",
+          "actual": "C",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 11,
+          "input": "写一篇对当前AI监管政策的评论，要有正方和反方的对比分析",
+          "expected": "E",
+          "actual": "E",
+          "passed": true,
+          "confidence": 0.51,
+          "latency_ms": 0
+        },
+        {
+          "id": 12,
+          "input": "写一份双十一促销活动营销文案，面向25-35岁女性用户",
+          "expected": "F",
+          "actual": "F",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 13,
+          "input": "撰写一份面向监管机构的白皮书，关于金融科技的风险管理",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 14,
+          "input": "写一段今日A股收盘速递，三大指数涨跌情况和成交量",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 15,
+          "input": "写一份Python数据分析库pandas的API参考手册，按模块组织",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        }
+      ],
+      "edge_cases": [
+        {
+          "id": 1,
+          "case": "empty_input",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 2,
+          "case": "whitespace_only",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 3,
+          "case": "punctuation_only",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 4,
+          "case": "vague_no_context",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 5,
+          "case": "very_long_input",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 2
+        }
+      ],
+      "accuracy": 100.0,
+      "golden_passed": 15,
+      "golden_total": 15
+    },
+    {
+      "layer": 2,
+      "name": "集群能力基准",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "mock_mode": true,
+      "per_cluster": {
+        "flashnews": {
+          "pass_rate": "3/3",
+          "avg_chars": 175,
+          "avg_latency_ms": 7
+        },
+        "deepprod": {
+          "pass_rate": "3/3",
+          "avg_chars": 1159,
+          "avg_latency_ms": 11
+        },
+        "creativex": {
+          "pass_rate": "3/3",
+          "avg_chars": 274,
+          "avg_latency_ms": 8
+        },
+        "techdoc": {
+          "pass_rate": "3/3",
+          "avg_chars": 282,
+          "avg_latency_ms": 6
+        },
+        "scipop": {
+          "pass_rate": "3/3",
+          "avg_chars": 345,
+          "avg_latency_ms": 5
+        },
+        "oped": {
+          "pass_rate": "3/3",
+          "avg_chars": 356,
+          "avg_latency_ms": 6
+        }
+      },
+      "cases": [
+        {
+          "id": "A1",
+          "cluster": "flashnews",
+          "label": "A股午间快讯",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 168,
+          "latency_ms": 16,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【监控发现】A股三大指数午间收盘快报 — 沪深两市午间收盘，三大指数全线上涨核查通过。数据来源: 沪深交易所、Wind。无误。【A股午间快讯】A股三大指数午间收盘快报\n\n三大指数全线上涨，成交量放大。沪指涨1.2%，深成指涨1.8%，创业板指涨2.1%。Mock content for S4_PUBLISH: A股三大指数午间收盘快报"
+        },
+        {
+          "id": "A2",
+          "cluster": "flashnews",
+          "label": "科技行业收盘速递",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 162,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【监控发现】今日科技板块收盘速递 — 沪深两市午间收盘，三大指数全线上涨核查通过。数据来源: 沪深交易所、Wind。无误。【A股午间快讯】今日科技板块收盘速递\n\n三大指数全线上涨，成交量放大。沪指涨1.2%，深成指涨1.8%，创业板指涨2.1%。Mock content for S4_PUBLISH: 今日科技板块收盘速递"
+        },
+        {
+          "id": "A3",
+          "cluster": "flashnews",
+          "label": "突发事件快报",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 195,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【监控发现】某科技公司发布重大产品，股价盘前大涨15% — 沪深两市午间收盘，三大指数全线上涨核查通过。数据来源: 沪深交易所、Wind。无误。【A股午间快讯】某科技公司发布重大产品，股价盘前大涨15%\n\n三大指数全线上涨，成交量放大。沪指涨1.2%，深成指涨1.8%，创业板指涨2.1%。Mock content for S4_PUBLISH: 某科技公司发布重大产品，股价盘前大涨15%"
+        },
+        {
+          "id": "B1",
+          "cluster": "deepprod",
+          "label": "半导体设备国产化深度分析",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "6/6",
+          "total_chars": 1149,
+          "latency_ms": 19,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 50,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 65
+          },
+          "content_preview": "【选题方案】中国半导体设备国产化进程深度分析\n价值评分: 8.5/10\n建议角度: 技术路线对比+政策驱动+竞争格局【研究报告】中国半导体设备国产化进程深度分析\n\n1. 市场规模: 全球XX市场预计2026年达到$45B\n2. 主要玩家: A(30%)、B(25%)、C(15%)\n3. 技术趋势: AI驱动、国产替代加速\n4. 政策环境: 国家大基金持续投入\n\n数据来源: SEMI报告、Wind、..."
+        },
+        {
+          "id": "B2",
+          "cluster": "deepprod",
+          "label": "新能源产业政策分析",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "6/6",
+          "total_chars": 1167,
+          "latency_ms": 8,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 66,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 70
+          },
+          "content_preview": "【选题方案】2026年新能源汽车政策梳理与影响分析\n价值评分: 8.5/10\n建议角度: 技术路线对比+政策驱动+竞争格局【研究报告】2026年新能源汽车政策梳理与影响分析\n\n1. 市场规模: 全球XX市场预计2026年达到$45B\n2. 主要玩家: A(30%)、B(25%)、C(15%)\n3. 技术趋势: AI驱动、国产替代加速\n4. 政策环境: 国家大基金持续投入\n\n数据来源: SEMI报告..."
+        },
+        {
+          "id": "B3",
+          "cluster": "deepprod",
+          "label": "AI大模型竞争格局报告",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "6/6",
+          "total_chars": 1161,
+          "latency_ms": 7,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 33,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 60
+          },
+          "content_preview": "【选题方案】全球AI大模型竞争格局与趋势2026\n价值评分: 8.5/10\n建议角度: 技术路线对比+政策驱动+竞争格局【研究报告】全球AI大模型竞争格局与趋势2026\n\n1. 市场规模: 全球XX市场预计2026年达到$45B\n2. 主要玩家: A(30%)、B(25%)、C(15%)\n3. 技术趋势: AI驱动、国产替代加速\n4. 政策环境: 国家大基金持续投入\n\n数据来源: SEMI报告、W..."
+        },
+        {
+          "id": "C1",
+          "cluster": "creativex",
+          "label": "双十一促销文案",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 275,
+          "latency_ms": 19,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【创意简报】双十一大促活动营销文案\n目标受众: C端用户\n调性: 年轻化、有新意\n核心卖点: 性价比Mock content for S2_IDEATION: 双十一大促活动营销文案【营销文案】双十一大促活动营销文案\n\n🔥 你还在为XXX而烦恼吗？\n\n每天花3分钟，彻底改变你的生活方式。\n\n✨ 核心亮点:\n· 痛点解决: 不再XXX\n· 超值性价比: 仅需XX元\n· 限时优惠: 前100名额外赠送..."
+        },
+        {
+          "id": "C2",
+          "cluster": "creativex",
+          "label": "品牌故事文案",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 267,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【创意简报】新消费品牌创立故事\n目标受众: C端用户\n调性: 年轻化、有新意\n核心卖点: 性价比Mock content for S2_IDEATION: 新消费品牌创立故事【营销文案】新消费品牌创立故事\n\n🔥 你还在为XXX而烦恼吗？\n\n每天花3分钟，彻底改变你的生活方式。\n\n✨ 核心亮点:\n· 痛点解决: 不再XXX\n· 超值性价比: 仅需XX元\n· 限时优惠: 前100名额外赠送\n\n👉 立即..."
+        },
+        {
+          "id": "C3",
+          "cluster": "creativex",
+          "label": "科技产品发布会文案",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 279,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【创意简报】新款智能手表发布营销文案\n目标受众: C端用户\n调性: 年轻化、有新意\n核心卖点: 性价比Mock content for S2_IDEATION: 新款智能手表发布营销文案【营销文案】新款智能手表发布营销文案\n\n🔥 你还在为XXX而烦恼吗？\n\n每天花3分钟，彻底改变你的生活方式。\n\n✨ 核心亮点:\n· 痛点解决: 不再XXX\n· 超值性价比: 仅需XX元\n· 限时优惠: 前100名额..."
+        },
+        {
+          "id": "D1",
+          "cluster": "techdoc",
+          "label": "REST API 接口文档",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 287,
+          "latency_ms": 13,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【技术文档规格】REST API 用户认证接口文档\n格式: OpenAPI 3.0\n章节: 认证、端点、错误码、示例【研究报告】REST API 用户认证接口文档\n\n1. 市场规模: 全球XX市场预计2026年达到$45B\n2. 主要玩家: A(30%)、B(25%)、C(15%)\n3. 技术趋势: AI驱动、国产替代加速\n4. 政策环境: 国家大基金持续投入\n\n数据来源: SEMI报告、Wind..."
+        },
+        {
+          "id": "D2",
+          "cluster": "techdoc",
+          "label": "Python SDK 安装指南",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 296,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【技术文档规格】Python SDK 安装与快速上手指南\n格式: OpenAPI 3.0\n章节: 认证、端点、错误码、示例【研究报告】Python SDK 安装与快速上手指南\n\n1. 市场规模: 全球XX市场预计2026年达到$45B\n2. 主要玩家: A(30%)、B(25%)、C(15%)\n3. 技术趋势: AI驱动、国产替代加速\n4. 政策环境: 国家大基金持续投入\n\n数据来源: SEMI报..."
+        },
+        {
+          "id": "D3",
+          "cluster": "techdoc",
+          "label": "架构设计文档",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 263,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【技术文档规格】微服务架构设计文档\n格式: OpenAPI 3.0\n章节: 认证、端点、错误码、示例【研究报告】微服务架构设计文档\n\n1. 市场规模: 全球XX市场预计2026年达到$45B\n2. 主要玩家: A(30%)、B(25%)、C(15%)\n3. 技术趋势: AI驱动、国产替代加速\n4. 政策环境: 国家大基金持续投入\n\n数据来源: SEMI报告、Wind、公司年报Mock conten..."
+        },
+        {
+          "id": "E1",
+          "cluster": "scipop",
+          "label": "量子计算科普",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 350,
+          "latency_ms": 11,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【知识研究】用通俗语言解释量子计算基本原理\n\n核心概念: 量子计算利用量子叠加态进行并行计算。传统计算机用0/1二进制，量子比特可同时处于0和1的叠加态，使某些计算（如因数分解）从指数级降为多项式级。\n\n关键人物: Richard Feynman(1982提出)、David Deutsch(量子图灵机)、Peter Shor(Shor算法)\n\n类比: 经典计算机像一本一本翻书，量子计算机像同时翻开..."
+        },
+        {
+          "id": "E2",
+          "cluster": "scipop",
+          "label": "AI工作原理科普",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 338,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 33,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 60
+          },
+          "content_preview": "【知识研究】解释大语言模型如何工作\n\n核心概念: 量子计算利用量子叠加态进行并行计算。传统计算机用0/1二进制，量子比特可同时处于0和1的叠加态，使某些计算（如因数分解）从指数级降为多项式级。\n\n关键人物: Richard Feynman(1982提出)、David Deutsch(量子图灵机)、Peter Shor(Shor算法)\n\n类比: 经典计算机像一本一本翻书，量子计算机像同时翻开所有书。..."
+        },
+        {
+          "id": "E3",
+          "cluster": "scipop",
+          "label": "基因编辑科普",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 347,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【知识研究】CRISPR基因编辑技术科普\n\n核心概念: 量子计算利用量子叠加态进行并行计算。传统计算机用0/1二进制，量子比特可同时处于0和1的叠加态，使某些计算（如因数分解）从指数级降为多项式级。\n\n关键人物: Richard Feynman(1982提出)、David Deutsch(量子图灵机)、Peter Shor(Shor算法)\n\n类比: 经典计算机像一本一本翻书，量子计算机像同时翻开所..."
+        },
+        {
+          "id": "F1",
+          "cluster": "oped",
+          "label": "AI监管观点",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 359,
+          "latency_ms": 14,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【知识研究】AI监管需要全球协作而非各自为政\n\n核心概念: 量子计算利用量子叠加态进行并行计算。传统计算机用0/1二进制，量子比特可同时处于0和1的叠加态，使某些计算（如因数分解）从指数级降为多项式级。\n\n关键人物: Richard Feynman(1982提出)、David Deutsch(量子图灵机)、Peter Shor(Shor算法)\n\n类比: 经典计算机像一本一本翻书，量子计算机像同时翻..."
+        },
+        {
+          "id": "F2",
+          "cluster": "oped",
+          "label": "远程办公利弊分析",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 339,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【知识研究】远程办公对创新力的影响\n\n核心概念: 量子计算利用量子叠加态进行并行计算。传统计算机用0/1二进制，量子比特可同时处于0和1的叠加态，使某些计算（如因数分解）从指数级降为多项式级。\n\n关键人物: Richard Feynman(1982提出)、David Deutsch(量子图灵机)、Peter Shor(Shor算法)\n\n类比: 经典计算机像一本一本翻书，量子计算机像同时翻开所有书。..."
+        },
+        {
+          "id": "F3",
+          "cluster": "oped",
+          "label": "开源vs闭源AI",
+          "passed": true,
+          "mock_mode": true,
+          "stages": "4/4",
+          "total_chars": 371,
+          "latency_ms": 2,
+          "quality": {
+            "length_adequate": 100,
+            "format_completeness": 0,
+            "non_empty": 100,
+            "has_structure": 100,
+            "is_real": 0,
+            "overall": 50
+          },
+          "content_preview": "【知识研究】开源AI模型vs闭源AI模型的未来博弈\n\n核心概念: 量子计算利用量子叠加态进行并行计算。传统计算机用0/1二进制，量子比特可同时处于0和1的叠加态，使某些计算（如因数分解）从指数级降为多项式级。\n\n关键人物: Richard Feynman(1982提出)、David Deutsch(量子图灵机)、Peter Shor(Shor算法)\n\n类比: 经典计算机像一本一本翻书，量子计算机像..."
+        }
+      ]
+    },
+    {
+      "layer": 3,
+      "name": "质量评估",
+      "evaluated": 18,
+      "avg_overall_score": 55,
+      "results": [
+        {
+          "id": "A1",
+          "cluster": "flashnews",
+          "label": "A股午间快讯",
+          "scores": {
+            "relevance": 70,
+            "completeness": 0,
+            "structure": 30,
+            "style_adherence": 66,
+            "readability": 90,
+            "originality": 10,
+            "overall": 46
+          }
+        },
+        {
+          "id": "A2",
+          "cluster": "flashnews",
+          "label": "科技行业收盘速递",
+          "scores": {
+            "relevance": 70,
+            "completeness": 0,
+            "structure": 30,
+            "style_adherence": 66,
+            "readability": 90,
+            "originality": 10,
+            "overall": 46
+          }
+        },
+        {
+          "id": "A3",
+          "cluster": "flashnews",
+          "label": "突发事件快报",
+          "scores": {
+            "relevance": 70,
+            "completeness": 0,
+            "structure": 30,
+            "style_adherence": 66,
+            "readability": 90,
+            "originality": 10,
+            "overall": 46
+          }
+        },
+        {
+          "id": "B1",
+          "cluster": "deepprod",
+          "label": "半导体设备国产化深度分析",
+          "scores": {
+            "relevance": 70,
+            "completeness": 50,
+            "structure": 50,
+            "style_adherence": 83,
+            "readability": 90,
+            "originality": 85,
+            "overall": 69
+          }
+        },
+        {
+          "id": "B2",
+          "cluster": "deepprod",
+          "label": "新能源产业政策分析",
+          "scores": {
+            "relevance": 70,
+            "completeness": 50,
+            "structure": 50,
+            "style_adherence": 83,
+            "readability": 90,
+            "originality": 85,
+            "overall": 69
+          }
+        },
+        {
+          "id": "B3",
+          "cluster": "deepprod",
+          "label": "AI大模型竞争格局报告",
+          "scores": {
+            "relevance": 70,
+            "completeness": 50,
+            "structure": 50,
+            "style_adherence": 66,
+            "readability": 90,
+            "originality": 85,
+            "overall": 67
+          }
+        },
+        {
+          "id": "C1",
+          "cluster": "creativex",
+          "label": "双十一促销文案",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 33,
+            "readability": 90,
+            "originality": 10,
+            "overall": 49
+          }
+        },
+        {
+          "id": "C2",
+          "cluster": "creativex",
+          "label": "品牌故事文案",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 50,
+            "readability": 90,
+            "originality": 10,
+            "overall": 52
+          }
+        },
+        {
+          "id": "C3",
+          "cluster": "creativex",
+          "label": "科技产品发布会文案",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 33,
+            "readability": 90,
+            "originality": 10,
+            "overall": 49
+          }
+        },
+        {
+          "id": "D1",
+          "cluster": "techdoc",
+          "label": "REST API 接口文档",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 50,
+            "readability": 90,
+            "originality": 85,
+            "overall": 60
+          }
+        },
+        {
+          "id": "D2",
+          "cluster": "techdoc",
+          "label": "Python SDK 安装指南",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 50,
+            "readability": 90,
+            "originality": 85,
+            "overall": 60
+          }
+        },
+        {
+          "id": "D3",
+          "cluster": "techdoc",
+          "label": "架构设计文档",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 33,
+            "readability": 90,
+            "originality": 85,
+            "overall": 57
+          }
+        },
+        {
+          "id": "E1",
+          "cluster": "scipop",
+          "label": "量子计算科普",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 16,
+            "readability": 90,
+            "originality": 85,
+            "overall": 54
+          }
+        },
+        {
+          "id": "E2",
+          "cluster": "scipop",
+          "label": "AI工作原理科普",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 0,
+            "readability": 90,
+            "originality": 85,
+            "overall": 52
+          }
+        },
+        {
+          "id": "E3",
+          "cluster": "scipop",
+          "label": "基因编辑科普",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 0,
+            "readability": 90,
+            "originality": 85,
+            "overall": 52
+          }
+        },
+        {
+          "id": "F1",
+          "cluster": "oped",
+          "label": "AI监管观点",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 0,
+            "readability": 90,
+            "originality": 85,
+            "overall": 52
+          }
+        },
+        {
+          "id": "F2",
+          "cluster": "oped",
+          "label": "远程办公利弊分析",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 0,
+            "readability": 90,
+            "originality": 85,
+            "overall": 52
+          }
+        },
+        {
+          "id": "F3",
+          "cluster": "oped",
+          "label": "开源vs闭源AI",
+          "scores": {
+            "relevance": 70,
+            "completeness": 25,
+            "structure": 50,
+            "style_adherence": 0,
+            "readability": 90,
+            "originality": 85,
+            "overall": 52
+          }
+        }
+      ]
+    }
+  ]
+}

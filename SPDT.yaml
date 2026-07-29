@@ -1,174 +1,390 @@
 # SPDT-005: 媒体内容制造 (Media Content Manufacturing)
+# 版本：v2.1（2026-07-29 更新）
+# 核心变更：协调型五阶段流水线重构
 
 spdt_id: SPDT-005
 spdt_name: 媒体内容制造
 spdt_name_en: Media Content Manufacturing
 owner_agent: agent-e926h
 created: 2026-07-10
-version: 1.0
+version: 2.1
+last_updated: 2026-07-29
 
 description: |
-  以 SmartTextPlatform 1 路由器 + 6 集群架构为核心，覆盖从实时快讯到深度长文、
+  以 smarttext_router 路由器 + 6 集群架构为核心，覆盖从实时快讯到深度长文、
   从知识科普到品牌创意的全媒体内容自动制造。配合 autopublish 多渠道发布引擎，
   实现"数据源 → 成品内容 → 一键分发"的全自动化。
 
+  架构对齐: 内容制造管线执行规范 v1.0 (SOP v4.0)
+  架构类型: 协调型（外部 PDT 生产，SPDT-005 做编排分发）
+  MODLIB纳管: D:/1_omas/MODLIB/
+
+# =============================================================================
+# 流水线架构（v2.1 协调型五阶段）
+# =============================================================================
+pipeline:
+  name: 媒体内容协调流水线
+  architecture_type: coordination          # 协调型：外部 PDT 生产，本 PDT 编排分发
+  vs_spd04: |
+    SPDT-004 = 自含生产型（代码全在内部）
+    SPDT-005 = 协调型（通过 junction 引用外部 PDT）
+
+  stages:
+    - id: 1_ingest
+      name: 知识摄入
+      description: 入口路由 + ContentSpec 生成（不生产内容，只做分发决策）
+      junction_ref: platform/infrastructure/smarttext_router
+      SOP_stage: M0 + M1
+      status: active
+      output: ContentSpec YAML（路由决策）
+
+    - id: 2_structure
+      name: 结构化加工
+      description: ManuscriptsEngine 多 Agent 协作，生成 article_v2 结构化稿件
+      junction_ref: platform/services/ManuscriptsEngine
+      external_PDT: PT-047_SocSciAgent
+      SOP_stage: M2 + M3
+      status: active
+      maturity: 0.7
+      output: article_v2 / breaking_news / tech_explainer
+
+    - id: 3_render
+      name: 渲染生产
+      description: 质量门禁 + 多形态渲染（图文/音频/视频/卡片）
+      junction_ref: platform/services/ManuscriptsEngine/pipeline_runner.py
+      SOP_stage: M4
+      status: active
+      quality_gates: [G-SOURCE, G-TIMELINESS, G-FACTUAL, G-STYLE, G-STRUCTURE, G-FORMAT]
+      shared_from: SPDT-004 3_render/video_factory
+      output: 图文版 / 音频版 / 视频版 / 卡片版
+
+    - id: 4_adapt
+      name: 自适应编排
+      description: 质量记分卡 + 品牌化编排（ ManuscriptsEngine agents/review + orchestration）
+      junction_ref: platform/services/ManuscriptsEngine/agents
+      SOP_stage: M5
+      status: active
+      scorecard: content_scorecard_v1
+      output: 评分报告 + 品牌化建议
+
+    - id: 5_deliver
+      name: 触达交付
+      description: 多渠道自动分发（web/feeds/mobile/feishu/wechat_mp）
+      junction_ref: platform/infrastructure/autopublish
+      SOP_stage: M6
+      status: active
+      channels: [web, feeds, mobile, feishu, wechat_mp]
+      output: 发布记录 + 触达报告
+
+# =============================================================================
+# Junction 映射（协调型核心）
+# =============================================================================
+junction_map:
+  """
+  协调型 PDT 间耦合原则：
+  - SPDT-005 不复制外部 PDT 代码，仅通过 junction 引用
+  - junction_ref 指向 SPDT-005 内部逻辑命名空间（实际指向外部 PT）
+  - PT-047_SocSciAgent 是实际生产引擎，SPDT-005 是编排协调层
+  """
+  1_ingest:
+    logical_namespace: platform/infrastructure/smarttext_router
+    external_source: platform/infrastructure/smarttext_router/smarttext_router
+    role: M0 入口路由器 + M1 ContentSpec 生成
+    junction_type: internal    # 内部已存在
+
+  2_structure:
+    logical_namespace: platform/services/ManuscriptsEngine
+    external_source: PT-047_SocSciAgent
+    role: M2+M3 体裁匹配 + 知识源连通 + 创作流水线
+    junction_type: external    # 外部 PDT 生产
+
+  3_render:
+    logical_namespace: platform/services/ManuscriptsEngine/pipeline_runner.py
+    external_source: PT-047_SocSciAgent/pipeline_runner
+    role: M4 质量约束应用 + 多形态渲染
+    junction_type: external    # 复用 SPDT-004 video_factory
+
+  4_adapt:
+    logical_namespace: platform/services/ManuscriptsEngine/agents
+    external_source: PT-047_SocSciAgent/agents
+    role: M5 质量记分卡 + 知识资产注册
+    junction_type: external    # 外部 PDT
+
+  5_deliver:
+    logical_namespace: platform/infrastructure/autopublish
+    external_source: platform/infrastructure/autopublish
+    role: M6 人类检查点 + 多渠道分发
+    junction_type: internal    # 内部已存在
+
+# =============================================================================
+# SOP M0-M6 对齐
+# =============================================================================
+sop:
+  family: content_manufacturing
+  version: v4.0
+  execution_spec: "D:/1_omas/governance/内容制造管线执行规范_v1.0.md"
+  human_checkpoints:
+    m1: "ContentSpec YAML 需求确认（smarttext_router 输出审查）"
+    m4: "敏感内容签批（G-SOURCE/G-TIMELINESS 灰区触发）"
+    m6: "最终交付确认 + 发布前检查（autopublish 输出）"
+
+# =============================================================================
+# MODLIB 消费声明
+# =============================================================================
+modlib_consumption:
+  schemas:
+    - id: article_v2_schema
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/schemas/article_v2_schema.json
+      status: pending    # 待从 ManuscriptsEngine 提取
+    - id: quality_gate_schema
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/schemas/quality_gate_schema.json
+      status: pending    # 待建立
+  templates:
+    - id: content_spec_template
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/content_spec/content_spec_media.yaml
+      status: pending    # media 领域 ContentSpec 模板
+  registries:
+    - id: genre_registry
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/genre_registry/
+      domains: [education, media]
+  protocols:
+    - id: IF-A_scene_json_v2
+      version: "2.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/interface_protocols/IF-A_scene_json_v2.schema.json
+    - id: IF-B_video_package
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/interface_protocols/IF-B_video_package.schema.json
+    - id: IF-C_card_package
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/content_manufacturing/interface_protocols/IF-C_card_package.schema.json
+
+# =============================================================================
+# PDT 产品线
+# =============================================================================
 pdt_list:
+  # B1 深度长内容
   - pdt_id: PT-040
     name: DeepProd
     name_zh: 深度长文制造
+    SOP_type: B1
     layer: L2 应用
-    role: 6 Stage 深度内容生产：选题→研究→写作→审阅→可视化→交付
-    directory: PT-040_DeepProd
+    role: 深度行业报告（半导体/AI/科技）
+    directory: product/reports/deep_report
+    genre: deep_industry_report
     status: active
     registered: 2026-07-10
-    source: D:\92_products\DeepProd
+    pipeline_stages: [2_structure, 3_render, 4_adapt, 5_deliver]
 
+  # B2 快反内容
   - pdt_id: PT-041
     name: FlashNews
     name_zh: 实时快讯制造
+    SOP_type: B2
     layer: L2 应用
-    role: 4 Stage 快反内容：监测→核查→撰稿→发布
-    directory: PT-041_FlashNews
+    role: 行业快讯/预警/简报
+    directory: product/articles/flash_news
+    genre: breaking_news
     status: active
     registered: 2026-07-10
-    source: D:\92_products\FlashNews
+    pipeline_stages: [1_ingest, 3_render, 5_deliver]    # B2 跳过了 M2/M3 简化结构
 
+  # B3 知识转化
   - pdt_id: PT-042
     name: SciPop
     name_zh: 知识科普制造
+    SOP_type: B3
     layer: L2 应用
-    role: 4 Stage 科普转化：研究→转化→写作→审查
-    directory: PT-042_SciPop
+    role: 科普文章/技术解读
+    directory: product/articles/sci_pop
+    genre: tech_explainer
     status: active
     registered: 2026-07-10
-    source: D:\92_products\SciPop
-
-  - pdt_id: PT-043
-    name: OpEd
-    name_zh: 观点评论制造
-    layer: L2 应用
-    role: 4 Stage 论证内容：研究→结构→写作→辩论
-    directory: PT-043_OpEd
-    status: active
-    registered: 2026-07-10
-    source: D:\92_products\OpEd
-
-  - pdt_id: PT-044
-    name: CreativeX
-    name_zh: 品牌创意制造
-    layer: L2 应用
-    role: 4 Stage 创意转化：简报→构思→创作→润色
-    directory: PT-044_CreativeX
-    status: active
-    registered: 2026-07-10
-    source: D:\92_products\CreativeX
+    pipeline_stages: [2_structure, 3_render, 4_adapt]
 
   - pdt_id: PT-045
     name: TechDoc
     name_zh: 技术文档制造
+    SOP_type: B3
     layer: L2 应用
-    role: 4 Stage 技术写作：规格→研究→撰写→审查
-    directory: PT-045_TechDoc
+    role: 技术文档/规格说明
+    directory: product/articles/tech_doc
+    genre: tech_explainer
     status: active
     registered: 2026-07-10
-    source: D:\92_products\TechDoc
+    pipeline_stages: [2_structure, 3_render, 4_adapt]
 
+  # B4 创意论证
+  - pdt_id: PT-043
+    name: OpEd
+    name_zh: 观点评论制造
+    SOP_type: B4
+    layer: L2 应用
+    role: 观点评论/趋势分析
+    directory: product/articles/oped
+    genre: oped_argument
+    status: active
+    registered: 2026-07-10
+    pipeline_stages: [2_structure, 4_adapt, 5_deliver]
+
+  - pdt_id: PT-044
+    name: CreativeX
+    name_zh: 品牌创意制造
+    SOP_type: B4
+    layer: L2 应用
+    role: 品牌创意/营销文案
+    directory: product/articles/creative
+    genre: oped_argument
+    status: active
+    registered: 2026-07-10
+    pipeline_stages: [2_structure, 3_render, 4_adapt]
+
+  # B2 planned
   - pdt_id: PT-046
     name: DataNews
     name_zh: 数据新闻制造
+    SOP_type: B2
     layer: L2 应用
     role: 基于数据的自动化新闻与可视化报道
-    directory: PT-046_DataNews
+    directory: product/reports/data_news
+    genre: breaking_news
     status: planned
     registered: 2026-07-10
+    pipeline_stages: [1_ingest, 2_structure, 3_render, 5_deliver]
 
-  - pdt_id: PT-047
-    name: SocSciAgent
-    name_zh: 社科智能体创作平台
-    layer: L3 智能体平台
-    role: 社科通俗作品全自动生产体系——主编协调，选材/编排/评审/生成多智能体协作，端到端自动化
-    directory: PT-047_SocSciAgent
-    status: construction
-    registered: 2026-07-14
-    source: C:\Users\willi\Desktop\我的视野\0713-基于知识库的高阶备考智能体
+  # ── 平台服务（协调型核心）───────────────────────────────
 
-  - pdt_id: PT-048
-    name: AIBookForge
-    name_zh: AI写书修炼场
-    layer: L3 智能体平台
-    role: AI时代素养训练项目——以"为自己写一本学习用书"为核心任务，覆盖七品味；与PT-047并列，PT-047=内容工厂，PT-048=训练道场
-    directory: PT-048_AIBookForge
-    status: construction
-    registered: 2026-07-26
-    source: C:\Users\willi\Desktop\我的视野\0725-AI新智人
+  - pdt_id: ManuscriptsEngine
+    former_name: SocSciAgent
+    name_zh: 长文本生成引擎（外部 PDT，SPDT-005 通过 junction 引用）
+    layer: coordination_engine
+    role: 多 Agent 协作的通用书籍/长文生成平台（支持多领域插件扩展）
+    directory: platform/services/ManuscriptsEngine
+    external_ref: PT-047_SocSciAgent
+    junction_type: external
+    is_generic_engine: true
+    status: active
+    note: "协调型：不复制代码，通过 junction 引用 PT-047_SocSciAgent"
 
-shared_infrastructure:
+# =============================================================================
+# 平台基础设施（协调型入口/出口）
+# =============================================================================
+platform_services:
   smarttext_router:
     name: SmartText 路由引擎
-    role: SPDT-005 内部所有 PDT 共用的入口路由器 + 6 集群架构
-    directory: shared\smarttext_router
-    source: D:\92_products\SmartTextPlatform
+    name_zh: M0 入口路由器 + M1 ContentSpec 生成
+    directory: platform/infrastructure/smarttext_router
+    SOP_stage: 1_ingest
+    status: active
+    junction_namespace: 1_ingest
 
   autopublish:
     name: 多渠道自动发布
-    role: 飞书 / 微信 / 网站 一键分发
-    directory: channels
-    source: D:\9_infra\autopublish
+    name_zh: M6 多渠道分发（web/feeds/mobile/feishu/wechat_mp）
+    directory: platform/infrastructure/autopublish
+    SOP_stage: 5_deliver
+    status: active
+    junction_namespace: 5_deliver
+    note: "同时服务 SPDT-004（课程推广）和 SPDT-005（内容分发）"
 
-  quality_gate:
-    name: 媒体内容质量门禁
-    role: 事实核查 / 风格一致性 / 合规审查
-    source: D:\6_agent_project\projects\content_quality_gate
+  agent_templates:
+    name: Agent 模板库
+    role: Agent 模板（T1-T8 coop + M1）
+    directory: platform/infrastructure/agent_templates
+    SOP_stage: 3_render
+    status: active
 
-  text_templates:
-    name: 文风包与模板库
-    role: 各媒体类型的文风包 / 结构模板 / 格式模板
-    directory: templates
-    source: D:\6_agent_project\projects\cgm_training_factory\_02_assets (部分)
-
+# =============================================================================
+# 跨 SPDT 链接
+# =============================================================================
 cross_spdt_links:
-  - from: SPDT-002 (专利情报)
-    to: PT-042 (知识科普) / PT-040 (深度长文)
-    data: 专利情报 → 技术科普文章 / 深度行业分析
+  - from: SPDT-004（自适应备考）
+    to: SPDT-005（媒体内容）
+    data: PT-048_AIBookForge 与 2_structure 协同（电子书制作）
     status: planned
 
-  - from: SPDT-003 (论文情报)
-    to: PT-042 (知识科普)
+  - from: SPDT-002（专利情报）
+    to: PT-042 / PT-040
+    data: 专利情报 → 技术科普 / 深度行业分析
+    status: planned
+
+  - from: SPDT-003（论文情报）
+    to: PT-042
     data: 前沿论文 → 大众科普内容
     status: planned
 
-  - from: radar_platform (D:\9_infra)
-    to: PT-041 (实时快讯)
+  - from: SPDT-009（半导体战略）
+    to: PT-040
+    data: 半导体情报 → 深度行业报告
+    status: planned
+
+  - from: radar_platform
+    to: PT-041
     data: 实时监测 → 自动撰稿 → 发布
     status: planned
 
-  - from: SPDT-005
-    to: autopublish (共享基础设施)
-    data: 所有内容 PDT → 飞书/微信/网站 分发
+  - from: SPDT-005（3_render）
+    to: SPDT-004（video_factory）
+    data: 复用 video_factory 进行视频/音频渲染
     status: active
+    note: "跨 PDT 共享渲染引擎"
 
+# =============================================================================
+# KPI
+# =============================================================================
 kpis:
-  - metric: PDT 总数（含建设中）
+  - metric: PDT 总数
     current: 8
     target: 10
-  - metric: 内容年产量
-    current: "~200 篇 (验证)"
-    target: 10000 篇
+  - metric: 流水线完整度
+    current: "5/5 阶段均 active（协调型：junction 引用外部 PDT）"
+    target: "5/5 阶段"
   - metric: 全自动比例
     current: "~40%"
     target: "≥85%"
-  - metric: 多平台覆盖
-    current: "飞书 / 微信 / 网站"
-    target: "5+ 平台"
+  - metric: MODLIB media 领域 Schema
+    current: "待建立（article_v2 / news_v2 Schema）"
+    target: "article_v2 + news_v2 Schema 完成注册"
 
+# =============================================================================
+# 技术栈
+# =============================================================================
 tech_stack:
-  router: TextClassifier (10维结构化)
-  llm: GLM series
+  llm: DeepSeek
   storage: JSON + MD 输出
-  publishing: autopublish (飞书/微信/网站)
-  quality: content_quality_gate + fact-check pipeline
+  publishing: autopublish
+  quality: quality_gate (G-SOURCE/G-TIMELINESS/G-FACTUAL/G-STYLE/G-STRUCTURE/G-FORMAT)
   template: YAML-driven prompt templates
 
+# =============================================================================
+# 重大架构变更记录
+# =============================================================================
+architecture_changes:
+  - date: 2026-07-29
+    change: v2.1 协调型五阶段流水线重构
+    details:
+      - 新建 1_ingest~5_deliver 五阶段目录（逻辑命名空间）
+      - 识别为协调型架构（外部 PDT 生产，SPDT-005 编排分发）
+      - smarttext_router → 1_ingest
+      - ManuscriptsEngine (SocSciAgent) → 2_structure + 4_adapt
+      - pipeline_runner.py → 3_render
+      - autopublish → 5_deliver
+      - junction_map 建立外部 PDT 引用关系
+      - 新增 MODLIB media 领域 Schema 待建清单
+  - date: 2026-07-10
+    change: v2.0 初始化
+    details:
+      - PT-040~PT-046 PDT 注册
+      - smarttext_router + autopublish 基础设施注册
+      - ManuscriptsEngine（SocSciAgent）平台服务注册
+
+# =============================================================================
+# OMAS 集成
+# =============================================================================
 omas:
-  spdt_registry: D:\6_agent_project\omas\spdt_registry\SPDT-005
-  pdt_registry: D:\6_agent_project\omas\pdt_registry
+  spdt_registry: D:/1_omas/spdt_registry/SPDT-005
+  pdt_registry: D:/1_omas/pdt_registry
+  modlib: D:/1_omas/MODLIB/content_manufacturing/

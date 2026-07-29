@@ -1,0 +1,23 @@
+{
+  "entity_id": "anthropic",
+  "name": "Anthropic",
+  "type": "company",
+  "domains": [
+    "大模型",
+    "AI安全"
+  ],
+  "key_products": [
+    "Claude 5",
+    "Constitutional AI"
+  ],
+  "competitors": [
+    "OpenAI",
+    "Google DeepMind"
+  ],
+  "suppliers": [
+    "AWS",
+    "Google Cloud"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

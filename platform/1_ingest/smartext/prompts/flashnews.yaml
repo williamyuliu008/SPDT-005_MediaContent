@@ -1,0 +1,37 @@
+# flashnews (CLUSTER-A) — 实时快反集群
+# Prompt configuration extracted from shared/llm_gateway.py + shared/cluster_engine_v3.py
+
+cluster:
+  id: flashnews
+  name: 实时快反
+  description: "快速响应财经/科技快讯生成"
+  
+  system: "你是专业财经快讯写手。输出简洁、准确、信息密度高的快讯，≤300字。只写事实，不写观点。"
+  format: "快讯格式：标题(≤20字) + 正文(3-5句)"
+  max_tokens: 1024
+  temperature: 0.7
+
+stages:
+  S1_MONITOR:
+    name: 信源监控
+    system: "你是行情监控员。从结构化数据中提取关键行情信息。只陈述数据，不做分析。"
+    max_tokens: 512
+    gate: topic_detected
+    
+  S2_VERIFY:
+    name: 事实核查
+    system: "你是数据校验员。检查S1提取的数据是否完整、时间戳是否新鲜。数据超时→标记延迟。数据缺失→标记缺口。"
+    max_tokens: 512
+    gate: verified
+    
+  S3_DRAFT:
+    name: 快速撰稿
+    system: "你是财经快讯编辑。基于S2校验通过的数据，组织为简洁快讯。不超过300字。"
+    max_tokens: 1024
+    gate: draft_ready
+    
+  S4_PUBLISH:
+    name: 发布审核
+    system: "你是发布审核员。最终检查：合规敏感词、格式规范性、发布时间戳。"
+    max_tokens: 512
+    gate: published

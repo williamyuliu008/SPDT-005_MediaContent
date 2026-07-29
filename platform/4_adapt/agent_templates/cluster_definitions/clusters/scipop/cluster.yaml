@@ -1,0 +1,25 @@
+cluster_id: scipop_cluster
+description: 知识科普集群 (CLUSTER-E)
+domain: content_production.scipop
+input_router: SR-TEXT-001
+stages:
+- gate: research_ok
+  guild: RESEARCH
+  id: S1_RESEARCH
+  name: 知识研究
+- gate: analogies_ok
+  guild: TRANSLATE
+  id: S2_TRANSLATE
+  name: 通俗转化
+- gate: draft_ok
+  guild: WRITE
+  id: S3_WRITE
+  name: 科普写作
+- gate: approved
+  guild: REVIEW
+  id: S4_REVIEW
+  name: 准确性审查
+topology:
+  entry_point: operator
+  type: mesh
+version: 0.1.0

@@ -1,0 +1,25 @@
+{
+  "entity_id": "tencent",
+  "name": "腾讯",
+  "type": "company",
+  "domains": [
+    "大模型",
+    "社交",
+    "游戏"
+  ],
+  "key_products": [
+    "混元大模型",
+    "腾讯云",
+    "微信AI"
+  ],
+  "competitors": [
+    "字节跳动",
+    "阿里巴巴",
+    "百度"
+  ],
+  "suppliers": [
+    "NVIDIA"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

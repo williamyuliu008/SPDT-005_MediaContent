@@ -1,0 +1,293 @@
+/* ═══════════════════════════════════════════════════════════
+   AI 瞭望台 · Style v2.0
+   基于 UIUX_SOP v0.3 推导:
+     Layout: L2 (分栏)  Style: S3 (科技未来风)
+     Brand: #0ea5e9  Density: high (3-col, 12px gap)
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+    /* S3 Tech 深色基底 + Brand 覆盖 */
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #0f0f23;
+    --bg-card: #14142b;
+    --bg-card-hover: #1a1a3a;
+    --border: #1e1e3a;
+    --border-glow: rgba(14, 165, 233, 0.15);
+
+    /* Brand 色系 (#0ea5e9 覆盖 S3 默认 #722ed1) */
+    --brand-50: #e0f4fe;
+    --brand-500: #0ea5e9;
+    --brand-600: #0284c7;
+    --brand-700: #0369a1;
+    --brand-glow: rgba(14, 165, 233, 0.2);
+
+    /* 功能色 */
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --purple: #8b5cf6;
+
+    /* 文字层级 (S3: 14px base, Inter) */
+    --text-primary: #e8eaed;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+
+    /* 密度 (high: 密集) */
+    --radius-sm: 4px;
+    --radius: 6px;
+    --radius-lg: 8px;
+    --shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.08);
+
+    /* 频道色 */
+    --ch-compete: #3b82f6;
+    --ch-compete-glow: rgba(59, 130, 246, 0.12);
+    --ch-chips: #f59e0b;
+    --ch-chips-glow: rgba(245, 158, 11, 0.12);
+    --ch-oss: #22c55e;
+    --ch-oss-glow: rgba(34, 197, 94, 0.12);
+    --ch-design: #8b5cf6;
+    --ch-design-glow: rgba(139, 92, 246, 0.12);
+    --ch-monthly: #ec4899;
+    --ch-monthly-glow: rgba(236, 72, 153, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.65;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Typography ─────────────────────────────── */
+h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; }
+h2 { font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; margin: 28px 0 12px; }
+h3 { font-size: 1rem; font-weight: 600; margin: 20px 0 8px; }
+p  { color: var(--text-secondary); line-height: 1.7; margin: 6px 0; }
+a  { color: var(--brand-500); text-decoration: none; }
+a:hover { color: var(--brand-600); }
+strong { color: var(--text-primary); font-weight: 600; }
+code { background: var(--bg-card); padding: 1px 5px; border-radius: var(--radius-sm);
+       font-size: 0.85em; color: var(--brand-500); }
+blockquote {
+    border-left: 3px solid var(--brand-500);
+    margin: 10px 0; padding: 8px 14px;
+    background: var(--brand-glow);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.85rem;
+}
+blockquote.signal-meta {
+    font-style: normal; font-size: 0.82rem; color: var(--text-muted);
+    background: transparent; border-left-color: var(--border);
+}
+hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* ─── Header (S3: 发光效果) ──────────────────── */
+header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: var(--shadow-glow);
+}
+
+.header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 52px; padding: 0 20px;
+}
+
+.logo {
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--text-primary);
+    display: flex; align-items: center; gap: 6px;
+    letter-spacing: -.01em;
+}
+.logo .icon { font-size: 1.3rem; }
+.logo .subtitle {
+    font-size: 0.72rem; color: var(--text-muted);
+    font-weight: 400; margin-left: 4px;
+}
+
+nav { display: flex; gap: 2px; }
+nav a {
+    padding: 6px 12px; border-radius: var(--radius-sm);
+    color: var(--text-secondary); font-size: 0.82rem;
+    font-weight: 500; transition: all 0.15s;
+}
+nav a:hover, nav a.active {
+    background: var(--brand-glow); color: var(--brand-500);
+    text-decoration: none;
+}
+
+.menu-toggle { display: none; background: none; border: none;
+               color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; }
+
+/* ─── Layout (L2: 分栏, high density) ────────── */
+main { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+.date-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin-bottom: 24px; padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+}
+.date-nav a { color: var(--text-secondary); font-weight: 500; }
+.date-nav a:hover { color: var(--brand-500); }
+.date-nav-current {
+    font-size: 1rem; font-weight: 700;
+    color: var(--text-primary);
+    padding: 0 12px;
+}
+
+/* ─── Daily Report (S3: 深色卡片, 发光边框) ─── */
+.daily-report { max-width: 800px; margin: 0 auto; }
+
+.report-title {
+    font-size: 1.4rem; font-weight: 700;
+    text-align: center; margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -.02em;
+}
+
+.daily-report h2 {
+    font-size: 1.05rem; font-weight: 600;
+    padding-bottom: 6px; margin: 24px 0 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.daily-report blockquote:first-of-type {
+    text-align: center; font-style: normal;
+    font-size: 0.85rem; color: var(--text-secondary);
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 6px 14px;
+    margin-bottom: 16px;
+}
+
+/* ─── Signal Cards ───────────────────────────── */
+.daily-report p {
+    margin: 4px 0; line-height: 1.65;
+}
+
+/* ─── Table ──────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+th {
+    background: var(--bg-card); text-align: left;
+    padding: 8px 12px; font-weight: 600; font-size: 0.8rem;
+    color: var(--text-primary); border-bottom: 2px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.03em;
+}
+td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+/* ─── Footer ─────────────────────────────────── */
+footer {
+    text-align: center; padding: 24px;
+    color: var(--text-muted); font-size: 0.75rem;
+    border-top: 1px solid var(--border); margin-top: 40px;
+}
+
+/* ─── Search Page ────────────────────────────── */
+.search-container { max-width: 600px; margin: 24px auto; }
+
+.search-input {
+    width: 100%; padding: 12px 16px;
+    font-size: 0.95rem; font-family: inherit;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-primary);
+    outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search-input:focus {
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 3px var(--brand-glow);
+}
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-results { margin-top: 16px; }
+.search-result-item {
+    padding: 12px 16px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 6px;
+}
+.search-result-item .sr-section {
+    font-size: 0.72rem; color: var(--brand-500);
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.search-result-item .sr-title {
+    font-size: 0.92rem; font-weight: 600; margin: 2px 0;
+}
+.search-result-item .sr-snippet {
+    font-size: 0.82rem; color: var(--text-secondary);
+}
+
+/* ─── Archive ────────────────────────────────── */
+.archive-list { max-width: 700px; margin: 20px auto; }
+.archive-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 4px; font-size: 0.85rem;
+}
+.archive-item:hover { background: var(--bg-card-hover); }
+.archive-item .date { color: var(--text-muted); font-size: 0.8rem; min-width: 80px; }
+.archive-item .headline { color: var(--text-secondary); font-weight: 500; }
+
+/* ─── Knowledge Page ─────────────────────────── */
+.knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px; margin-top: 16px;
+}
+.knowledge-card {
+    padding: 14px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: var(--radius);
+}
+.knowledge-card:hover {
+    border-color: var(--brand-500);
+    box-shadow: var(--shadow-glow);
+}
+.knowledge-card .kc-name { font-size: 0.95rem; font-weight: 600; }
+.knowledge-card .kc-domain { font-size: 0.78rem; color: var(--brand-500); margin: 4px 0; }
+.knowledge-card .kc-products { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ─── Empty State ────────────────────────────── */
+.empty-state {
+    text-align: center; padding: 48px 20px; color: var(--text-muted);
+}
+.empty-state h3 { font-size: 1rem; color: var(--text-secondary); }
+
+/* ─── Channel Colors ─────────────────────────── */
+.channel-compete { border-left-color: var(--ch-compete) !important; }
+.channel-chips   { border-left-color: var(--ch-chips) !important; }
+.channel-oss     { border-left-color: var(--ch-oss) !important; }
+.channel-design  { border-left-color: var(--ch-design) !important; }
+.channel-monthly { border-left-color: var(--ch-monthly) !important; }
+
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+    main { padding: 12px; }
+    .daily-report { max-width: 100%; }
+    header { padding: 0 10px; }
+    .header-inner { height: 48px; }
+    .logo .subtitle { display: none; }
+
+    nav { display: none; }
+    nav.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 48px; left: 0; right: 0;
+        background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+        padding: 8px;
+    }
+    .menu-toggle { display: block; }
+
+    .date-nav { font-size: 0.8rem; gap: 8px; }
+    .report-title { font-size: 1.15rem; }
+    .knowledge-grid { grid-template-columns: repeat(2, 1fr); }
+}

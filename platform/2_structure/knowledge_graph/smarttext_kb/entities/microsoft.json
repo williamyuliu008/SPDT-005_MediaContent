@@ -1,0 +1,26 @@
+{
+  "entity_id": "microsoft",
+  "name": "Microsoft",
+  "type": "company",
+  "domains": [
+    "云计算",
+    "AI平台",
+    "办公"
+  ],
+  "key_products": [
+    "Azure AI",
+    "Copilot",
+    "Phi-4"
+  ],
+  "competitors": [
+    "Google Cloud",
+    "AWS",
+    "OpenAI"
+  ],
+  "suppliers": [
+    "NVIDIA",
+    "OpenAI"
+  ],
+  "timeline": [],
+  "last_updated": "2026-07-08"
+}

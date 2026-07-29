@@ -1,0 +1,387 @@
+{
+  "timestamp": "2026-06-17T16:38:54.992259",
+  "platform_version": "1.0.0",
+  "total_cases": 18,
+  "passed": 18,
+  "failed": 0,
+  "cases": [
+    {
+      "id": "A1",
+      "cluster": "flashnews",
+      "label": "A股午间快讯",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 600,
+      "latency_ms": 7627,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "A股午间收盘：三大指数集体收跌，沪指跌0.6%\n\n截至午间收盘，上证指数跌0.61%，报3278.40点；深证成指跌0.85%，报10512.63点；创业板指跌0.82%，报2167.12点。沪深两市半日成交额约4800亿元，较前一交易日缩量。行业板块多数下跌，半导体、军工板块跌幅居前，煤炭、银行板块逆势微涨。A股午间收盘：三大指数集体收跌\n\n截至午间收盘，上证指数跌0.61%，报3278.40点..."
+    },
+    {
+      "id": "A2",
+      "cluster": "flashnews",
+      "label": "科技行业收盘速递",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 410,
+      "latency_ms": 6273,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "科技板块收盘微跌 半导体领涨\n\n今日A股科技板块整体小幅收跌0.18%，半导体子板块逆势上涨0.65%，AI芯片个股表现活跃。消费电子与通信设备板块承压，跌幅均超0.5%。北向资金全天净流出科技股约8亿元。科技板块收盘微跌 半导体逆势走强\n\n今日A股科技板块整体收跌0.18%，半导体子板块逆势上涨0.65%，AI芯片个股表现活跃。消费电子与通信设备板块承压，跌幅均超0.5%。北向资金全天净流出科技..."
+    },
+    {
+      "id": "A3",
+      "cluster": "flashnews",
+      "label": "突发事件快报",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 470,
+      "latency_ms": 5936,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "英伟达发布新一代AI芯片 盘前涨15%\n\n英伟达今日发布新一代AI芯片Blackwell Ultra，性能较前代提升4倍。受此消息影响，该公司盘前股价大涨15%，报950美元。新品将于Q3量产，已获多家云服务商订单。市场预期该产品将进一步巩固英伟达在AI芯片领域的领导地位。英伟达发布Blackwell Ultra芯片 盘前涨15%\n\n英伟达今日发布新一代AI芯片Blackwell Ultra，性能..."
+    },
+    {
+      "id": "B1",
+      "cluster": "deepprod",
+      "label": "半导体设备国产化深度分析",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "6/6",
+      "total_chars": 41907,
+      "latency_ms": 268550,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 50,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 85
+      },
+      "content_preview": "好的，收到您的需求。作为一名资深行业分析师，我将严格遵循您设定的结构化需求、深度与格式要求，为您呈现一份面向投资人群的、数据驱动的中国半导体设备国产化进程深度分析报告。\n\n***\n\n### **执行摘要**\n\n**核心观点：** 中国半导体设备国产化已进入 **“从1到10”** 的关键跃迁期。尽管在光刻机等尖端领域仍与国际先进水平存在代差，但以刻蚀、薄膜沉积、清洗、热处理、离子注入等为代表的核心..."
+    },
+    {
+      "id": "B2",
+      "cluster": "deepprod",
+      "label": "新能源产业政策分析",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "6/6",
+      "total_chars": 27801,
+      "latency_ms": 191626,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 66,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 90
+      },
+      "content_preview": "# 2026年新能源汽车政策梳理与影响分析\n\n**报告类型**：深度行业分析  \n**目标受众**：企业决策者、投资机构、政策制定者  \n**风格定位**：数据驱动、论证严谨、战略导向  \n**报告日期**：2025年10月  \n**数据截止**：2025年Q3\n\n---\n\n## 执行摘要\n\n2026年将成为全球新能源汽车产业政策分水岭。中国、欧盟、美国三大经济体将同步进入新一轮政策周期，核心特征..."
+    },
+    {
+      "id": "B3",
+      "cluster": "deepprod",
+      "label": "AI大模型竞争格局报告",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "6/6",
+      "total_chars": 34937,
+      "latency_ms": 210528,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 33,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 80
+      },
+      "content_preview": "好的，遵照您的指示。作为一名资深行业分析师，我将为您呈现一份针对“全球AI大模型竞争格局与趋势2026”的深度行业研究报告。\n\n---\n\n### **全球AI大模型竞争格局与趋势2026：深度行业研究报告**\n\n**报告日期：** 2024年5月21日\n**分析师：** [您的资深分析师]\n**报告编号：** AI-2026-001\n\n---\n\n#### **执行摘要**\n\n2026年的全球AI大..."
+    },
+    {
+      "id": "C1",
+      "cluster": "creativex",
+      "label": "双十一促销文案",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 4420,
+      "latency_ms": 41109,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 33,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 80
+      },
+      "content_preview": "标题：双十一，你的购物车不该只有“凑单”！\n\n痛点：每次大促，你是不是总在深夜刷手机，盯着满屏的“满减”“折扣”，却越看越累？购物车塞满了“凑单”的纸巾、洗衣液，可真正想要的——那件想了很久的大衣、那双让你心动的跑鞋——却总因为“太贵”“再等等”而错过。你明明值得更好的，却总在犹豫中委屈自己。\n\n解决方案：今年双十一，别让“将就”填满你的生活。我们精选了50+爆款好物，直接底价，不用算数、不用熬夜..."
+    },
+    {
+      "id": "C2",
+      "cluster": "creativex",
+      "label": "品牌故事文案",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 6028,
+      "latency_ms": 52719,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "标题：当所有人都在追逐风口，我选择回头，只为一口值得等待的米香\n\n**痛点**\n\n你有多久，没有好好吃过一顿饭了？\n\n不是外卖盒里油腻腻的“预制菜”，不是便利店冷柜里微波炉“叮”一声的速食。是那种，掀开锅盖，热气扑面，米香钻进鼻腔，每一粒都饱满、弹牙、带着自然甜味的米饭。\n\n我在上海待了8年，见过凌晨3点的陆家嘴，也吃过无数份标价88元却味同嚼蜡的商务套餐。直到有一天，我翻开手机相册，发现最近10..."
+    },
+    {
+      "id": "C3",
+      "cluster": "creativex",
+      "label": "科技产品发布会文案",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 4626,
+      "latency_ms": 37309,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "标题：别再让“电量焦虑”绑架你的手腕！\n\n痛点：  \n你是不是也这样？智能手表功能再炫，一天一充的宿命让你秒变“充电器人”；运动到一半突然没电，数据断档的瞬间比失恋还扎心；甚至开会时手表震动提醒没电，尴尬得想原地消失… 科技本该解放你，不是绑架你！\n\n解决方案：  \n全新【续航怪兽·X1 智能手表】来了——  \n搭载自研“零功耗”芯片，重度使用7天不充电，轻度续航直达14天！  \n✅ 全天候心率+..."
+    },
+    {
+      "id": "D1",
+      "cluster": "techdoc",
+      "label": "REST API 接口文档",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 26622,
+      "latency_ms": 73520,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 75,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 92
+      },
+      "content_preview": "# 用户认证 API 接口文档\n\n## 概述\n\n本文档定义了 REST API 用户认证接口的规范。该接口提供注册、登录、令牌刷新和注销功能，采用 JWT（JSON Web Token）进行身份验证，确保通信安全。\n\n目标受众：后端开发人员、系统集成工程师。\n\n**核心特性：**\n- 基于 JWT 的无状态认证\n- 支持令牌刷新机制\n- 统一的错误响应格式\n- 符合 RESTful 设计原则\n\n#..."
+    },
+    {
+      "id": "D2",
+      "cluster": "techdoc",
+      "label": "Python SDK 安装指南",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 15856,
+      "latency_ms": 52796,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 33,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 80
+      },
+      "content_preview": "好的，遵照您的需求，我将以技术文档工程师的身份，为您生成一份关于 Python SDK 的安装与快速上手指南。\n\n---\n\n# Python SDK 安装与快速上手指南\n\n## 概述\n\n本文档旨在帮助开发者快速完成 Python SDK 的安装，并通过一个简单的示例演示其核心功能。本 SDK 提供了与 [产品/服务名称] 进行交互的便捷接口，支持同步与异步操作，涵盖了数据查询、资源管理及事件处理等..."
+    },
+    {
+      "id": "D3",
+      "cluster": "techdoc",
+      "label": "架构设计文档",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 25354,
+      "latency_ms": 96081,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "好的，遵照您的需求。以下是针对技术决策者编写的微服务架构设计文档。\n\n---\n\n# 微服务架构设计文档\n\n**文档版本:** 1.0\n**目标读者:** 技术决策者（CTO、技术总监、架构师、高级开发人员）\n**编写日期:** 2023-10-27\n\n## 概述\n\n本文档旨在为构建下一代电商平台提供微服务架构设计的蓝图。核心目标是通过服务化拆分，解决单体应用在快速迭代、高并发场景下的瓶颈，实现系统..."
+    },
+    {
+      "id": "E1",
+      "cluster": "scipop",
+      "label": "量子计算科普",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 4973,
+      "latency_ms": 37663,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "好的，没问题。作为你的科学传播伙伴，我来为你准备这篇关于量子计算的科普文章。\n\n---\n\n### 你好，量子世界：一个“硬币魔法”的故事\n\n想象一下，你面前有一枚硬币。在日常生活中，它要么是正面朝上（代表“0”），要么是反面朝上（代表“1”）。我们所有的电脑、手机，本质上都是在用几亿个这样的“硬币”进行着“是”与“否”的快速游戏。这就是经典的二进制世界。\n\n现在，让我们进入一个神奇的魔法世界。在这..."
+    },
+    {
+      "id": "E2",
+      "cluster": "scipop",
+      "label": "AI工作原理科普",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 2466,
+      "latency_ms": 25430,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 33,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 80
+      },
+      "content_preview": "你想知道AI是怎么“懂”你说话的吗？想象一下，大语言模型就像一个超级聪明的“文字拼图大师”。它没真正“理解”世界，但它读过海量的书、文章和对话——相当于把整个互联网的文字都塞进了脑子里。当你问它问题时，它不会思考，而是快速翻看记忆，找出最可能接上你话的“下一块拼图”。\n\n核心概念：大语言模型的核心是“预测下一个词”。它通过分析你给的文字，计算哪个词最可能出现在后面，然后一个个词地生成回答。比如你说..."
+    },
+    {
+      "id": "E3",
+      "cluster": "scipop",
+      "label": "基因编辑科普",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 6703,
+      "latency_ms": 56190,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 33,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 80
+      },
+      "content_preview": "好的，没问题！作为你的科学传播者，我们这就开始。\n\n---\n\n### **CRISPR基因编辑技术科普**\n\n#### **引入（类比）：一本“生命天书”和一支“神奇的修正笔”**\n\n想象一下，我们每个人的身体里都有一本厚厚的、用特殊代码写成的“生命天书”，这本书就是我们的基因。这本书里的每一个字、每一句话，都决定了我们的头发是什么颜色、眼睛是大是小，甚至决定了我们容不容易得某些疾病。\n\n有时候，..."
+    },
+    {
+      "id": "F1",
+      "cluster": "oped",
+      "label": "AI监管观点",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 4699,
+      "latency_ms": 43765,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "论点：AI监管需要全球协作而非各自为政\n\n正方论据：全球协作能有效应对AI的跨国界风险，并促进技术普惠。首先，AI技术本质上无国界，其应用如深度伪造、致命自主武器或算法偏见，能迅速跨越主权边界，造成全球性危害。例如，欧盟《人工智能法案》虽为区域典范，但无法阻止非欧盟国家开发的AI系统通过云服务影响欧盟公民。全球协作框架（如联合国或G7主导的“AI全球治理倡议”）可制定统一标准，避免“监管套利”——..."
+    },
+    {
+      "id": "F2",
+      "cluster": "oped",
+      "label": "远程办公利弊分析",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 4261,
+      "latency_ms": 38270,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "论点：远程办公对创新力具有双刃剑效应，企业管理者需在效率与创造力之间寻找平衡。\n\n正方论据：远程办公可能削弱创新力，因为创新依赖于非正式碰撞与深度协作。斯坦福大学2023年研究显示，完全远程团队的专利产出比混合办公团队低15%，主要原因是缺乏“水冷器效应”——即随机走廊对话带来的灵感触发。此外，哈佛商学院调查发现，远程环境下员工更倾向于任务导向的线性思维，而非发散性探索，导致渐进式创新（如流程优化..."
+    },
+    {
+      "id": "F3",
+      "cluster": "oped",
+      "label": "开源vs闭源AI",
+      "passed": true,
+      "mock_mode": false,
+      "stages": "4/4",
+      "total_chars": 7820,
+      "latency_ms": 70998,
+      "quality": {
+        "length_adequate": 100,
+        "format_completeness": 0,
+        "non_empty": 100,
+        "has_structure": 100,
+        "is_real": 100,
+        "overall": 70
+      },
+      "content_preview": "论点：开源AI模型与闭源AI模型的未来博弈将走向“分层共存”格局——开源模型主导基础研究与长尾应用，闭源模型垄断高价值商业场景，但最终胜负取决于“生态控制力”而非技术参数。\n\n### 正方论据：开源模型将蚕食闭源市场，成为AI普惠化的基石\n\n1. **成本与民主化效应**：开源模型（如Llama 3、Mistral）显著降低了AI门槛。企业无需支付高昂的API调用费或授权费，即可在本地部署、微调模..."
+    }
+  ],
+  "summary": {
+    "per_cluster": {
+      "flashnews": {
+        "pass_rate": "3/3",
+        "avg_chars": 493,
+        "avg_latency_ms": 6612
+      },
+      "deepprod": {
+        "pass_rate": "3/3",
+        "avg_chars": 34882,
+        "avg_latency_ms": 223568
+      },
+      "creativex": {
+        "pass_rate": "3/3",
+        "avg_chars": 5025,
+        "avg_latency_ms": 43712
+      },
+      "techdoc": {
+        "pass_rate": "3/3",
+        "avg_chars": 22611,
+        "avg_latency_ms": 74132
+      },
+      "scipop": {
+        "pass_rate": "3/3",
+        "avg_chars": 4714,
+        "avg_latency_ms": 39761
+      },
+      "oped": {
+        "pass_rate": "3/3",
+        "avg_chars": 5593,
+        "avg_latency_ms": 51011
+      }
+    },
+    "overall_pass_rate": "18/18",
+    "mock_mode": false
+  }
+}

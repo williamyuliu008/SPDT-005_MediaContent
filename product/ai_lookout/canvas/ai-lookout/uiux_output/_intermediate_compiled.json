@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "project_name": "ai_lookout",
+    "description": "AI 瞭望台 · AI 产业情报日报网站。每日自动生成一篇完整的AI产业日报，包含竞争态势、芯事、开源雷达、设计前线四个板块。单页到底，日期切换，搜索，知识底座。深色科技风，高信息密度，对标 Stratechery 纯文字美学。"
+  },
+  "ux_pattern": {
+    "primary": "list-browse",
+    "secondary": [
+      "daily-report",
+      "search",
+      "knowledge"
+    ],
+    "label": "列表浏览",
+    "typical_components": [
+      "search_bar",
+      "list_or_cards"
+    ],
+    "sub_patterns": []
+  },
+  "derived_from": {
+    "project_name": "ai_lookout",
+    "description": "AI 瞭望台 · AI 产业情报日报网站。每日自动生成一篇完整的AI产业日报，包含竞争态势、芯事、开源雷达、设计前线四个板块。单页到底，日期切换，搜索，知识底座。深色科技风，高信息密度，对标 Stratechery 纯文字美学。",
+    "functional_semantics": "",
+    "user_role": "decision_maker",
+    "usage_frequency": "high",
+    "risk_level": "low",
+    "information_density": "high",
+    "scene_refinement": "knowledge_graph",
+    "ux_modes": [
+      "daily-report",
+      "search",
+      "knowledge"
+    ],
+    "brand_colors": {
+      "primary": "#0ea5e9",
+      "secondary": "#6366f1",
+      "accent": "#f59e0b"
+    }
+  },
+  "layout": {
+    "id": "L2",
+    "variant": "",
+    "sidebar_width": "240px",
+    "is_immersive": false,
+    "candidates": [
+      "L2",
+      "L3"
+    ],
+    "derivation_trace": {
+      "step1_density": "high",
+      "step1_candidates": [
+        "L2",
+        "L3"
+      ],
+      "step2_d1_override": null,
+      "step3_role_override": null,
+      "final": "L2"
+    }
+  },
+  "style": {
+    "id": "S3",
+    "name": "Tech",
+    "candidates": [
+      "S1",
+      "S3"
+    ],
+    "scene_override": "knowledge_graph",
+    "brand_overridden": false,
+    "derivation_trace": {
+      "step1_density": "high",
+      "step1_candidates": [
+        "S1",
+        "S3"
+      ],
+      "step2_role": "decision_maker",
+      "step2_after_role": "S1",
+      "step3_scene_override": "S3",
+      "final": "S3"
+    }
+  },
+  "components": [
+    {
+      "id": "search_bar",
+      "required": true
+    },
+    {
+      "id": "list_or_cards",
+      "required": true
+    }
+  ],
+  "grid_columns": 3,
+  "multi_view": null,
+  "error_states": {
+    "mandatory": [
+      "network_failure",
+      "loading",
+      "data_empty"
+    ],
+    "optional": []
+  },
+  "app_shell": {
+    "sidebar": {
+      "type": "collapsible_sidebar",
+      "width_expanded": "240px",
+      "width_collapsed": "56px",
+      "initial_state": "expanded"
+    },
+    "topbar": {
+      "type": "fixed_header",
+      "height": "56px",
+      "visible": true
+    },
+    "toast": {
+      "type": "floating_notification",
+      "position": "top-right"
+    },
+    "room_shell": {
+      "type": "content_wrapper",
+      "max_width": "none",
+      "padding": "24px"
+    },
+    "is_immersive": false
+  },
+  "brand_override": {
+    "enabled": true,
+    "primary": "#0ea5e9",
+    "secondary": "#6366f1",
+    "accent": "#f59e0b",
+    "override_fields": {
+      "button_background": "#0ea5e9",
+      "link_color": "#0ea5e9",
+      "active_tab_indicator": "#0ea5e9",
+      "focus_ring": "#0ea5e9",
+      "progress_bar_fill": "#0ea5e9",
+      "switch_checked_background": "#0ea5e9"
+    }
+  }
+}

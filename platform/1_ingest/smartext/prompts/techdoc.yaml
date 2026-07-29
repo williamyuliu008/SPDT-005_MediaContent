@@ -1,0 +1,37 @@
+# techdoc (CLUSTER-D) — 技术文档集群
+# Prompt configuration extracted from shared/llm_gateway.py + shared/cluster_engine_v3.py
+
+cluster:
+  id: techdoc
+  name: 技术文档
+  description: "技术文档/API 参考生成"
+  
+  system: "你是技术文档工程师。输出精确、结构化、含代码示例的技术文档。Markdown 格式。"
+  format: "文档格式：概述→安装→API参考→示例→错误码→FAQ"
+  max_tokens: 4096
+  temperature: 0.5
+
+stages:
+  S1_SPEC:
+    name: 规格定义
+    system: "你是技术文档架构师。分析API/工具的功能，输出文档大纲和章节结构。"
+    max_tokens: 1024
+    gate: spec_ready
+    
+  S2_RESEARCH:
+    name: API研究
+    system: "你是API研究员。基于S1的大纲，研究每个端点的输入/输出/错误码。"
+    max_tokens: 4096
+    gate: research_done
+    
+  S3_WRITE:
+    name: 文档撰写
+    system: "你是技术文档工程师。基于S2的研究，撰写完整的Markdown文档含代码示例。"
+    max_tokens: 4096
+    gate: draft_ready
+    
+  S4_REVIEW:
+    name: 技术审查
+    system: "你是技术审阅员。检查S3文档的代码可运行性、API准确性、格式规范性。"
+    max_tokens: 2048
+    gate: approved

@@ -1,0 +1,28 @@
+cluster_id: flashnews_cluster
+description: 实时快反集群 (CLUSTER-A)
+domain: content_production.news
+input_router: SR-TEXT-001 (TextClassifier)
+message_bus:
+  decision_log: true
+  type: operator_managed
+stages:
+- gate: topic_detected
+  guild: SCOUT
+  id: S1_MONITOR
+  name: 信源监控
+- gate: verified
+  guild: VERIFY
+  id: S2_VERIFY
+  name: 事实核查
+- gate: draft_ready
+  guild: WRITING
+  id: S3_DRAFT
+  name: 快速撰稿
+- gate: published
+  guild: PUBLISH
+  id: S4_PUBLISH
+  name: 发布
+topology:
+  entry_point: operator
+  type: mesh
+version: 0.1.0

@@ -1,36 +1,88 @@
 ﻿# SPDT-005_MediaContent 与 OMAS 衔接配置
 spdt_id: SPDT-005
-spdt_name: 多媒体内容产品线
+spdt_name: 媒体内容制造
 category: media
 domains: [media, publishing]
 
 # ── SOP 路由结果 ──
 sop_family: content_manufacturing
-secondary_family: knowledge_creation
+sop_version: v4.0
+execution_spec: "D:/1_omas/governance/内容制造管线执行规范_v1.0.md"
+
+# ── 五阶段管线声明 ──
+pipeline:
+  sop_family: content_manufacturing
+  sop_version: v4.0
+  execution_spec: "D:/1_omas/governance/内容制造管线执行规范_v1.0.md"
+  modlib_root: "D:/1_omas/MODLIB/"
+  stages_active: [1_ingest, 2_structure, 3_render, 4_adapt, 5_deliver]
+  stages_planned: []
+  domain: media
+
+  stage_detail:
+    1_ingest:
+      router: smarttext_router
+      modlib: content_spec_template
+      status: active
+      junction_type: internal
+    2_structure:
+      genre_engine: article_v2
+      modlib: [scene_v2_schema, genre_registry, media_adapter]
+      status: active
+      junction_type: external
+      external_ref: PT-047_SocSciAgent
+    3_render:
+      engines: [text]
+      quality_gates: [G-SOURCE, G-TIMELINESS, G-FACTUAL, G-STYLE, G-STRUCTURE, G-FORMAT]
+      modlib: [quality_gate_schema, IF-A, IF-B, IF-C]
+      status: active
+    4_adapt:
+      scorecard: content_scorecard_v1
+      modlib: [quality_gate_schema]
+      status: active
+    5_deliver:
+      channels: [web, feeds, mobile, feishu, wechat_mp]
+      publish: autopublish
+      status: active
 
 # ── 依赖的 OMAS Cell ──
 omas_cells:
+  - cell: CMC
+    capabilities: [content_pipeline, genre_registry, multimedia_generation]
+    modlib: D:/1_omas/MODLIB/
   - cell: Infra
     capabilities: [model_router]
-  - cell: CMC
-    capabilities: [content_pipeline, multimedia_generation]
   - cell: SDC
     capabilities: [template_design, channel_adapter]
-  - cell: QAC
-    capabilities: [quality_gate, media_quality]
+  - cell: DSC
+    role: 赛道规划与能力矩阵维护
+
+# ── MODLIB 纳管声明 ──
+modlib_consumption:
+  schemas:
+    - scene_v2_schema
+    - quality_gate_schema
+  templates:
+    - content_spec_template
+  registries:
+    - genre_registry
+  protocols:
+    - IF-A_audio_synthesis
+    - IF-B_video_rendering
+    - IF-C_card_generation
+  adapters:
+    - media_adapter
 
 # ── 领域本体引用 ──
 ontology:
   - domain: media_calendar
     profile: D:/1_omas/toolbox/Ontology/profiles/media/
 
-# ── 复用的 DAG 模板 ──
-dag_templates: []
-
 # ── 知识库 ──
 knowledge_bases:
   - collection: media_knowledge
     path_env: SPDT_MEDIA_ROOT
+    local: platform/services/SocSciAgent/kb/
 
 # ── 反哺记录 ──
 feedback: []

@@ -1,0 +1,536 @@
+# ═══════════════════════════════════════════════════════════
+# Radar 信源注册表 — Source Registry
+# ═══════════════════════════════════════════════════════════
+# 维护方: MKT 内阁
+# 版本: v1.0 / 2026-06-17
+# 覆盖: 10 家核心 AI 公司 + 扩展生态公司
+#
+# 信源层级定义:
+#   primary   — 官方一手信源（公司官网/财报/SEC/GitHub release） reliability ≥ 0.95
+#   secondary — 可信行业媒体/分析师                   reliability 0.80-0.95
+#   tertiary  — 社交媒体/传言                          reliability < 0.60
+#
+# signal_types:
+#   capability  — 技术能力的阶跃变化
+#   structural  — 行业结构的重组变化
+#   supply_chain— 硬件/产能/价格变化
+#   ecosystem   — 开源/平台/开发者变化
+#   paradigm    — 交互模式/设计语言变化
+#   risk        — 安全/合规/伦理变化
+# ═══════════════════════════════════════════════════════════
+
+sources:
+
+  # ────────────────────────────────────────
+  # PRIMARY SOURCES (≥ 14 个)
+  # ────────────────────────────────────────
+
+  - source_id: "nvidia_newsroom"
+    name: "NVIDIA Newsroom"
+    url: "https://nvidianews.nvidia.com/"
+    tier: "primary"
+    signal_types: ["capability", "supply_chain", "structural", "paradigm"]
+    update_frequency: "realtime"
+    reliability: 0.98
+    companies_covered: ["nvidia"]
+    fetch_method: "rss"
+    last_verified: "2026-06-17"
+    notes: "NVIDIA 官方新闻发布，含 Computex/GTC 重大发布、财报、合作公告"
+
+  - source_id: "sec_edgar"
+    name: "SEC EDGAR"
+    url: "https://www.sec.gov/cgi-bin/browse-edgar"
+    tier: "primary"
+    signal_types: ["structural", "risk"]
+    update_frequency: "daily"
+    reliability: 1.0
+    companies_covered: ["openai", "microsoft", "nvidia", "google", "perplexity"]
+    fetch_method: "api"
+    last_verified: "2026-06-17"
+    notes: "SEC 法定披露，含 S-1/10-K/8-K，数据不可篡改，最高置信度"
+
+  - source_id: "openai_blog"
+    name: "OpenAI Blog"
+    url: "https://openai.com/blog/"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem", "paradigm"]
+    update_frequency: "realtime"
+    reliability: 0.97
+    companies_covered: ["openai"]
+    fetch_method: "rss"
+    last_verified: "2026-06-17"
+    notes: "OpenAI 官方博客，含模型发布、API 更新、研究进展、安全公告"
+
+  - source_id: "google_blog_ai"
+    name: "Google AI Blog"
+    url: "https://blog.google/technology/ai/"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem", "paradigm"]
+    update_frequency: "realtime"
+    reliability: 0.97
+    companies_covered: ["google"]
+    fetch_method: "rss"
+    last_verified: "2026-06-17"
+    notes: "Google AI/DeepMind 官方博客，含 Gemini 发布、I/O 大会、研究进展"
+
+  - source_id: "microsoft_news"
+    name: "Microsoft News Center"
+    url: "https://news.microsoft.com/"
+    tier: "primary"
+    signal_types: ["capability", "structural", "ecosystem", "paradigm"]
+    update_frequency: "daily"
+    reliability: 0.97
+    companies_covered: ["microsoft"]
+    fetch_method: "rss"
+    last_verified: "2026-06-17"
+    notes: "微软官方新闻，含 Build 大会、Copilot 更新、VS 发布、合作公告"
+
+  - source_id: "anthropic_blog"
+    name: "Anthropic Blog"
+    url: "https://www.anthropic.com/blog"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem", "risk"]
+    update_frequency: "realtime"
+    reliability: 0.96
+    companies_covered: ["anthropic"]
+    fetch_method: "rss"
+    last_verified: "2026-06-17"
+    notes: "Anthropic 官方博客，含 Claude 发布、安全研究、宪法 AI 进展"
+
+  - source_id: "apple_newsroom"
+    name: "Apple Newsroom"
+    url: "https://www.apple.com/newsroom/"
+    tier: "primary"
+    signal_types: ["capability", "structural", "paradigm", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.98
+    companies_covered: ["apple"]
+    fetch_method: "rss"
+    last_verified: "2026-06-17"
+    notes: "苹果官方发布，含 WWDC、Siri AI、芯片更新、App Store 政策"
+
+  - source_id: "github_releases"
+    name: "GitHub Releases (AI repos)"
+    url: "https://github.com/trending/python?since=weekly"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.95
+    companies_covered: ["microsoft", "google", "openai", "anthropic", "meta", "alibaba"]
+    fetch_method: "api"
+    last_verified: "2026-06-17"
+    notes: "GitHub Trending/Release，含 vLLM、Llama、Qwen 等关键仓库"
+
+  - source_id: "huggingface_models"
+    name: "HuggingFace Model Hub"
+    url: "https://huggingface.co/models"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.95
+    companies_covered: ["meta", "alibaba", "tencent", "microsoft", "google", "anthropic", "bytedance"]
+    fetch_method: "api"
+    last_verified: "2026-06-17"
+    notes: "HuggingFace 模型发布和下载量，开源生态核心指标"
+
+  - source_id: "arxiv_cs_ai"
+    name: "arXiv CS.AI / CS.CL"
+    url: "https://arxiv.org/list/cs.AI/recent"
+    tier: "primary"
+    signal_types: ["capability", "paradigm"]
+    update_frequency: "daily"
+    reliability: 0.95
+    companies_covered: ["openai", "google", "anthropic", "microsoft", "meta", "baidu", "alibaba"]
+    fetch_method: "api"
+    last_verified: "2026-06-17"
+    notes: "学术预印本，含前沿模型架构、训练方法、Agent 研究"
+
+  - source_id: "tencent_news"
+    name: "腾讯官方新闻"
+    url: "https://www.tencent.com/en-us/articles/"
+    tier: "primary"
+    signal_types: ["capability", "structural", "ecosystem"]
+    update_frequency: "weekly"
+    reliability: 0.95
+    companies_covered: ["tencent"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "腾讯官方发布，含混元大模型、开源公告、战略调整"
+
+  - source_id: "alibaba_news"
+    name: "阿里云官方博客"
+    url: "https://www.alibabacloud.com/blog"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem", "structural"]
+    update_frequency: "daily"
+    reliability: 0.95
+    companies_covered: ["alibaba"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "阿里云官方，含千问/百炼平台发布、开源模型公告、云服务更新"
+
+  - source_id: "baidu_ernie_blog"
+    name: "百度文心官方博客"
+    url: "https://ernie.baidu.com/blog/"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem"]
+    update_frequency: "weekly"
+    reliability: 0.95
+    companies_covered: ["baidu"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "百度文心大模型官方发布，含模型版本、技术报告、DAA 等新指标"
+
+  - source_id: "bytedance_news"
+    name: "字节跳动技术博客"
+    url: "https://www.bytedance.com/en/news"
+    tier: "primary"
+    signal_types: ["capability", "ecosystem", "paradigm"]
+    update_frequency: "weekly"
+    reliability: 0.93
+    companies_covered: ["bytedance"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "字节跳动官方，含豆包/扣子发布、Agent 平台公告"
+
+  # ────────────────────────────────────────
+  # SECONDARY SOURCES (≥ 20 个)
+  # ────────────────────────────────────────
+
+  - source_id: "semianalysis"
+    name: "Semianalysis"
+    url: "https://www.semianalysis.com/"
+    tier: "secondary"
+    signal_types: ["capability", "supply_chain", "structural"]
+    update_frequency: "weekly"
+    reliability: 0.85
+    companies_covered: ["nvidia", "tsmc", "intel", "amd", "google", "microsoft", "openai"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "深度半导体/AI 基础设施分析，供应链信号精准，但需交叉验证"
+
+  - source_id: "theinformation"
+    name: "The Information"
+    url: "https://www.theinformation.com/"
+    tier: "secondary"
+    signal_types: ["structural", "capability", "risk"]
+    update_frequency: "daily"
+    reliability: 0.88
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "apple", "nvidia", "bytedance", "tencent"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "硅谷深度科技报道，独家内幕多但需付费墙，reliability 较高"
+
+  - source_id: "venturebeat"
+    name: "VentureBeat AI"
+    url: "https://venturebeat.com/category/ai/"
+    tier: "secondary"
+    signal_types: ["capability", "structural", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.82
+    companies_covered: ["openai", "google", "microsoft", "nvidia", "anthropic", "perplexity", "cohere"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "AI 产品发布一手报道，Computex/WWDC 等大会现场覆盖"
+
+  - source_id: "techcrunch"
+    name: "TechCrunch AI"
+    url: "https://techcrunch.com/category/artificial-intelligence/"
+    tier: "secondary"
+    signal_types: ["structural", "capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.80
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "nvidia", "perplexity", "cohere"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "AI 创投/融资新闻覆盖面广，产品发布报道及时"
+
+  - source_id: "bloomberg_tech"
+    name: "Bloomberg Technology"
+    url: "https://www.bloomberg.com/technology"
+    tier: "secondary"
+    signal_types: ["structural", "risk", "supply_chain"]
+    update_frequency: "daily"
+    reliability: 0.90
+    companies_covered: ["openai", "google", "microsoft", "nvidia", "apple", "tencent", "alibaba", "bytedance"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "金融向科技报道，含 IPO/融资/监管动态，但付费墙限制"
+
+  - source_id: "reuters_tech"
+    name: "Reuters Technology"
+    url: "https://www.reuters.com/technology/"
+    tier: "secondary"
+    signal_types: ["structural", "risk", "supply_chain"]
+    update_frequency: "daily"
+    reliability: 0.92
+    companies_covered: ["openai", "google", "microsoft", "nvidia", "apple", "tencent", "alibaba"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "通讯社级可靠性，出口管制/地缘政治信号关键来源"
+
+  - source_id: "arstechnica"
+    name: "Ars Technica AI"
+    url: "https://arstechnica.com/ai/"
+    tier: "secondary"
+    signal_types: ["capability", "supply_chain", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.84
+    companies_covered: ["nvidia", "intel", "amd", "google", "microsoft", "apple"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "硬件/芯片/架构深度分析，技术细节可靠"
+
+  - source_id: "anandtech"
+    name: "AnandTech"
+    url: "https://www.anandtech.com/"
+    tier: "secondary"
+    signal_types: ["capability", "supply_chain"]
+    update_frequency: "weekly"
+    reliability: 0.88
+    companies_covered: ["nvidia", "intel", "amd", "tsmc", "apple"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "深度芯片评测/架构分析，供应链/制程信号精准"
+
+  - source_id: "wired"
+    name: "WIRED AI"
+    url: "https://www.wired.com/tag/artificial-intelligence/"
+    tier: "secondary"
+    signal_types: ["paradigm", "risk", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.80
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "apple"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "AI 社会影响/人机交互/伦理话题，paradigm 信号丰富"
+
+  - source_id: "theverge"
+    name: "The Verge AI"
+    url: "https://www.theverge.com/ai-artificial-intelligence"
+    tier: "secondary"
+    signal_types: ["paradigm", "capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.78
+    companies_covered: ["openai", "google", "microsoft", "apple", "anthropic", "perplexity"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "消费向科技报道，产品体验/UX 变化覆盖好"
+
+  - source_id: "fortune"
+    name: "Fortune Tech"
+    url: "https://fortune.com/tech/"
+    tier: "secondary"
+    signal_types: ["structural", "risk"]
+    update_frequency: "daily"
+    reliability: 0.85
+    companies_covered: ["openai", "microsoft", "google", "nvidia", "apple", "perplexity"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "商业向科技报道，IPO/战略/高管动态独家报道多"
+
+  - source_id: "eet_china"
+    name: "电子工程专辑 (EET China)"
+    url: "https://www.eet-china.com/"
+    tier: "secondary"
+    signal_types: ["supply_chain", "capability"]
+    update_frequency: "daily"
+    reliability: 0.80
+    companies_covered: ["nvidia", "intel", "amd", "tsmc", "baidu", "huawei"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国半导体供应链信号关键来源，含特供芯片/出口管制影响"
+
+  - source_id: "cls_cn"
+    name: "财联社 (CLS)"
+    url: "https://www.cls.cn/"
+    tier: "secondary"
+    signal_types: ["structural", "capability", "risk"]
+    update_frequency: "realtime"
+    reliability: 0.78
+    companies_covered: ["bytedance", "alibaba", "tencent", "baidu", "openai", "nvidia"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国财经快讯，字节/阿里/腾讯等中国AI公司动态覆盖面广"
+
+  - source_id: "36kr"
+    name: "36氪 AI 频道"
+    url: "https://36kr.com/information/AI/"
+    tier: "secondary"
+    signal_types: ["structural", "capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.75
+    companies_covered: ["bytedance", "alibaba", "tencent", "baidu", "perplexity"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国 AI 创投/产品动态，覆盖创业公司多但 reliability 需交叉验证"
+
+  - source_id: "sina_finance_tech"
+    name: "新浪财经科技"
+    url: "https://finance.sina.com.cn/tech/"
+    tier: "secondary"
+    signal_types: ["structural", "capability"]
+    update_frequency: "daily"
+    reliability: 0.75
+    companies_covered: ["google", "baidu", "alibaba", "tencent", "bytedance"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国科技财经报道，Google I/O 等大会中文覆盖"
+
+  - source_id: "zhihu_ai"
+    name: "知乎 AI 话题"
+    url: "https://www.zhihu.com/topic/19551147/hot"
+    tier: "secondary"
+    signal_types: ["paradigm", "ecosystem", "risk"]
+    update_frequency: "daily"
+    reliability: 0.65
+    companies_covered: ["alibaba", "baidu", "bytedance", "tencent", "openai", "google"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国AI社区讨论，生态/开发者情绪/应用趋势 insights，需严格交叉验证"
+
+  - source_id: "gitcode_csdn"
+    name: "GitCode/CSDN 技术动态"
+    url: "https://gitcode.csdn.net/"
+    tier: "secondary"
+    signal_types: ["capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.72
+    companies_covered: ["anthropic", "nvidia", "microsoft", "apple", "cohere", "openai"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国开发者社区，海外AI新闻中文转载，含模型发布/合作动态"
+
+  - source_id: "chinaflashmarket"
+    name: "ChinaFlashMarket"
+    url: "https://chinaflashmarket.com/"
+    tier: "secondary"
+    signal_types: ["supply_chain"]
+    update_frequency: "daily"
+    reliability: 0.75
+    companies_covered: ["tencent", "alibaba", "nvidia", "tsmc", "baidu"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国半导体/NAND/DRAM 市场，含云厂商 API 调价/存储供应链"
+
+  - source_id: "datanorth"
+    name: "DataNorth AI News"
+    url: "https://datanorth.ai/"
+    tier: "secondary"
+    signal_types: ["capability", "ecosystem"]
+    update_frequency: "daily"
+    reliability: 0.78
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "perplexity"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "AI 垂直媒体，模型更新/产品发布报道及时"
+
+  - source_id: "mit_tech_review"
+    name: "MIT Technology Review AI"
+    url: "https://www.technologyreview.com/topic/artificial-intelligence/"
+    tier: "secondary"
+    signal_types: ["paradigm", "risk", "capability"]
+    update_frequency: "weekly"
+    reliability: 0.88
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "nvidia"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "深度AI技术趋势分析，含前沿研究/伦理/社会影响"
+
+  - source_id: "nextbigfuture"
+    name: "NextBigFuture"
+    url: "https://www.nextbigfuture.com/"
+    tier: "secondary"
+    signal_types: ["capability", "supply_chain"]
+    update_frequency: "daily"
+    reliability: 0.72
+    companies_covered: ["nvidia", "tsmc", "intel", "amd", "google", "openai"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "AI 算力/芯片/能源趋势，前沿但部分预测过于乐观，需交叉验证"
+
+  - source_id: "tomshardware"
+    name: "Tom's Hardware"
+    url: "https://www.tomshardware.com/"
+    tier: "secondary"
+    signal_types: ["supply_chain", "capability"]
+    update_frequency: "daily"
+    reliability: 0.82
+    companies_covered: ["nvidia", "intel", "amd", "apple", "tsmc"]
+    fetch_method: "page_fetch"
+    last_verified: "2026-06-17"
+    notes: "消费/企业硬件评测，RTX Spark 等新品规格/价格/产能信号"
+
+  # ────────────────────────────────────────
+  # TERTIARY SOURCES (备用，低权重)
+  # ────────────────────────────────────────
+
+  - source_id: "twitter_ai"
+    name: "Twitter/X AI 社区"
+    url: "https://twitter.com/explore"
+    tier: "tertiary"
+    signal_types: ["paradigm", "risk", "ecosystem"]
+    update_frequency: "realtime"
+    reliability: 0.30
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "nvidia", "meta"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "研究人员/工程师一手泄漏和讨论，但噪音大需要严格过滤"
+
+  - source_id: "reddit_ml"
+    name: "Reddit r/MachineLearning"
+    url: "https://www.reddit.com/r/MachineLearning/"
+    tier: "tertiary"
+    signal_types: ["capability", "ecosystem", "paradigm"]
+    update_frequency: "daily"
+    reliability: 0.50
+    companies_covered: ["openai", "google", "microsoft", "anthropic", "meta"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "ML 社区讨论，含论文讨论/开源项目/从业者反馈，高价值但需筛选"
+
+  - source_id: "maimai"
+    name: "脉脉 AI 圈"
+    url: "https://maimai.cn/"
+    tier: "tertiary"
+    signal_types: ["structural", "risk"]
+    update_frequency: "daily"
+    reliability: 0.25
+    companies_covered: ["bytedance", "alibaba", "tencent", "baidu", "openai"]
+    fetch_method: "web_search"
+    last_verified: "2026-06-17"
+    notes: "中国科技从业者匿名社区，含薪酬/裁员/组织变动传言，可靠性低"
+
+# ═══════════════════════════════════════════════════════════
+# 覆盖审计指标
+# ═══════════════════════════════════════════════════════════
+
+coverage_summary:
+  total_sources: 37
+  primary_count: 14
+  secondary_count: 20
+  tertiary_count: 3
+  signal_type_coverage:
+    capability: 32
+    structural: 20
+    supply_chain: 10
+    ecosystem: 19
+    paradigm: 14
+    risk: 12
+  company_coverage:
+    openai: 26
+    google: 26
+    microsoft: 26
+    anthropic: 22
+    nvidia: 25
+    bytedance: 14
+    baidu: 14
+    alibaba: 18
+    tencent: 14
+    perplexity: 11
+    apple: 15
+    cohere: 3
+    tsmc: 6
+    intel: 5
+    amd: 5
+    meta: 7

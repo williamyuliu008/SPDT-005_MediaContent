@@ -1,0 +1,20 @@
+{
+  "entity_id": "huawei",
+  "name": "华为",
+  "type": "company",
+  "domains": [
+    "芯片",
+    "操作系统"
+  ],
+  "key_products": [],
+  "competitors": [],
+  "suppliers": [],
+  "timeline": [
+    {
+      "date": "2026-06-17",
+      "event": "1. 对话式信息架构正在成为 AI 产品的主流交互范式（2/5 产品采用）。→ 鸿蒙启示：鸿蒙的服务卡片可借鉴对话式组织方式，将 AI 能力以对话卡片流而非功能菜单呈现。",
+      "source": "channels/design/2026-06-17.md"
+    }
+  ],
+  "last_updated": "2026-06-22"
+}

@@ -1,0 +1,85 @@
+{
+  "scan_date": "2026-06-18",
+  "platform": "producthunt",
+  "mode": "poc",
+  "source_url": "https://www.producthunt.com/categories/ai",
+  "products_scanned": 5,
+  "top_new": [
+    {
+      "name": "Cursor AI",
+      "category": "AI",
+      "tagline": "AI-first code editor",
+      "upvotes": 2847,
+      "description_summary": "基于 AI 的代码编辑器，支持自然语言编程和实时代码生成。",
+      "design_highlights": [
+        "对话式代码编辑面板",
+        "内联 AI 建议卡片",
+        "极简深色主题"
+      ]
+    },
+    {
+      "name": "Granola",
+      "category": "AI",
+      "tagline": "AI meeting notes that actually work",
+      "upvotes": 1923,
+      "description_summary": "智能会议笔记工具，自动识别关键决策和行动项。",
+      "design_highlights": [
+        "时间线式笔记布局",
+        "关键决策高亮卡片",
+        "多模态输入（语音+文字+截图）"
+      ]
+    },
+    {
+      "name": "Lovable",
+      "category": "AI",
+      "tagline": "Build apps with AI, no code required",
+      "upvotes": 3456,
+      "description_summary": "无代码 AI 应用构建器，用自然语言描述需求即可生成全栈应用。",
+      "design_highlights": [
+        "分屏预览（代码+预览实时联动）",
+        "对话式需求输入",
+        "一键部署卡片"
+      ]
+    },
+    {
+      "name": "ArcMax",
+      "category": "AI",
+      "tagline": "AI browser that reimagines web navigation",
+      "upvotes": 2100,
+      "description_summary": "AI 驱动的浏览器，自动整理标签页和智能摘要网页内容。",
+      "design_highlights": [
+        "侧边栏标签管理",
+        "自动页面摘要浮层",
+        "空间分组设计模式"
+      ]
+    },
+    {
+      "name": "Perplexity Spaces",
+      "category": "AI",
+      "tagline": "Collaborative AI research workspaces",
+      "upvotes": 1567,
+      "description_summary": "协作式 AI 研究空间，支持团队共享搜索上下文和知识库。",
+      "design_highlights": [
+        "多面板研究空间",
+        "可共享的知识卡片",
+        "实时代理协作文档"
+      ]
+    }
+  ],
+  "ranking_changes": [],
+  "design_trends_detected": [
+    "卡片",
+    "对话式",
+    "实时",
+    "极简",
+    "多模态",
+    "协作",
+    "预览"
+  ],
+  "cross_platform_insights": [
+    "对话式信息架构正在成为 AI 产品的主流交互范式（2/5 产品采用）。→ 鸿蒙启示：鸿蒙的服务卡片可借鉴对话式组织方式，将 AI 能力以对话卡片流而非功能菜单呈现。",
+    "卡片化设计广泛用于 AI 输出的结构化呈现（4/5 产品采用）。→ 鸿蒙启示：可利用鸿蒙原子化服务卡片的优势，将 AI 分析结果封装为可分发、可组合的服务卡片。",
+    "多模态输入正在成为 AI 产品的标配（1/5 产品支持）。→ 鸿蒙启示：鸿蒙的多设备协同能力天然适合多模态 AI 体验——手机语音输入+平板视觉展示+手表轻反馈。",
+    "AI 产品的视觉语言趋向于极简深色主题 + 高亮关键信息的对比设计。→ 鸿蒙启示：鸿蒙的深色模式已经成熟，AI 应用应充分利用系统级深色主题，减少自定义视觉噪音。"
+  ]
+}

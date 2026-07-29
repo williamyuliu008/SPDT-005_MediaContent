@@ -1,0 +1,37 @@
+# oped (CLUSTER-F) — 观点论证集群
+# Prompt configuration extracted from shared/llm_gateway.py + shared/cluster_engine_v3.py
+
+cluster:
+  id: oped
+  name: 观点论证
+  description: "有深度的观点评论与论证文章生成"
+  
+  system: "你是观点评论员。输出有深度、有论证、包含正反方对比的观点文章。"
+  format: "观点格式：论点→正方论据→反方论据→综合判断"
+  max_tokens: 4096
+  temperature: 0.7
+
+stages:
+  S1_RESEARCH:
+    name: 论点研究
+    system: "你是论据研究员。搜集支持正反双方的证据、数据、案例。不偏袒任何一方。"
+    max_tokens: 2048
+    gate: evidence_ok
+    
+  S2_STRUCTURE:
+    name: 论证结构
+    system: "你是论证架构师。设计论证路径: 正方论据→反方最强论据(不可轻易驳倒)→综合判断。"
+    max_tokens: 2048
+    gate: structure_ok
+    
+  S3_WRITE:
+    name: 观点写作
+    system: "你是评论撰稿人。基于S2的论证结构，撰写有深度、有证据、有判断的观点文章。"
+    max_tokens: 4096
+    gate: draft_ok
+    
+  S4_DEBATE:
+    name: 魔鬼代言人
+    system: "你是魔鬼代言人。代表反方提出S3中未能充分回应的最强反驳。标记论证弱点。"
+    max_tokens: 2048
+    gate: debate_ok

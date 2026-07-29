@@ -1,0 +1,24 @@
+{
+  "project_name": "ai_lookout",
+  "description": "AI 瞭望台 · AI 产业情报日报网站。每日自动生成一篇完整的AI产业日报，包含竞争态势、芯事、开源雷达、设计前线四个板块。单页到底，日期切换，搜索，知识底座。深色科技风，高信息密度，对标 Stratechery 纯文字美学。",
+  "ux_modes": ["daily-report", "search", "knowledge"],
+  "user_role": "decision_maker",
+  "usage_frequency": "high",
+  "risk_level": "low",
+  "information_density": "high",
+  "scene_refinement": "knowledge_graph",
+  "brand_colors": {
+    "primary": "#0ea5e9",
+    "secondary": "#6366f1",
+    "accent": "#f59e0b"
+  },
+  "special_requirements": [
+    "单页日报，一页到底，无需跳转",
+    "日程导航：前一天/今天/后一天",
+    "4个板块用不同边框色区分",
+    "深色主题，文字优先",
+    "对标 Stratechery 极简纯文字排版",
+    "高信息密度：3-4列卡片布局",
+    "响应式：桌面优先，移动端可用"
+  ]
+}

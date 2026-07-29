@@ -1,0 +1,47 @@
+# SmartTextPlatform — 持续测试配置
+# 三层测试体系：分类回归 → 集群能力 → 质量评估
+
+test_suites:
+  classification:
+    enabled: true
+    module: "continuous/classifier_regression.py"
+    description: "路由器分类回归测试 — 防退化"
+
+  cluster_capability:
+    enabled: true
+    module: "continuous/cluster_benchmark.py"
+    description: "6 集群文字创作能力基准测试"
+    cases_per_cluster: 3
+    min_quality_score: 70  # 0-100
+
+  quality_dimensions:
+    enabled: true
+    module: "continuous/quality_evaluator.py"
+    description: "多维度文字质量评估"
+
+evaluation:
+  dimensions:
+    - relevance       # 内容与需求的匹配度
+    - completeness    # 覆盖需求的完整性
+    - structure       # 结构化程度
+    - style_adherence # 风格符合度
+    - readability     # 可读性
+    - originality     # 原创性（避免模板化）
+  min_dimension_score: 60
+  min_overall_score: 70
+
+performance:
+  max_latency_ms: 15000   # 单集群全程不超过15s
+  max_stage_latency_ms: 8000  # 单stage不超过8s
+  min_content_chars:
+    flashnews: 30
+    deepprod: 800
+    techdoc: 100
+    creativex: 50
+    scipop: 150
+    oped: 150
+
+output:
+  results_dir: "tests/continuous/results"
+  log_format: "json"
+  keep_history: 30  # 保留最近30次结果

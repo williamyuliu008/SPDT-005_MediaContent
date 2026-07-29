@@ -1,0 +1,121 @@
+{
+  "passed": false,
+  "total_gates": 9,
+  "passed_gates": 8,
+  "gate_results": [
+    {
+      "gate": "G1",
+      "passed": true,
+      "description": "",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G2",
+      "passed": false,
+      "description": "",
+      "violations": [
+        {
+          "gate": "G2",
+          "severity": "error",
+          "description": "缺少失败路径声明：{'operation_failed'}",
+          "rule": "",
+          "auto_fix": "在 errorStates.mandatory 中增加：['operation_failed']"
+        }
+      ],
+      "auto_fixable": [
+        {
+          "gate": "G2",
+          "severity": "error",
+          "description": "缺少失败路径声明：{'operation_failed'}",
+          "rule": "",
+          "auto_fix": "在 errorStates.mandatory 中增加：['operation_failed']"
+        }
+      ]
+    },
+    {
+      "gate": "G3",
+      "passed": true,
+      "description": "",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G4",
+      "passed": true,
+      "description": "",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G5",
+      "passed": true,
+      "description": "",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G6",
+      "passed": true,
+      "description": "",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G7",
+      "passed": true,
+      "description": "（无多视图，自动通过）",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G_app_shell",
+      "passed": true,
+      "description": "App Shell 配置一致性",
+      "violations": [],
+      "auto_fixable": []
+    },
+    {
+      "gate": "G_brand",
+      "passed": true,
+      "description": "品牌色一致性",
+      "violations": [
+        {
+          "gate": "G_brand",
+          "severity": "warning",
+          "description": "声明了 brand_colors 但 style.brand_overridden == false（未生效）",
+          "rule": "brand_system.priority_order: brand_color > scene_refinement > base_derivation",
+          "auto_fix": "设置 style.brand_overridden: true，并在 style 中标记 overridden_by_brand 字段"
+        }
+      ],
+      "auto_fixable": [
+        {
+          "gate": "G_brand",
+          "severity": "warning",
+          "description": "声明了 brand_colors 但 style.brand_overridden == false（未生效）",
+          "rule": "brand_system.priority_order: brand_color > scene_refinement > base_derivation",
+          "auto_fix": "设置 style.brand_overridden: true，并在 style 中标记 overridden_by_brand 字段"
+        }
+      ]
+    }
+  ],
+  "violations": [
+    {
+      "gate": "G2",
+      "severity": "error",
+      "description": "缺少失败路径声明：{'operation_failed'}",
+      "rule": "",
+      "auto_fix": "在 errorStates.mandatory 中增加：['operation_failed']"
+    }
+  ],
+  "auto_fixable": [
+    {
+      "gate": "G2",
+      "severity": "error",
+      "description": "缺少失败路径声明：{'operation_failed'}",
+      "rule": "",
+      "auto_fix": "在 errorStates.mandatory 中增加：['operation_failed']"
+    }
+  ],
+  "report": "============================================================\n  UIUX_SOP v0.3 Linter Report\n  Project : ai_lookout\n  Layout  : L2\n  Style   : S3\n============================================================\n\n  总门禁：9  通过：8  失败：1\n\n  [✅ PASS] G1: \n\n  [❌ FAIL] G2: \n    [ERROR] 缺少失败路径声明：{'operation_failed'}\n    [FIX] 在 errorStates.mandatory 中增加：['operation_failed']\n\n  [✅ PASS] G3: \n\n  [✅ PASS] G4: \n\n  [✅ PASS] G5: \n\n  [✅ PASS] G6: \n\n  [✅ PASS] G7: （无多视图，自动通过）\n\n  [✅ PASS] G_app_shell: App Shell 配置一致性\n\n  [✅ PASS] G_brand: 品牌色一致性\n    [WARNING] 声明了 brand_colors 但 style.brand_overridden == false（未生效）\n    [FIX] 设置 style.brand_overridden: true，并在 style 中标记 overridden_by_brand 字段\n\n  ⚠️  有 1 道门禁未通过，请修复后重新校验。"
+}

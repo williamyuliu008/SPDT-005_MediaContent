@@ -1,0 +1,113 @@
+{
+  "build_time": "2026-07-08T10:33:08.880837",
+  "entity_count": 10,
+  "relation_count": 21,
+  "channel_files_scanned": 0,
+  "entities": [
+    "openai",
+    "google",
+    "microsoft",
+    "anthropic",
+    "nvidia",
+    "bytedance",
+    "baidu",
+    "alibaba",
+    "tencent",
+    "perplexity"
+  ],
+  "relation_types": [
+    "supply_chain",
+    "compete",
+    "invest"
+  ],
+  "entity_summary": {
+    "openai": {
+      "name": "OpenAI",
+      "domains": [
+        "大模型",
+        "基础研究",
+        "API平台"
+      ],
+      "timeline_events": 0
+    },
+    "google": {
+      "name": "Google DeepMind",
+      "domains": [
+        "大模型",
+        "搜索",
+        "云计算"
+      ],
+      "timeline_events": 0
+    },
+    "microsoft": {
+      "name": "Microsoft",
+      "domains": [
+        "云计算",
+        "AI平台",
+        "办公"
+      ],
+      "timeline_events": 0
+    },
+    "anthropic": {
+      "name": "Anthropic",
+      "domains": [
+        "大模型",
+        "AI安全"
+      ],
+      "timeline_events": 0
+    },
+    "nvidia": {
+      "name": "NVIDIA / 英伟达",
+      "domains": [
+        "AI芯片",
+        "GPU",
+        "AI计算"
+      ],
+      "timeline_events": 0
+    },
+    "bytedance": {
+      "name": "字节跳动",
+      "domains": [
+        "大模型",
+        "应用",
+        "推荐"
+      ],
+      "timeline_events": 0
+    },
+    "baidu": {
+      "name": "百度",
+      "domains": [
+        "大模型",
+        "自动驾驶",
+        "搜索"
+      ],
+      "timeline_events": 0
+    },
+    "alibaba": {
+      "name": "阿里巴巴",
+      "domains": [
+        "云计算",
+        "大模型",
+        "开源"
+      ],
+      "timeline_events": 0
+    },
+    "tencent": {
+      "name": "腾讯",
+      "domains": [
+        "大模型",
+        "社交",
+        "游戏"
+      ],
+      "timeline_events": 0
+    },
+    "perplexity": {
+      "name": "Perplexity",
+      "domains": [
+        "AI搜索",
+        "Agent"
+      ],
+      "timeline_events": 0
+    }
+  }
+}

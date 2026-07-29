@@ -1,0 +1,196 @@
+{
+  "timestamp": "2026-06-17T09:40:44.130861",
+  "layers": [
+    {
+      "layer": 1,
+      "name": "分类回归",
+      "golden_tests": [
+        {
+          "id": 1,
+          "input": "我需要一篇关于新能源电池技术路线的深度分析，面向投资人群，要求数据驱动",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 2,
+          "input": "帮我写一篇今日A股收盘快评，300字以内，面向散户",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 3,
+          "input": "写一份面向开发者的 REST API 接口文档，需要包含认证、端点、错误码",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "confidence": 0.72,
+          "latency_ms": 0
+        },
+        {
+          "id": 4,
+          "input": "写一篇科普文章解释量子计算，面向高中生，要有类比",
+          "expected": "C",
+          "actual": "C",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 5,
+          "input": "帮我写一篇关于AI伦理的评论文章，要有深度思考和批判性",
+          "expected": "E",
+          "actual": "E",
+          "passed": true,
+          "confidence": 0.51,
+          "latency_ms": 0
+        },
+        {
+          "id": 6,
+          "input": "写一份面向C端用户的新产品上市营销文案，强调性价比",
+          "expected": "F",
+          "actual": "F",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 7,
+          "input": "生成一份关于2026年Q2芯片行业的季度分析报告，含市场份额和趋势预测",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "confidence": 0.65,
+          "latency_ms": 0
+        },
+        {
+          "id": 8,
+          "input": "写一条A股午间简讯，覆盖三大指数和热点板块，150字",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "confidence": 0.51,
+          "latency_ms": 0
+        },
+        {
+          "id": 9,
+          "input": "写一个Python Flask用户认证模块的README文档，含安装和使用示例",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 10,
+          "input": "用通俗语言解释什么是机器学习，面向小学生，用生活中的例子",
+          "expected": "C",
+          "actual": "C",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 11,
+          "input": "写一篇对当前AI监管政策的评论，要有正方和反方的对比分析",
+          "expected": "E",
+          "actual": "E",
+          "passed": true,
+          "confidence": 0.51,
+          "latency_ms": 0
+        },
+        {
+          "id": 12,
+          "input": "写一份双十一促销活动营销文案，面向25-35岁女性用户",
+          "expected": "F",
+          "actual": "F",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 13,
+          "input": "撰写一份面向监管机构的白皮书，关于金融科技的风险管理",
+          "expected": "B",
+          "actual": "B",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 14,
+          "input": "写一段今日A股收盘速递，三大指数涨跌情况和成交量",
+          "expected": "A",
+          "actual": "A",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        },
+        {
+          "id": 15,
+          "input": "写一份Python数据分析库pandas的API参考手册，按模块组织",
+          "expected": "D",
+          "actual": "D",
+          "passed": true,
+          "confidence": 0.5800000000000001,
+          "latency_ms": 0
+        }
+      ],
+      "edge_cases": [
+        {
+          "id": 1,
+          "case": "empty_input",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 2,
+          "case": "whitespace_only",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 3,
+          "case": "punctuation_only",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 4,
+          "case": "vague_no_context",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 0
+        },
+        {
+          "id": 5,
+          "case": "very_long_input",
+          "result": "UNKNOWN",
+          "crashed": false,
+          "latency_ms": 2
+        }
+      ],
+      "accuracy": 100.0,
+      "golden_passed": 15,
+      "golden_total": 15
+    },
+    {
+      "layer": 2,
+      "name": "集群能力基准",
+      "error": "No module named 'continuous'"
+    },
+    {
+      "layer": 3,
+      "name": "质量评估",
+      "error": "cannot access local variable 'l2' where it is not associated with a value"
+    }
+  ]
+}

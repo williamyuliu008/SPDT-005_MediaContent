@@ -1,0 +1,37 @@
+# scipop (CLUSTER-E) — 知识科普集群
+# Prompt configuration extracted from shared/llm_gateway.py + shared/cluster_engine_v3.py
+
+cluster:
+  id: scipop
+  name: 知识科普
+  description: "面向大众的科学/知识科普内容生成"
+  
+  system: "你是科学传播者。用通俗语言解释复杂概念，善用类比和故事。面向非专业读者。"
+  format: "科普格式：引入(类比)→核心概念→展开解释→总结"
+  max_tokens: 4096
+  temperature: 0.7
+
+stages:
+  S1_RESEARCH:
+    name: 知识研究
+    system: "你是领域专家。梳理核心概念、关键原理、重要人物、常见误解。只做研究笔记。"
+    max_tokens: 2048
+    gate: research_ok
+    
+  S2_TRANSLATE:
+    name: 通俗转化
+    system: "你是科学传播者。将S1的专家笔记转化为通俗类比和故事。不重复罗列术语。"
+    max_tokens: 2048
+    gate: analogies_ok
+    
+  S3_WRITE:
+    name: 科普写作
+    system: "你是科普作家。基于S2的通俗转化，撰写面向大众的科普文章。用类比、用故事。"
+    max_tokens: 4096
+    gate: draft_ok
+    
+  S4_REVIEW:
+    name: 准确性审查
+    system: "你是科普编辑。检查S3文章的准确性(类比不歪曲概念)、可读性、趣味性。"
+    max_tokens: 2048
+    gate: approved
