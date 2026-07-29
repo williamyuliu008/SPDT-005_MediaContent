@@ -1,14 +1,14 @@
 # SPDT-005: 媒体内容制造 (Media Content Manufacturing)
-# 版本：v2.1（2026-07-29 更新）
-# 核心变更：协调型五阶段流水线重构
+# 版本：v2.2（2026-07-30 更新）
+# 核心变更：SOP v1.2 — 三维分类体系 + 内容产品框架 + 接口体系
 
 spdt_id: SPDT-005
 spdt_name: 媒体内容制造
 spdt_name_en: Media Content Manufacturing
 owner_agent: agent-e926h
 created: 2026-07-10
-version: 2.1
-last_updated: 2026-07-29
+version: 2.2
+last_updated: 2026-07-30
 
 description: |
   以 smarttext_router 路由器 + 6 集群架构为核心，覆盖从实时快讯到深度长文、
@@ -134,13 +134,34 @@ sop:
 modlib_consumption:
   schemas:
     - id: article_v2_schema
+      version: "2.0.0"
+      path: D:/1_omas/MODLIB/schemas/article_v2.schema.json
+      status: active
+      description: "核心工件Schema（blocks+metadata+gray_zones），IF-P-3接口"
+    - id: intelligence_brief_schema
       version: "1.0.0"
-      path: D:/1_omas/MODLIB/content_manufacturing/schemas/article_v2_schema.json
-      status: pending    # 待从 ManuscriptsEngine 提取
+      path: D:/1_omas/MODLIB/schemas/intelligence_brief.schema.json
+      status: active
+      description: "情报简报Schema，IF-P-1接口"
+    - id: article_outline_schema
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/schemas/article_outline.schema.json
+      status: active
+      description: "文章大纲Schema，IF-P-2接口"
+    - id: quality_scorecard_schema
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/schemas/quality_scorecard.schema.json
+      status: active
+      description: "质量记分卡Schema，IF-P-4接口"
+    - id: content_product_schema
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/schemas/content_product.schema.json
+      status: active
+      description: "内容产品Schema，IF-P-5接口"
     - id: quality_gate_schema
       version: "1.0.0"
-      path: D:/1_omas/MODLIB/content_manufacturing/schemas/quality_gate_schema.json
-      status: pending    # 待建立
+      path: D:/1_omas/MODLIB/schemas/quality_gate_schema.json
+      status: active
   templates:
     - id: content_spec_template
       version: "1.0.0"
@@ -152,15 +173,23 @@ modlib_consumption:
       path: D:/1_omas/MODLIB/content_manufacturing/genre_registry/
       domains: [education, media]
   protocols:
-    - id: IF-A_scene_json_v2
-      version: "2.0.0"
-      path: D:/1_omas/MODLIB/content_manufacturing/interface_protocols/IF-A_scene_json_v2.schema.json
-    - id: IF-B_video_package
+    - id: IF-P_pipeline_interfaces
       version: "1.0.0"
-      path: D:/1_omas/MODLIB/content_manufacturing/interface_protocols/IF-B_video_package.schema.json
-    - id: IF-C_card_package
+      path: D:/1_omas/MODLIB/interface_protocols/IF-P_pipeline_interfaces.yaml
+      status: draft
+      description: "内容制造管线五阶段接口协议（IF-P-1~IF-P-5 + 灰区工单）"
+    - id: IF-A_audio_synthesis
       version: "1.0.0"
-      path: D:/1_omas/MODLIB/content_manufacturing/interface_protocols/IF-C_card_package.schema.json
+      path: D:/1_omas/MODLIB/interface_protocols/IF-A_audio_synthesis.yaml
+      status: frozen
+    - id: IF-B_video_rendering
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/interface_protocols/IF-B_video_rendering.yaml
+      status: frozen
+    - id: IF-C_card_generation
+      version: "1.0.0"
+      path: D:/1_omas/MODLIB/interface_protocols/IF-C_card_generation.yaml
+      status: frozen
 
 # =============================================================================
 # PDT 产品线
@@ -346,8 +375,11 @@ kpis:
     current: "~40%"
     target: "≥85%"
   - metric: MODLIB media 领域 Schema
-    current: "待建立（article_v2 / news_v2 Schema）"
+    current: "5个Schema已注册（article_v2/intelligence_brief/article_outline/quality_scorecard/content_product）"
     target: "article_v2 + news_v2 Schema 完成注册"
+  - metric: IF-P 管线接口协议
+    current: "IF-P v1.0.0 draft（5阶段接口+灰区工单）"
+    target: "IF-P frozen + 完整Gate Rules实现"
 
 # =============================================================================
 # 技术栈
@@ -363,6 +395,16 @@ tech_stack:
 # 重大架构变更记录
 # =============================================================================
 architecture_changes:
+  - date: 2026-07-30
+    change: v2.2 SOP v1.2 — 三维分类体系 + 内容产品框架 + 接口体系
+    details:
+      - governance/SPDT-005_SOP.md 升级至 v1.2（§3三维分类+§6内容产品+§7接口体系）
+      - 新增 platform/kb/content_type_registry.yaml v1.1（每个类型加 pipeline_dimensions）
+      - 新增 governance/SPDT-005_SOP.md 引用 MODLIB IF-P 接口协议
+      - 新增 platform/5_deliver/product/（ProductFormatter/MetadataGenerator/ChannelAdapter）
+      - 新增 docs/pipeline_module_matrix.md（6类型×5阶段×模块功能需求矩阵）
+      - MODLIB 新增：IF-P_pipeline_interfaces.yaml + 5个工件Schema
+      - MODLIB 新增：article_v2/intelligence_brief/article_outline/quality_scorecard/content_product Schema
   - date: 2026-07-29
     change: v2.1 协调型五阶段流水线重构
     details:

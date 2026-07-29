@@ -1,0 +1,171 @@
+# -*- coding: utf-8 -*-
+"""SPDT-005 media_gates 集成测试（encoding-safe）"""
+import sys, os, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+sys.path.insert(0, os.path.dirname(__file__))
+from media_gates import (
+    GSourceGate, GTimelinessGate, GFactualGate, GStyleGate,
+    MediaGateRunner, GatePath
+)
+from datetime import datetime, timezone, timedelta
+
+PASS = "[PASS]"
+FAIL = "[FAIL]"
+
+def t(label, cond):
+    status = PASS if cond else FAIL
+    print(f"  {status} {label}")
+    return cond
+
+all_pass = True
+
+# ── G-SOURCE ──────────────────────────────────────────────────────────
+print("G-SOURCE:")
+g = GSourceGate()
+
+r = g.check({})
+all_pass &= t("no sources -> FAILURE", r.path == GatePath.FAILURE)
+
+r = g.check({"sources": [{"name": "Twitter", "trust_level": "E"}]})
+all_pass &= t("E source -> FAILURE", r.path == GatePath.FAILURE)
+
+r = g.check({"sources": [{"name": "DigiTimes", "trust_level": "D"}]})
+all_pass &= t("D source -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+r = g.check({"sources": [{"name": "Nikkei", "trust_level": "C"}]})
+all_pass &= t("C source -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+# scene_v2 格式
+r = g.check({
+    "scenes": [{
+        "source_knowledge_nodes": [{"name": "CNBC", "trust_level": "C"}]
+    }]
+})
+all_pass &= t("scene_v2 format with C source -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+# ── G-TIMELINESS ────────────────────────────────────────────────────
+print("\nG-TIMELINESS:")
+g = GTimelinessGate()
+now = datetime.now(timezone.utc)
+
+recent = (now - timedelta(hours=2)).isoformat()
+r = g.check({"metadata": {"event_time": recent, "content_type": "breaking_news"}})
+all_pass &= t("breaking_news 2h -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+old = (now - timedelta(hours=10)).isoformat()
+r = g.check({"metadata": {"event_time": old, "content_type": "breaking_news"}})
+all_pass &= t("breaking_news 10h -> GRAY_ZONE", r.path == GatePath.GRAY_ZONE)
+
+very_old = (now - timedelta(hours=30)).isoformat()
+r = g.check({"metadata": {"event_time": very_old, "content_type": "breaking_news"}})
+all_pass &= t("breaking_news 30h -> FAILURE", r.path == GatePath.FAILURE)
+
+recent2 = (now - timedelta(hours=48)).isoformat()
+r = g.check({"metadata": {"event_time": recent2, "content_type": "deep_industry_report"}})
+all_pass &= t("deep_report 48h -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+r = g.check({"metadata": {}})
+all_pass &= t("no event_time -> GRAY_ZONE", r.path == GatePath.GRAY_ZONE)
+
+# ── G-FACTUAL ────────────────────────────────────────────────────────
+print("\nG-FACTUAL:")
+g = GFactualGate()
+
+r = g.check({"metadata": {"content_type": "breaking_news"}})
+# empty article -> sunshine
+all_pass &= t("empty article -> SUNSHINE (no claims)", r.path == GatePath.SUNSHINE)
+
+r = g.check({
+    "scenes": [{
+        "scene_id": "scene_001", "scene_type": "action",
+        "content": {"text": "市场份额达到25.5%，同比增长3倍"},
+        "source_knowledge_nodes": []
+    }]
+})
+all_pass &= t("numeric claims, no source -> GRAY_ZONE", r.path == GatePath.GRAY_ZONE)
+
+r = g.check({
+    "scenes": [{
+        "scene_id": "scene_001", "scene_type": "action",
+        "content": {"text": "市场份额达到25.5%"},
+        "source_knowledge_nodes": [{"node_id": "n1", "statement": "市场份额25.5%"}]
+    }]
+})
+all_pass &= t("sourced claims -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+r = g.check({
+    "metadata": {
+        "factuality": {
+            "errors": [{"claim": "2024年", "actual": "2023年"}]
+        }
+    }
+})
+all_pass &= t("factuality errors -> FAILURE", r.path == GatePath.FAILURE)
+
+# ── G-STYLE ──────────────────────────────────────────────────────────
+print("\nG-STYLE:")
+g = GStyleGate()
+
+r = g.check({
+    "metadata": {
+        "content_type": "deep_industry_report",
+        "executive_summary": "本报告深入分析2026年第二季度全球半导体市场动态，受AI算力需求强劲驱动，行业整体营收同比增长12%，环比增长5%，头部代工厂产能利用率维持高位。",
+    },
+    "body": [
+        "本节介绍全球半导体行业整体规模。2026年第二季度，在AI算力需求的强劲驱动下，行业营收同比增长12%，环比增长5%。",
+        "头部代工厂台积电、三星、英特尔产能利用率维持高位。AI GPU 需求是主要增长引擎，带动 CoWoS 封装产能持续紧张。",
+        "从区域分布来看，台湾、韩国、日本和中国大陆占据全球晶圆代工产能的85%以上。",
+        "本报告数据来源包括：Gartner、IDC、TrendForce 等权威研究机构，以及各家代工厂的官方财报。",
+        "展望下半年，随着消费电子需求复苏和 AI 应用场景持续扩展，半导体行业景气度有望继续维持。",
+        "投资建议：关注先进制程和先进封装赛道。",
+        "本报告的分析结论仅供参考，不构成投资建议。",
+        "附：主要研究方法说明。本报告采用一手数据访谈和二手文献综述相结合的方式。",
+    ]
+})
+all_pass &= t("proper deep_report -> SUNSHINE", r.path == GatePath.SUNSHINE)
+
+r = g.check({
+    "metadata": {"content_type": "breaking_news", "headline": "这是一个10字以上的快讯标题"},
+    "body": ["p1。", "p2。"]  # < 3 paragraphs
+})
+all_pass &= t("breaking_news too few para -> GRAY_ZONE", r.path == GatePath.GRAY_ZONE)
+
+r = g.check({
+    "metadata": {"content_type": "breaking_news"},
+    "body": ["p1。", "p2。", "p3。"]
+})
+all_pass &= t("breaking_news no headline -> GRAY_ZONE", r.path == GatePath.GRAY_ZONE)
+
+# ── MediaGateRunner ──────────────────────────────────────────────────
+print("\nMediaGateRunner:")
+runner = MediaGateRunner()
+now = datetime.now(timezone.utc)
+article = {
+    "metadata": {
+        "content_type": "breaking_news",
+        "headline": "这是一个10字以上的快讯标题",
+        "event_time": (now - timedelta(hours=2)).isoformat(),
+        "executive_summary": "简短摘要。",
+        "factuality": {"errors": [], "warnings": []}
+    },
+    "sources": [{"name": "CNBC", "trust_level": "C"}],
+    "body": ["p1。", "p2。", "p3。"]
+}
+result = runner.run_all(article)
+all_pass &= t("runner has overall_pass", "overall_pass" in result)
+all_pass &= t("runner has gates", "gates" in result)
+all_pass &= t("runner has failure_gates", "failure_gates" in result)
+all_pass &= t("runner has gray_zone_gates", "gray_zone_gates" in result)
+all_pass &= t("runner overall_pass=True", result["overall_pass"] == True)
+print(f"  [INFO] sunshine_gates: {result['sunshine_gates']}")
+print(f"  [INFO] gray_zone_gates: {result['gray_zone_gates']}")
+print(f"  [INFO] failure_gates: {result['failure_gates']}")
+
+# ── Summary ──────────────────────────────────────────────────────────
+print()
+if all_pass:
+    print("=== ALL TESTS PASSED ===")
+else:
+    print("=== SOME TESTS FAILED ===")
+    sys.exit(1)

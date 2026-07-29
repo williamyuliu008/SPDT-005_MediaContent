@@ -1,88 +1,75 @@
-﻿# SPDT-005_MediaContent 与 OMAS 衔接配置
 spdt_id: SPDT-005
-spdt_name: 媒体内容制造
+spdt_name: 媒体内容产品线
 category: media
-domains: [media, publishing]
+domains: [media, journalism]
 
-# ── SOP 路由结果 ──
-sop_family: content_manufacturing
-sop_version: v4.0
-execution_spec: "D:/1_omas/governance/内容制造管线执行规范_v1.0.md"
-
-# ── 五阶段管线声明 ──
 pipeline:
   sop_family: content_manufacturing
   sop_version: v4.0
   execution_spec: "D:/1_omas/governance/内容制造管线执行规范_v1.0.md"
-  modlib_root: "D:/1_omas/MODLIB/"
-  stages_active: [1_ingest, 2_structure, 3_render, 4_adapt, 5_deliver]
-  stages_planned: []
+  modlib_root: "D:/1_omas/MODLIB/content_manufacturing/"
+  stages_active: [1_ingest, 2_structure, 3_render, 5_deliver]
+  stages_planned: [4_adapt]
   domain: media
 
   stage_detail:
     1_ingest:
-      router: smarttext_router
-      modlib: content_spec_template
       status: active
-      junction_type: internal
+      router: smarttext_router     # 现有入口
+      modlib: [content_spec, ingested_entry_schema, audit_log_schema]
+      SOP_stage: M0（素材采集+初审）→ M1（题材判断）
     2_structure:
-      genre_engine: article_v2
-      modlib: [scene_v2_schema, genre_registry, media_adapter]
       status: active
-      junction_type: external
-      external_ref: PT-047_SocSciAgent
+      engines: [scene_orchestrator]  # scene_v2 → media adapter 映射
+      modlib: [scene_v2_v2.3, genre_registry, quality_gate_v1]
+      adapter: media.content_type_mapper  # deep_historical_narrative → article_v2 等
+      SOP_stage: M2（结构设计 + Genre Registry）→ M3a（模板匹配）
     3_render:
-      engines: [text]
-      quality_gates: [G-SOURCE, G-TIMELINESS, G-FACTUAL, G-STYLE, G-STRUCTURE, G-FORMAT]
-      modlib: [quality_gate_schema, IF-A, IF-B, IF-C]
       status: active
+      tools: [writer_agent, layout_engine]
+      modlib: [content_manufacturing_template_v1]
+      SOP_stage: M3b（初稿生成）→ M4a（风格渲染）
     4_adapt:
-      scorecard: content_scorecard_v1
-      modlib: [quality_gate_schema]
-      status: active
+      status: planned
+      description: "场景适配层 — 将通用 content_template 适配为 media 领域的具体形态（article_v2/news_v2/report_v2）"
+      modlib: [media_adapter_schema]
     5_deliver:
-      channels: [web, feeds, mobile, feishu, wechat_mp]
-      publish: autopublish
       status: active
+      tools: [autopublish]           # 现有出口
+      gates: [G-SOURCE, G-TIMELINESS, G-FACTUAL, G-STYLE]  # 媒体四门禁
+      modlib: [quality_gate_v1, delivery_spec_v1]
+      SOP_stage: M5（质量门禁）→ 交付
 
-# ── 依赖的 OMAS Cell ──
-omas_cells:
-  - cell: CMC
-    capabilities: [content_pipeline, genre_registry, multimedia_generation]
-    modlib: D:/1_omas/MODLIB/
-  - cell: Infra
-    capabilities: [model_router]
-  - cell: SDC
-    capabilities: [template_design, channel_adapter]
-  - cell: DSC
-    role: 赛道规划与能力矩阵维护
-
-# ── MODLIB 纳管声明 ──
 modlib_consumption:
   schemas:
-    - scene_v2_schema
-    - quality_gate_schema
-  templates:
-    - content_spec_template
-  registries:
-    - genre_registry
-  protocols:
-    - IF-A_audio_synthesis
-    - IF-B_video_rendering
-    - IF-C_card_generation
-  adapters:
-    - media_adapter
+    - path: "D:/1_omas/src/MODLIB/schemas/content_spec_v1.schema.json"
+      usage: "内容规格入口 — smarttext_router 输入验证"
+    - path: "D:/1_omas/src/MODLIB/schemas/scene_v2_v2.3.schema.json"
+      usage: "场景结构 — scene_orchestrator 生成 scene_v2 实例"
+    - path: "D:/1_omas/src/MODLIB/schemas/quality_gate_v1.schema.json"
+      usage: "质量门禁定义 — 5_deliver 阶段门禁检查"
 
-# ── 领域本体引用 ──
-ontology:
-  - domain: media_calendar
-    profile: D:/1_omas/toolbox/Ontology/profiles/media/
+  governance:
+    - "CMC 五阶段管线规范 (SOP v4.0)"
+    - "SPDT 双周调研 SOP v1.0"
 
-# ── 知识库 ──
-knowledge_bases:
-  - collection: media_knowledge
-    path_env: SPDT_MEDIA_ROOT
-    local: platform/services/SocSciAgent/kb/
+methodology:
+  dual_agent_calibration:
+    enabled: true
+    domains: [media]
+    gates: [G-FACTUAL, G-STYLE]
+    description: "媒体内容的事实+风格双 Agent 校准"
 
-# ── 反哺记录 ──
-feedback: []
+  quality_gates:
+    G-SOURCE: { type: "source_verification", severity: "blocker" }
+    G-TIMELINESS: { type: "timeliness", severity: "blocker" }
+    G-FACTUAL: { type: "factual_accuracy", severity: "blocker" }
+    G-STYLE: { type: "style_compliance", severity: "warning" }
+
+omas_cells_consumed:
+  - cell: QAC
+    capabilities: [quality_gate_engine, dual_agent_calibration]
+  - cell: MODLIB
+    capabilities: [content_spec, scene_v2, quality_gate]
+  - cell: CMC
+    capabilities: [pipeline_exec_spec]

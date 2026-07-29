@@ -412,7 +412,100 @@ ContentProduct = {
 
 ---
 
-## 7. 内容类型路由规则
+## 7. 管线接口体系
+
+> 接口定义来源：MODLIB `interface_protocols/IF-P_pipeline_interfaces.yaml`
+> Schema 定义：MODLIB `schemas/*.schema.json`
+
+### 7.1 接口设计的核心原则
+
+1. **阶段间传递 JSON Artifact**：每个阶段输出的不是函数调用，而是自包含的 JSON 工件
+2. **协议头统一**：所有 Artifact 都携带标准 header（artifact_id / content_type / pipeline_dimensions / produced_at）
+3. **Schema 版本化**：接口 Schema 有明确版本号（当前 v1.0.0 draft）
+4. **灰区跨阶段传递**：灰区标记不局限于某阶段，在 Artifact 中流转直至关闭
+
+### 7.2 五阶段接口流
+
+```
+IF-P-1                IF-P-2               IF-P-3               IF-P-4              IF-P-5
+Ingest ─────→ Structure ────→ Render ────→ Adapt ────→ Deliver ──→ ContentProduct
+              │              │             │            │
+Intelligence  ArticleOutline  Article_v2   Article_v2  Autopublish
+Brief         (蓝图)         (稿件)       +Scorecard  (发布)
+                           ↑               │
+                           │               │
+                     Schema版本:        Schema版本:
+                     article_v2.schema  quality_scorecard.schema
+```
+
+### 7.3 五大接口详解
+
+| 接口 | Artifact | Schema | 关键字段 |
+|:---|:---|:---|:---|
+| **IF-P-1** | IntelligenceBrief | `intelligence_brief.schema.json` | signals（情报信号）/ sources（来源分级A/B/C）/ knowledge_gaps |
+| **IF-P-2** | ArticleOutline | `article_outline.schema.json` | sections（章节蓝图）/ word_count_target / knowledge_graph |
+| **IF-P-3** | Article_v2 | `article_v2.schema.json` | blocks（内容块数组）/ terms（术语表）/ gray_zones |
+| **IF-P-4** | Article_v2 + QualityScorecard | `quality_scorecard.schema.json` | total_score / dimensions / gray_zones / action |
+| **IF-P-5** | ContentProduct | `content_product.schema.json` | metadata / formatting / channel_packages |
+
+### 7.4 协议头的标准结构
+
+所有 Artifact 的 header 必须包含：
+
+```
+header:
+  artifact_id:      "ART-{type}-{content_type}-{date}-{uuid8}"   # 全局唯一
+  artifact_type:    "intelligence_brief / article_outline / article_v2 / quality_scorecard"
+  version:          Schema版本（如 "1.0.0"）
+  content_type:     内容类型（对应 registry.yaml）
+  pipeline_dimensions:
+    accuracy:       1-5
+    literary:       1-5
+    professional_depth: 1-5
+  pipeline_id:      管线实例ID（用于追踪）
+  produced_at:      ISO 8601 时间戳
+  producer:         生产模块路径
+```
+
+### 7.5 质量门控规则（Gate Rules）
+
+每个阶段的输出必须通过 Schema 校验：
+
+```
+IF-P-1 → IF-P-2 门控：
+  · signals.length >= 1
+  · 所有 sources 必须有 grade（A/B/C）
+
+IF-P-2 → IF-P-3 门控：
+  · sections.length >= 1
+  · 每个 section 必须有 section_id / title / target_words
+
+IF-P-3 → IF-P-4 门控：
+  · blocks.length >= 1
+  · blocks 必须包含 required_blocks（由 outline 定义）
+  · 所有 citations.source_id 必须在 IF-P-1 sources 中存在（禁止幻觉引用）
+
+IF-P-4 → IF-P-5 门控：
+  · total_score >= threshold → PASS → 进入 product 化
+  · total_score < threshold → FAIL → 退回 Render 修改
+  · gray_zones.length > 0 AND unresolved → HOLD → 等待人工确认
+```
+
+### 7.6 灰区工单生命周期
+
+```
+灰区触发 → 工单创建（ticket_id = GRAY-{stage}-{content_type}-{timestamp}）
+    │
+    ├──→ [open]        人工审核中
+    │        │
+    │        ├──→ [approved]  关闭，管线继续
+    │        ├──→ [rejected]   拒绝，内容退回对应阶段
+    │        └──→ [escalated]  升级至主编/合规
+    │
+    └──→ 自动关闭（如果内容修改后灰区消失）
+```
+
+灰区类型：G-POLITICAL / G-SOURCE / G-TIMELINESS / G-FACTUAL / G-LEGAL
 
 路由依据：`ContentSpec.content_type` 字段
 
@@ -450,7 +543,7 @@ pipeline_router.py 执行逻辑：
 
 ---
 
-## 9. 文件索引
+## 10. 文件索引
 
 | 文件 | 用途 |
 |:---|:---|
@@ -462,11 +555,23 @@ pipeline_router.py 执行逻辑：
 | `platform/5_deliver/product/` | 内容产品化模块（ProductFormatter / MetadataGenerator / ChannelAdapter） |
 | `docs/pipeline_module_matrix.md` | 管线模块选择矩阵 — 各类型的模块执行路径 |
 
+### MODLIB 接口文件（跨 SPDT 共享）
+
+| 文件 | 用途 |
+|:---|:---|
+| `D:/1_omas/MODLIB/interface_protocols/IF-P_pipeline_interfaces.yaml` | 管线接口协议 — 五阶段接口定义 |
+| `D:/1_omas/MODLIB/schemas/article_v2.schema.json` | Article_v2 工件 Schema v2.0 |
+| `D:/1_omas/MODLIB/schemas/intelligence_brief.schema.json` | IntelligenceBrief Schema v1.0 |
+| `D:/1_omas/MODLIB/schemas/article_outline.schema.json` | ArticleOutline Schema v1.0 |
+| `D:/1_omas/MODLIB/schemas/quality_scorecard.schema.json` | QualityScorecard Schema v1.0 |
+| `D:/1_omas/MODLIB/schemas/content_product.schema.json` | ContentProduct Schema v1.0 |
+
 ---
 
-## 10. SOP 版本历史
+## 11. SOP 版本历史
 
 | 版本 | 日期 | 变更 |
 |:---|:---|:---|
 | v1.0 | 2026-07-29 | 初版：元结构 + 内容类型注册表 |
 | v1.1 | 2026-07-30 | 新增三维分类体系（准确性/文学性/专业性）；新增内容产品框架（Content Product三层结构）；新增模块选择矩阵文档；更新人类检查点矩阵 |
+| v1.2 | 2026-07-30 | 新增管线接口体系（§7五阶段接口+Gate Rules+灰区工单生命周期）；引用MODLIB IF-P接口协议；新增MODLIB接口文件索引 |

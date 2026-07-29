@@ -1,0 +1,240 @@
+# -*- coding: utf-8 -*-
+"""SPDT-005 media_gates 集成测试"""
+import sys, os
+sys.path.insert(0, os.path.dirname(__file__))
+
+from media_gates import (
+    GSourceGate, GTimelinessGate, GFactualGate, GStyleGate,
+    MediaGateRunner, GatePath
+)
+
+def test_G_SOURCE():
+    """G-SOURCE: 信源可靠性测试"""
+    gate = GSourceGate()
+
+    # Test 1: 无信源 → FAILURE
+    r = gate.check({"metadata": {}})
+    assert r.path == GatePath.FAILURE, f"FAIL: no sources → {r.path}"
+    print(f"[G-SOURCE] no sources: {r.path.value}")
+
+    # Test 2: E/F 级信源 → FAILURE
+    r = gate.check({
+        "sources": [
+            {"name": "Twitter", "trust_level": "E"},
+            {"name": "unverified blog", "trust_level": "F"},
+        ]
+    })
+    assert r.path == GatePath.FAILURE, f"FAIL: E/F sources → {r.path}"
+    print(f"[G-SOURCE] E/F级信源: {r.path.value} ✓")
+
+    # Test 3: D 级信源 → SUNSHINE
+    r = gate.check({
+        "sources": [
+            {"name": "DigiTimes", "trust_level": "D"},
+        ]
+    })
+    assert r.path == GatePath.SUNSHINE, f"FAIL: D source → {r.path}"
+    print(f"[G-SOURCE] D级信源: {r.path.value} ✓")
+
+    # Test 4: C 级信源 → SUNSHINE
+    r = gate.check({
+        "sources": [
+            {"name": "Nikkei Asia", "trust_level": "C"},
+        ]
+    })
+    assert r.path == GatePath.SUNSHINE, f"FAIL: C source → {r.path}"
+    print(f"[G-SOURCE] C级信源: {r.path.value} ✓")
+
+
+def test_G_TIMELINESS():
+    """G-TIMELINESS: 时效性测试"""
+    gate = GTimelinessGate()
+
+    from datetime import datetime, timezone, timedelta
+
+    now = datetime.now(timezone.utc)
+
+    # Test 1: 快讯4小时内 → SUNSHINE
+    recent = (now - timedelta(hours=2)).isoformat()
+    r = gate.check({
+        "metadata": {
+            "event_time": recent,
+            "content_type": "breaking_news",
+        }
+    })
+    assert r.path == GatePath.SUNSHINE, f"FAIL: recent breaking_news → {r.path}"
+    print(f"[G-TIMELINESS] 快讯2小时内: {r.path.value} ✓")
+
+    # Test 2: 快讯超4小时但<24h → GRAY_ZONE
+    old = (now - timedelta(hours=10)).isoformat()
+    r = gate.check({
+        "metadata": {
+            "event_time": old,
+            "content_type": "breaking_news",
+        }
+    })
+    assert r.path == GatePath.GRAY_ZONE, f"FAIL: breaking_news 10h old → {r.path}"
+    print(f"[G-TIMELINESS] 快讯10小时前: {r.path.value} ✓")
+
+    # Test 3: 快讯超24小时 → FAILURE
+    very_old = (now - timedelta(hours=30)).isoformat()
+    r = gate.check({
+        "metadata": {
+            "event_time": very_old,
+            "content_type": "breaking_news",
+        }
+    })
+    assert r.path == GatePath.FAILURE, f"FAIL: breaking_news 30h old → {r.path}"
+    print(f"[G-TIMELINESS] 快讯30小时前: {r.path.value} ✓")
+
+    # Test 4: 深度报告72小时内 → SUNSHINE
+    recent2 = (now - timedelta(hours=48)).isoformat()
+    r = gate.check({
+        "metadata": {
+            "event_time": recent2,
+            "content_type": "deep_industry_report",
+        }
+    })
+    assert r.path == GatePath.SUNSHINE, f"FAIL: report 48h old → {r.path}"
+    print(f"[G-TIMELINESS] 深度报告48小时内: {r.path.value} ✓")
+
+    # Test 5: 无 event_time → GRAY_ZONE
+    r = gate.check({"metadata": {}})
+    assert r.path == GatePath.GRAY_ZONE, f"FAIL: no event_time → {r.path}"
+    print(f"[G-TIMELINESS] 无event_time: {r.path.value} ✓")
+
+
+def test_G_FACTUAL():
+    """G-FACTUAL: 事实核查测试"""
+    gate = GFactualGate()
+
+    # Test 1: 无信源节点且无数字声明 → SUNSHINE（无内容可查）
+    r = gate.check({"metadata": {"content_type": "breaking_news"}})
+    # No claims, no knowledge_nodes → sunshine
+    print(f"[G-FACTUAL] 空文章: {r.path.value}")
+
+    # Test 2: 有数字声明但无信源节点 → GRAY_ZONE
+    r = gate.check({
+        "scenes": [{
+            "scene_id": "scene_001",
+            "scene_type": "action",
+            "content": {"text": "该公司市场份额达到25.5%，同比增长3倍"},
+            "source_knowledge_nodes": []  # 空
+        }]
+    })
+    assert r.path == GatePath.GRAY_ZONE, f"FAIL: claims no source → {r.path}"
+    print(f"[G-FACTUAL] 数字声明无溯源: {r.path.value} ✓")
+
+    # Test 3: 有信源节点覆盖 → SUNSHINE
+    r = gate.check({
+        "scenes": [{
+            "scene_id": "scene_001",
+            "scene_type": "action",
+            "content": {"text": "该公司市场份额达到25.5%"},
+            "source_knowledge_nodes": [
+                {"node_id": "n1", "statement": "市场份额25.5%", "source": "DigiTimes"}
+            ]
+        }]
+    })
+    assert r.path == GatePath.SUNSHINE, f"FAIL: sourced claims → {r.path}"
+    print(f"[G-FACTUAL] 声明有溯源: {r.path.value} ✓")
+
+    # Test 4: factuality metadata 标注错误 → FAILURE
+    r = gate.check({
+        "metadata": {
+            "factuality": {
+                "errors": [{"claim": "2024年", "actual": "2023年", "severity": "critical"}]
+            }
+        }
+    })
+    assert r.path == GatePath.FAILURE, f"FAIL: factuality errors → {r.path}"
+    print(f"[G-FACTUAL] factuality标注错误: {r.path.value} ✓")
+
+
+def test_G_STYLE():
+    """G-STYLE: 风格合规测试"""
+    gate = GStyleGate()
+
+    # Test 1: 深度报告结构完整 → SUNSHINE
+    r = gate.check({
+        "metadata": {
+            "content_type": "deep_industry_report",
+            "executive_summary": "本报告分析半导体行业2026年第二季度市场动态，受AI需求驱动，整体营收同比增长12%。" * 2,
+        },
+        "body": ["段落1内容。", "段落2内容。", "段落3内容。", "段落4内容。",
+                  "段落5内容。", "段落6内容。", "段落7内容。", "段落8内容。",
+                  "段落9内容。"]
+    })
+    assert r.path == GatePath.SUNSHINE, f"FAIL: proper deep_report → {r.path}"
+    print(f"[G-STYLE] 完整深度报告: {r.path.value} ✓")
+
+    # Test 2: 快讯段落不足 → GRAY_ZONE
+    r = gate.check({
+        "metadata": {
+            "content_type": "breaking_news",
+            "headline": "这是一个10字以上的快讯标题",
+        },
+        "body": ["段落1。", "段落2。"]  # < 3 段落
+    })
+    assert r.path == GatePath.GRAY_ZONE, f"FAIL: breaking_news too few para → {r.path}"
+    print(f"[G-STYLE] 快讯段落不足: {r.path.value} ✓")
+
+    # Test 3: 快讯缺少 headline → GRAY_ZONE
+    r = gate.check({
+        "metadata": {"content_type": "breaking_news"},
+        "body": ["段落1。", "段落2。", "段落3。"]
+    })
+    assert r.path == GatePath.GRAY_ZONE, f"FAIL: no headline → {r.path}"
+    print(f"[G-STYLE] 快讯缺headline: {r.path.value} ✓")
+
+
+def test_MediaGateRunner():
+    """MediaGateRunner 批量执行测试"""
+    runner = MediaGateRunner()
+
+    from datetime import datetime, timezone, timedelta
+    now = datetime.now(timezone.utc)
+
+    article = {
+        "metadata": {
+            "content_type": "breaking_news",
+            "headline": "这是一个10字以上的快讯标题",
+            "event_time": (now - timedelta(hours=2)).isoformat(),
+            "executive_summary": "简短摘要。",
+            "factuality": {"errors": [], "warnings": []}
+        },
+        "sources": [
+            {"name": "CNBC", "trust_level": "C"}
+        ],
+        "body": ["段落1。", "段落2。", "段落3。"]
+    }
+
+    result = runner.run_all(article)
+    assert "overall_pass" in result
+    assert "gates" in result
+    assert "failure_gates" in result
+    assert "gray_zone_gates" in result
+    assert "sunshine_gates" in result
+
+    print(f"\n[Runner] overall_pass: {result['overall_pass']}")
+    print(f"[Runner] gates: {[g['gate_id'] for g in result['gates']]}")
+    print(f"[Runner] sunshine: {result['sunshine_gates']}")
+    print(f"[Runner] gray_zone: {result['gray_zone_gates']}")
+    print(f"[Runner] failures: {result['failure_gates']}")
+    print("[Runner] run_all ✓")
+
+
+if __name__ == "__main__":
+    import io, sys
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    print("=== SPDT-005 Media Gates E2E Test ===\n")
+    test_G_SOURCE()
+    print()
+    test_G_TIMELINESS()
+    print()
+    test_G_FACTUAL()
+    print()
+    test_G_STYLE()
+    print()
+    test_MediaGateRunner()
+    print("\n=== All tests passed ===")

@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>pipeline_module_matrix.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="spdt-005-管线模块选择矩阵">SPDT-005 管线模块选择矩阵</h1>
+<h2 id="各内容类型的-mini-sop-执行图谱">各内容类型的 mini-SOP 执行图谱</h2>
+<blockquote>
+<p>用途说明：</p>
+<ul>
+<li><strong>横向</strong>：了解某种内容类型的完整执行路径</li>
+<li><strong>纵向</strong>：了解某个模块需要支持哪些功能需求（从而判断模块设计边界）</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="一总览5阶段--6模块矩阵">一、总览：5阶段 × 6模块矩阵</h2>
+<pre class="hljs"><code><div>阶段        │ 快讯    │ 深度报告  │ 科普     │ 评论     │ 产品评测  │ 创意写作
+────────────┼─────────┼───────────┼──────────┼──────────┼───────────┼──────────
+① Ingest    │ radar.  │ radar.    │ smartext │ radar.   │ channels. │ radar.
+            │ breaking│ industry  │ .paper   │ opinion  │ product   │ story
+────────────┼─────────┼───────────┼──────────┼──────────┼───────────┼──────────
+② Structure │ article.│ genre.    │ kg.      │ article. │ article.  │ genre.
+            │ breaking│ report    │ science  │ oped     │ review    │ creative
+────────────┼─────────┼───────────┼──────────┼──────────┼───────────┼──────────
+③ Render    │ engine. │ engine.   │ engine.  │ engine.  │ engine.   │ engine.
+            │ breaking│ deep_report│ science  │ argument │ review    │ creative
+────────────┼─────────┼───────────┼──────────┼──────────┼───────────┼──────────
+④ Adapt     │ score.  │ score.    │ score.   │ score.   │ score.    │ score.
+            │ breaking│ deep_report│ science  │ argument │ review    │ creative
+────────────┼─────────┼───────────┼──────────┼──────────┼───────────┼──────────
+⑤ Deliver   │ publish.│ publish.  │ publish. │ publish. │ publish.  │ publish.
+            │ fast    │ multi_ch  │ standard │ multi_ch │ standard  │ standard
+</div></code></pre>
+<hr>
+<h2 id="二逐类型详细说明">二、逐类型详细说明</h2>
+<h3 id="类型-1突发快讯breakdown_news">类型 1：突发快讯（breakdown_news）</h3>
+<p><strong>定位</strong>：时效性最强的内容，15分钟完成全流程。</p>
+<h4 id="执行路径">执行路径</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">功能需求</th>
+<th style="text-align:left">为什么这样选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">① Ingest</td>
+<td style="text-align:left"><code>radar.breaking</code></td>
+<td style="text-align:left">关键词触发 + 多源实时监控</td>
+<td style="text-align:left">突发事件关键词识别（政策/危机/事故）</td>
+</tr>
+<tr>
+<td style="text-align:left">② Structure</td>
+<td style="text-align:left"><code>article.breaking</code></td>
+<td style="text-align:left">极简结构模板（标题+导语+事实点+时间线）</td>
+<td style="text-align:left">速度优先，预设结构，无需编排</td>
+</tr>
+<tr>
+<td style="text-align:left">③ Render</td>
+<td style="text-align:left"><code>engine.breaking</code></td>
+<td style="text-align:left">客观、快速、专业语气；禁止推测</td>
+<td style="text-align:left">快讯不允许AI生成推测性内容</td>
+</tr>
+<tr>
+<td style="text-align:left">④ Adapt</td>
+<td style="text-align:left"><code>scorecard.breaking</code></td>
+<td style="text-align:left">阈值70；时效性权重25%</td>
+<td style="text-align:left">快速通道降门槛，但来源和事实性仍严格</td>
+</tr>
+<tr>
+<td style="text-align:left">⑤ Deliver</td>
+<td style="text-align:left"><code>publish.fast</code></td>
+<td style="text-align:left">自动发布，无需等待</td>
+<td style="text-align:left">SLA 15分钟，人工确认来不及</td>
+</tr>
+</tbody>
+</table>
+<h4 id="人类检查点策略">人类检查点策略</h4>
+<ul>
+<li>M1：跳过（选题自动通过）</li>
+<li>M2：跳过（结构预设）</li>
+<li>M4：70分阈值</li>
+<li>M6：值班编辑快速确认</li>
+</ul>
+<h4 id="模块功能需求汇总">模块功能需求汇总</h4>
+<pre class="hljs"><code><div>radar.breaking    → 关键词监控 / 突发事件识别 / SLA计时
+article.breaking  → 极简模板（4段式）/ 时间线生成
+engine.breaking   → 客观语气 / 禁止推测 / 字数控制（300-500字）
+scorecard.breaking→ 时效性权重↑ / 来源权重↓ / 70分阈值
+publish.fast      → 自动发布 / 渠道静默推送 / 发布日志
+</div></code></pre>
+<hr>
+<h3 id="类型-2深度行业报告deep_industry_report">类型 2：深度行业报告（deep_industry_report）</h3>
+<p><strong>定位</strong>：3000-8000字专业分析，面向行业从业者。</p>
+<h4 id="执行路径-1">执行路径</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">功能需求</th>
+<th style="text-align:left">为什么这样选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">① Ingest</td>
+<td style="text-align:left"><code>radar.industry</code></td>
+<td style="text-align:left">行业媒体 + 财报 + 政策文件 + 专家访谈采集</td>
+<td style="text-align:left">多源交叉验证，确保深度</td>
+</tr>
+<tr>
+<td style="text-align:left">② Structure</td>
+<td style="text-align:left"><code>genre.report</code></td>
+<td style="text-align:left">摘要+背景+核心发现+深度分析+趋势预判+结论建议</td>
+<td style="text-align:left">六段式结构，逻辑严谨</td>
+</tr>
+<tr>
+<td style="text-align:left">③ Render</td>
+<td style="text-align:left"><code>engine.deep_report</code></td>
+<td style="text-align:left">专业语气 / 数据驱动 / 有洞察 / 避免套话</td>
+<td style="text-align:left">面向专业受众，拒绝空话</td>
+</tr>
+<tr>
+<td style="text-align:left">④ Adapt</td>
+<td style="text-align:left"><code>scorecard.deep_report</code></td>
+<td style="text-align:left">阈值85；来源权重25%；深度权重20%</td>
+<td style="text-align:left">高标准，来源质量和洞察深度并重</td>
+</tr>
+<tr>
+<td style="text-align:left">⑤ Deliver</td>
+<td style="text-align:left"><code>publish.multi_channel</code></td>
+<td style="text-align:left">web + feeds + 飞书 + 公众号同步</td>
+<td style="text-align:left">最大化触达，多渠道分发</td>
+</tr>
+</tbody>
+</table>
+<h4 id="人类检查点策略-1">人类检查点策略</h4>
+<ul>
+<li>M1：主编确认（选题深度评估）</li>
+<li>M2：主编确认（大纲结构）</li>
+<li>M4：85分阈值，低于则退回修改</li>
+<li>M6：主编强制签批</li>
+</ul>
+<h4 id="灰区规则">灰区规则</h4>
+<ul>
+<li>涉及竞争对手负面 → 法务审核</li>
+<li>数据来源为C级 → 要求升级来源</li>
+<li>涉及政策预测 → 专家签字</li>
+</ul>
+<h4 id="模块功能需求汇总-1">模块功能需求汇总</h4>
+<pre class="hljs"><code><div>radar.industry    → 多源采集（媒体/财报/政策/访谈）/ 数据交叉验证 / 来源分级
+genre.report      → 六段式结构 / 摘要生成 / 图表标注点 / 结论建议生成
+engine.deep_report→ 专业语气 / 数据引用格式 / 洞察生成提示词 / 8000字级支持
+scorecard.deep   → 来源权重↑ / 深度权重↑ / 85分高阈值 / 专家审核触发
+publish.multi_ch → 多渠道同时发布 / 格式适配（公众号长文/飞书文档）
+</div></code></pre>
+<hr>
+<h3 id="类型-3科普知识science_fact">类型 3：科普知识（science_fact）</h3>
+<p><strong>定位</strong>：面向大众，准确性与可读性并重。</p>
+<h4 id="执行路径-2">执行路径</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">功能需求</th>
+<th style="text-align:left">为什么这样选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">① Ingest</td>
+<td style="text-align:left"><code>smartext.paper_extraction</code></td>
+<td style="text-align:left">学术论文/权威科普来源抽取</td>
+<td style="text-align:left">准确性是底线，优先一手权威来源</td>
+</tr>
+<tr>
+<td style="text-align:left">② Structure</td>
+<td style="text-align:left"><code>kg.science</code></td>
+<td style="text-align:left">知识点图谱抽取 + 知识关联</td>
+<td style="text-align:left">科普需以知识点为核心组织，非线性展开</td>
+</tr>
+<tr>
+<td style="text-align:left">③ Render</td>
+<td style="text-align:left"><code>engine.science</code></td>
+<td style="text-align:left">生动有趣 / 类比清晰 / 术语需解释</td>
+<td style="text-align:left">大众读者，专业术语必须解释</td>
+</tr>
+<tr>
+<td style="text-align:left">④ Adapt</td>
+<td style="text-align:left"><code>scorecard.science</code></td>
+<td style="text-align:left">阈值75；事实性权重40%；可读性权重30%</td>
+<td style="text-align:left">准确性最重要（40%），其次是读懂（30%）</td>
+</tr>
+<tr>
+<td style="text-align:left">⑤ Deliver</td>
+<td style="text-align:left"><code>publish.standard</code></td>
+<td style="text-align:left">web + feeds + 公众号</td>
+<td style="text-align:left">标准分发节奏</td>
+</tr>
+</tbody>
+</table>
+<h4 id="人类检查点策略-2">人类检查点策略</h4>
+<ul>
+<li>M1：来源权威性确认</li>
+<li>M2：知识准确性初步确认</li>
+<li>M4：75分阈值</li>
+<li>M6：标准确认</li>
+</ul>
+<h4 id="灰区规则-1">灰区规则</h4>
+<ul>
+<li>涉及医疗/健康/药物 → 医疗审核</li>
+<li>涉及食品安全 → 安全检查</li>
+</ul>
+<h4 id="模块功能需求汇总-2">模块功能需求汇总</h4>
+<pre class="hljs"><code><div>smartext.paper   → PDF/论文解析 / 摘要抽取 / 关键数据提取 / 参考文献追踪
+kg.science       → 知识点抽取 / 知识图谱构建 / 类比关系推荐 / 可视化标注
+engine.science   → 类比生成 / 术语解释插入 / 生动语气 / 避免恐吓式科普
+scorecard.science→ 事实性权重40% / 可读性权重30% / 术语解释检查
+publish.standard → 标准格式 / 图片嵌入 / 公众号长图适配
+</div></code></pre>
+<hr>
+<h3 id="类型-4观点评论oped_argument">类型 4：观点评论（oped_argument）</h3>
+<p><strong>定位</strong>：有明确立场和论点，面向公共讨论。</p>
+<h4 id="执行路径-3">执行路径</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">功能需求</th>
+<th style="text-align:left">为什么这样选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">① Ingest</td>
+<td style="text-align:left"><code>radar.opinion</code></td>
+<td style="text-align:left">相关事件背景 + 对立观点 + 反驳预判采集</td>
+<td style="text-align:left">评论需要知道对立面是什么</td>
+</tr>
+<tr>
+<td style="text-align:left">② Structure</td>
+<td style="text-align:left"><code>article.oped</code></td>
+<td style="text-align:left">论点+论据+反驳预判+结论</td>
+<td style="text-align:left">四段式，有立场、有理据、有预判反驳</td>
+</tr>
+<tr>
+<td style="text-align:left">③ Render</td>
+<td style="text-align:left"><code>engine.argument</code></td>
+<td style="text-align:left">鲜明立场 / 有理有据 / 不人身攻击</td>
+<td style="text-align:left">立场鲜明但不失理性和建设性</td>
+</tr>
+<tr>
+<td style="text-align:left">④ Adapt</td>
+<td style="text-align:left"><code>scorecard.argument</code></td>
+<td style="text-align:left">阈值80；逻辑权重30%；事实权重25%</td>
+<td style="text-align:left">逻辑严密性最重要（30%），事实也不能少</td>
+</tr>
+<tr>
+<td style="text-align:left">⑤ Deliver</td>
+<td style="text-align:left"><code>publish.multi_channel</code></td>
+<td style="text-align:left">web + feeds + 飞书 + 公众号</td>
+<td style="text-align:left">评论需要广泛讨论</td>
+</tr>
+</tbody>
+</table>
+<h4 id="人类检查点策略-3">人类检查点策略</h4>
+<ul>
+<li>M1：选题评论价值确认</li>
+<li>M2：论点大纲确认</li>
+<li>M4：80分阈值</li>
+<li>M6：主编签批（强制）</li>
+</ul>
+<h4 id="灰区规则-2">灰区规则</h4>
+<ul>
+<li>涉及政治/宗教/民族 → 合规审核（强制）</li>
+<li>点名批评具体人物 → 法务审核</li>
+</ul>
+<h4 id="模块功能需求汇总-3">模块功能需求汇总</h4>
+<pre class="hljs"><code><div>radar.opinion    → 事件背景采集 / 反方观点收集 / 读者反驳预判 / 情绪热度追踪
+article.oped     → 论点-论据-反驳-结论四段式 / 反方标注 / 情感落点设计
+engine.argument  → 立场鲜明语气 / 逻辑连贯性 / 反驳预判嵌入 / 禁止人身攻击
+scorecard.argument→ 逻辑权重30% / 事实权重25% / 品牌调性权重10%
+publish.multi_ch → 多渠道 / 评论功能开启 / 社交分享优化
+</div></code></pre>
+<hr>
+<h3 id="类型-5产品评测product_review">类型 5：产品评测（product_review）</h3>
+<p><strong>定位</strong>：含购买建议的评测，诚实中立是核心。</p>
+<h4 id="执行路径-4">执行路径</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">功能需求</th>
+<th style="text-align:left">为什么这样选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">① Ingest</td>
+<td style="text-align:left"><code>channels.product_specs</code></td>
+<td style="text-align:left">官方参数 + 用户评价 + 竞品对比数据采集</td>
+<td style="text-align:left">评测需要多源对比，参数+口碑双验证</td>
+</tr>
+<tr>
+<td style="text-align:left">② Structure</td>
+<td style="text-align:left"><code>article.review</code></td>
+<td style="text-align:left">开箱印象+核心体验+优缺点+竞品对比+购买建议</td>
+<td style="text-align:left">五段式，结构固定，无需灵活编排</td>
+</tr>
+<tr>
+<td style="text-align:left">③ Render</td>
+<td style="text-align:left"><code>engine.review</code></td>
+<td style="text-align:left">诚实中立 / 具体数据支撑 / 有购买建议</td>
+<td style="text-align:left">评测核心价值：不说空话，有数据有建议</td>
+</tr>
+<tr>
+<td style="text-align:left">④ Adapt</td>
+<td style="text-align:left"><code>scorecard.review</code></td>
+<td style="text-align:left">阈值80；客观性权重30%；事实权重30%</td>
+<td style="text-align:left">客观性（30%）和事实性（30%）并重</td>
+</tr>
+<tr>
+<td style="text-align:left">⑤ Deliver</td>
+<td style="text-align:left"><code>publish.standard</code></td>
+<td style="text-align:left">web + feeds + 公众号</td>
+<td style="text-align:left">标准节奏</td>
+</tr>
+</tbody>
+</table>
+<h4 id="人类检查点策略-4">人类检查点策略</h4>
+<ul>
+<li>M1：产品是否值得评测（选题把关）</li>
+<li>M2：跳过（结构固定）</li>
+<li>M4：80分阈值</li>
+<li>M6：标准确认</li>
+</ul>
+<h4 id="灰区规则-3">灰区规则</h4>
+<ul>
+<li>涉及 affiliate/返佣链接 → 利益披露检查</li>
+<li>竞品对比数据 → 数据来源核实</li>
+</ul>
+<h4 id="模块功能需求汇总-4">模块功能需求汇总</h4>
+<pre class="hljs"><code><div>channels.product  → 官方参数API / 用户评价爬取（电商/论坛）/ 竞品数据库对比
+article.review    → 五段式模板 / 评分矩阵生成 / 优缺点可视化标注
+engine.review    → 中立语气 / 数据引用格式 / 购买建议生成 / 避免软文感
+scorecard.review  → 客观性权重30% / 事实权重30% / affiliate披露检查
+publish.standard  → 标准格式 / 图片对比图嵌入 / 相关文章推荐
+</div></code></pre>
+<hr>
+<h3 id="类型-6创意写作creative">类型 6：创意写作（creative）</h3>
+<p><strong>定位</strong>：非虚构创意写作（人物特稿/故事化报道）。</p>
+<h4 id="执行路径-5">执行路径</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">功能需求</th>
+<th style="text-align:left">为什么这样选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">① Ingest</td>
+<td style="text-align:left"><code>radar.story</code></td>
+<td style="text-align:left">人物访谈/一手素材/背景资料采集</td>
+<td style="text-align:left">创意写作依赖一手素材，故事感来自细节</td>
+</tr>
+<tr>
+<td style="text-align:left">② Structure</td>
+<td style="text-align:left"><code>genre.creative</code></td>
+<td style="text-align:left">非线性叙事：场景切入+冲突展开+人物弧线+情感落点</td>
+<td style="text-align:left">文学结构，不是论文结构</td>
+</tr>
+<tr>
+<td style="text-align:left">③ Render</td>
+<td style="text-align:left"><code>engine.creative</code></td>
+<td style="text-align:left">文学化语气 / 有画面感 / 情感真实</td>
+<td style="text-align:left">非虚构创意写作 = 真实+文学性</td>
+</tr>
+<tr>
+<td style="text-align:left">④ Adapt</td>
+<td style="text-align:left"><code>scorecard.creative</code></td>
+<td style="text-align:left">阈值75；可读性权重30%；情感权重30%；创意权重15%</td>
+<td style="text-align:left">文学性评分权重更高（创意15%，其他类型无此维度）</td>
+</tr>
+<tr>
+<td style="text-align:left">⑤ Deliver</td>
+<td style="text-align:left"><code>publish.standard</code></td>
+<td style="text-align:left">web + 飞书 + 公众号</td>
+<td style="text-align:left">标准节奏</td>
+</tr>
+</tbody>
+</table>
+<h4 id="人类检查点策略-5">人类检查点策略</h4>
+<ul>
+<li>M1：选题故事性评估</li>
+<li>M2：大纲叙事结构确认</li>
+<li>M4：75分阈值</li>
+<li>M6：标准确认</li>
+</ul>
+<h4 id="灰区规则-4">灰区规则</h4>
+<ul>
+<li>涉及真实人物 → 当事人授权确认</li>
+<li>涉及未成年人 → 监护人授权</li>
+</ul>
+<h4 id="模块功能需求汇总-5">模块功能需求汇总</h4>
+<pre class="hljs"><code><div>radar.story      → 人物访谈素材管理 / 场景细节采集 / 背景资料关联
+genre.creative    → 非线性叙事结构 / 人物弧线设计 / 场景-对话-叙述节奏
+engine.creative  → 文学化语言 / 感官细节描写 / 情感真实 / 场景蒙太奇
+scorecard.creative→ 文学性多维评分（可读性30%/情感30%/创意15%/事实性25%）
+publish.standard → 排版优化（引言/对话/场景分割）/ 长文适配 / 飞书文档格式
+</div></code></pre>
+<hr>
+<h2 id="三模块功能需求汇总按模块维度">三、模块功能需求汇总（按模块维度）</h2>
+<h3 id="ingest-层模块需求">Ingest 层模块需求</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">必须支持</th>
+<th style="text-align:left">差异化能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>radar.breaking</code></td>
+<td style="text-align:left">关键词触发 / 15分钟SLA计时</td>
+<td style="text-align:left">突发事件识别 / 危机等级判断</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>radar.industry</code></td>
+<td style="text-align:left">多源采集（≥3种源） / 来源分级</td>
+<td style="text-align:left">财报解析 / 政策文件抽取 / 专家访谈</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>radar.opinion</code></td>
+<td style="text-align:left">事件背景 / 反方观点收集</td>
+<td style="text-align:left">情绪热度追踪 / 反驳预判生成</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>radar.story</code></td>
+<td style="text-align:left">一手素材管理 / 人物资料库</td>
+<td style="text-align:left">场景细节采集 / 访谈记录整理</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>smartext.paper_extraction</code></td>
+<td style="text-align:left">PDF解析 / 摘要抽取</td>
+<td style="text-align:left">参考文献追踪 / 关键数据提取</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>channels.product_specs</code></td>
+<td style="text-align:left">官方参数API / 用户评价爬取</td>
+<td style="text-align:left">竞品数据库对比 / 价格追踪</td>
+</tr>
+</tbody>
+</table>
+<h3 id="structure-层模块需求">Structure 层模块需求</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">结构类型</th>
+<th style="text-align:left">关键能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>article.breaking</code></td>
+<td style="text-align:left">极简4段式</td>
+<td style="text-align:left">标题生成 / 时间线自动构建</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>article.oped</code></td>
+<td style="text-align:left">论点4段式</td>
+<td style="text-align:left">论点-论据映射 / 反方标注</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>article.review</code></td>
+<td style="text-align:left">评测5段式</td>
+<td style="text-align:left">评分矩阵生成 / 优缺点提取</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>genre.report</code></td>
+<td style="text-align:left">深度6段式</td>
+<td style="text-align:left">摘要生成 / 图表建议 / 结论生成</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>genre.creative</code></td>
+<td style="text-align:left">非线性叙事</td>
+<td style="text-align:left">人物弧线设计 / 场景节奏规划</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>kg.science</code></td>
+<td style="text-align:left">知识点图谱</td>
+<td style="text-align:left">知识点抽取 / 知识关联 / 类比推荐</td>
+</tr>
+</tbody>
+</table>
+<h3 id="render-层模块需求">Render 层模块需求</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">语气风格</th>
+<th style="text-align:left">字数范围</th>
+<th style="text-align:left">特殊要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>engine.breaking</code></td>
+<td style="text-align:left">客观、快速、专业</td>
+<td style="text-align:left">300-500字</td>
+<td style="text-align:left"><strong>禁止推测性内容</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>engine.deep_report</code></td>
+<td style="text-align:left">专业、数据驱动、有洞察</td>
+<td style="text-align:left">3000-8000字</td>
+<td style="text-align:left">数据引用格式 / 洞察提示</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>engine.science</code></td>
+<td style="text-align:left">生动、类比清晰</td>
+<td style="text-align:left">1000-3000字</td>
+<td style="text-align:left">术语解释插入 / 恐吓式规避</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>engine.argument</code></td>
+<td style="text-align:left">鲜明、有理、不攻击人</td>
+<td style="text-align:left">1500-4000字</td>
+<td style="text-align:left">反驳预判嵌入 / 逻辑连贯性</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>engine.review</code></td>
+<td style="text-align:left">诚实中立、有数据</td>
+<td style="text-align:left">2000-5000字</td>
+<td style="text-align:left">购买建议 / affiliate提示</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>engine.creative</code></td>
+<td style="text-align:left">文学化、画面感、情感真实</td>
+<td style="text-align:left">3000-10000字</td>
+<td style="text-align:left">感官描写 / 场景蒙太奇</td>
+</tr>
+</tbody>
+</table>
+<h3 id="adapt-层评分权重配置">Adapt 层评分权重配置</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模块</th>
+<th style="text-align:center">事实性</th>
+<th style="text-align:center">可读性</th>
+<th style="text-align:center">来源</th>
+<th style="text-align:center">时效性</th>
+<th style="text-align:center">深度</th>
+<th style="text-align:center">逻辑</th>
+<th style="text-align:center">情感</th>
+<th style="text-align:center">创意</th>
+<th style="text-align:center">客观性</th>
+<th style="text-align:center">阈值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>scorecard.breaking</code></td>
+<td style="text-align:center">35%</td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center"><strong>25%</strong></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">70</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>scorecard.deep_report</code></td>
+<td style="text-align:center">30%</td>
+<td style="text-align:center">15%</td>
+<td style="text-align:center"><strong>25%</strong></td>
+<td style="text-align:center">10%</td>
+<td style="text-align:center"><strong>20%</strong></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">85</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>scorecard.science</code></td>
+<td style="text-align:center"><strong>40%</strong></td>
+<td style="text-align:center"><strong>30%</strong></td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">75</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>scorecard.argument</code></td>
+<td style="text-align:center">25%</td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center">15%</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"><strong>30%</strong></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">80</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>scorecard.review</code></td>
+<td style="text-align:center">30%</td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"><strong>30%</strong></td>
+<td style="text-align:center">80</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>scorecard.creative</code></td>
+<td style="text-align:center">25%</td>
+<td style="text-align:center"><strong>30%</strong></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"><strong>30%</strong></td>
+<td style="text-align:center"><strong>15%</strong></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">75</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：各维度权重总和为100%，加粗为该类型的核心权重维度</p>
+</blockquote>
+<h3 id="deliver-层发布策略">Deliver 层发布策略</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">渠道</th>
+<th style="text-align:left">发布模式</th>
+<th style="text-align:left">SLA</th>
+<th style="text-align:left">特殊处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>publish.fast</code></td>
+<td style="text-align:left">web+mobile+feishu</td>
+<td style="text-align:left">自动立即发布</td>
+<td style="text-align:left">15分钟</td>
+<td style="text-align:left">无需人工确认</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>publish.multi_channel</code></td>
+<td style="text-align:left">web+feeds+feishu+wechat</td>
+<td style="text-align:left">多渠道同步</td>
+<td style="text-align:left">4小时+</td>
+<td style="text-align:left">格式适配（各渠道）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>publish.standard</code></td>
+<td style="text-align:left">web+feeds+wechat</td>
+<td style="text-align:left">定时/队列发布</td>
+<td style="text-align:left">24-48小时</td>
+<td style="text-align:left">标准格式适配</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="四模块开发优先级建议">四、模块开发优先级建议</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">优先级</th>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">P0</td>
+<td style="text-align:left"><code>radar.breaking</code> + <code>article.breaking</code> + <code>publish.fast</code></td>
+<td style="text-align:left">快讯是媒体内容最高频类型</td>
+</tr>
+<tr>
+<td style="text-align:left">P0</td>
+<td style="text-align:left"><code>engine.breaking</code> + <code>scorecard.breaking</code></td>
+<td style="text-align:left">渲染和评分是全类型共享</td>
+</tr>
+<tr>
+<td style="text-align:left">P1</td>
+<td style="text-align:left"><code>smartext.paper_extraction</code> + <code>kg.science</code> + <code>engine.science</code></td>
+<td style="text-align:left">科普是第二大高频类型</td>
+</tr>
+<tr>
+<td style="text-align:left">P1</td>
+<td style="text-align:left"><code>scorecard</code> 通用框架 + 各类型权重覆盖</td>
+<td style="text-align:left">所有类型共用，分数可比</td>
+</tr>
+<tr>
+<td style="text-align:left">P2</td>
+<td style="text-align:left"><code>radar.industry</code> + <code>genre.report</code> + <code>engine.deep_report</code></td>
+<td style="text-align:left">深度报告，媒体品牌核心</td>
+</tr>
+<tr>
+<td style="text-align:left">P2</td>
+<td style="text-align:left"><code>channels.product_specs</code> + <code>engine.review</code></td>
+<td style="text-align:left">产品评测，流量型内容</td>
+</tr>
+<tr>
+<td style="text-align:left">P3</td>
+<td style="text-align:left"><code>radar.opinion</code> + <code>article.oped</code> + <code>engine.argument</code></td>
+<td style="text-align:left">评论，高门槛但高价值</td>
+</tr>
+<tr>
+<td style="text-align:left">P3</td>
+<td style="text-align:left"><code>radar.story</code> + <code>genre.creative</code> + <code>engine.creative</code></td>
+<td style="text-align:left">创意写作，高门槛低频</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
