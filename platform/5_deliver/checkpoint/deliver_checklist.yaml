@@ -1,0 +1,125 @@
+# deliver_checklist.yaml — M6 交付检查清单
+# =========================================
+# SOP v4.0 M6 人类检查点 · SPDT-005 媒体领域实现
+# 对应：内容制造管线执行规范 v1.0 §2.5
+
+---
+version: "1.0"
+spdt_id: SPDT-005
+stage: "5_deliver"
+human_checkpoint: "M6_final_delivery"
+
+# ── 三项核心确认 ───────────────────────────────────────────────
+
+confirmation_items:
+  - id: "M6_CONTENT_SPEC"
+    label: "是否满足 ContentSpec？"
+    description: |
+      稿件内容是否符合 ContentSpec YAML 中定义的：
+      - content_type（B1/B2/B3/B4）
+      - target_audience
+      - knowledge_sources（来源可信度）
+      - quality_constraints（质量约束）
+    pass_required: true
+    gray_zone_allowed: false
+
+  - id: "M6_GENRE_GAPS"
+    label: "是否有未关闭的体裁缺口？"
+    description: |
+      稿件是否存在：
+      - 缺失的必需章节
+      - 未填充的体裁模板字段
+      - 超过 20% 的关键知识点无来源支撑
+    pass_required: true
+    gray_zone_allowed: false
+
+  - id: "M6_SCORE_THRESHOLD"
+    label: "质量记分卡是否达标？"
+    description: |
+      content_scorecard_v1 综合评分是否满足：
+      - ≥85分 → 直接发布
+      - 70-84分 → 需修订后发布
+      - <70分 → 内容失败，回链 2_structure
+    pass_required: true
+    gray_zone_allowed: false
+
+# ── 媒体领域额外检查 ───────────────────────────────────────────
+
+media_extra_checks:
+  - id: "M6_TIMELINESS"
+    label: "发布时机确认"
+    description: "时效性稿件（快讯/简报）是否在阈值内发布"
+    apply_to: ["breaking_news", "flash_news"]
+    pass_required: true
+
+  - id: "M6_SOURCE_SIGNED"
+    label: "来源确认"
+    description: "引用来源是否已获授权或属公共领域"
+    apply_to: ["deep_industry_report"]
+    pass_required: true
+    gray_zone_allowed: true
+
+  - id: "M6_BRAND_CONSISTENCY"
+    label: "品牌合规确认"
+    description: "稿件是否符合目标品牌/媒体风格指南"
+    apply_to: ["oped_argument", "creative"]
+    pass_required: true
+    gray_zone_allowed: true
+
+# ── 发布渠道确认 ───────────────────────────────────────────────
+
+channel_checks:
+  - channel: "web"
+    checklist:
+      - "网站发布格式（HTML/Markdown）是否合规"
+      - "SEO 元数据（title/description）是否填写"
+      - "发布时间是否设置正确"
+
+  - channel: "feeds"
+    checklist:
+      - "Newsletter 格式是否合规"
+      - "订阅者标签是否匹配"
+
+  - channel: "mobile"
+    checklist:
+      - "APP推送标题是否 ≤ 50字"
+      - "推送摘要是否包含核心发现"
+
+  - channel: "feishu"
+    checklist:
+      - "飞书文档格式是否合规"
+      - "分享权限是否设置正确"
+
+  - channel: "wechat_mp"
+    checklist:
+      - "微信公众号封面图是否上传"
+      - "原创声明是否勾选"
+      - "标签是否匹配"
+
+# ── 签批流程 ───────────────────────────────────────────────────
+
+signoff_flow:
+  gray_zone_handling: |
+    1. 灰区内容 → 触发 signoff.py 生成工单
+    2. 人工审核（编辑/主编）
+    3. 三种结果：
+       - APPROVED：继续发布
+       - REJECTED：退回 2_structure
+       - MODIFIED：修订后重新提交
+
+  escalation_rules:
+    - trigger: "同一稿件灰区触发 ≥ 3次"
+      action: "自动升级至主编审核"
+    - trigger: "涉及政治/敏感话题"
+      action: "强制主编 + 合规部门双重签批"
+
+  signoff_roles:
+    - role: "编辑"
+      scope: "快讯/科普类稿件"
+      authority: "APPROVED | REJECTED"
+    - role: "主编"
+      scope: "深度报告/评论"
+      authority: "APPROVED | REJECTED | MODIFIED"
+    - role: "合规审核"
+      scope: "涉及敏感话题"
+      authority: "APPROVED | REJECTED"
