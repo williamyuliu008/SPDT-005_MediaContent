@@ -1,0 +1,19 @@
+# AI 瞭望台 · 三段工具链调度配置
+# 每日 10:30 自动运行
+
+schedule:
+  daily_report:
+    cron: "30 10 * * *"
+    command: "cd D:/92_products/SmartTextPlatform && python build_all.py"
+    description: "Radar(ai_tech) → SmartText(daily_report) → AutoPublish(website)"
+
+platforms:
+  radar:
+    path: "D:/9_infra/radar_platform"
+    domain: "ai_tech"
+  smartext:
+    path: "D:/92_products/SmartTextPlatform/smartext"
+    format: "daily_report"
+  autopublish:
+    path: "D:/9_infra/autopublish"
+    channel: "website"
