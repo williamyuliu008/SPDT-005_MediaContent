@@ -1,0 +1,387 @@
+# content_type_registry.yaml
+# ============================================================
+# SPDT-005 内容类型注册表
+# 定义每种内容类型的 mini-SOP（弹性供应链路由规则）
+#
+# 规范参考：governance/SPDT-005_SOP.md
+# 执行引擎：platform/1_ingest/router/pipeline_router.py
+# ============================================================
+
+---
+version: "1.0"
+spdt_id: SPDT-005
+last_updated: "2026-07-29"
+
+# ──────────────────────────────────────────────────────────
+# 默认路由（未匹配时的兜底）
+# ──────────────────────────────────────────────────────────
+
+default_route: &default_route
+  label: "默认路由（通用文章）"
+  description: "content_type 未识别时使用的标准路由"
+  priority: 0
+  sla_hours: 24
+  stages:
+    ingest:
+      module: "platform/1_ingest/radar/radar"
+      config: "standard"
+    structure:
+      module: "platform/2_structure/article/article"
+      config: "standard"
+    render:
+      engine: "platform/3_render/engines/text/text_engine"
+      config: "standard"
+    adapt:
+      scorecard: "platform/4_adapt/scorecard/scorecard"
+      config: "standard"
+    deliver:
+      publish: "platform/5_deliver/publish/autopublish"
+      config: "standard"
+  human_checkpoints:
+    M1: "confirm"      # 选题确认
+    M2: "confirm"      # 结构确认
+    M4: "threshold_80" # 80分阈值
+    M6: "standard"     # 标准交付确认
+  channels: ["web", "feeds"]
+
+# ──────────────────────────────────────────────────────────
+# 内容类型路由表
+# ──────────────────────────────────────────────────────────
+
+content_types:
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 1. 突发快讯
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  breakdown_news:
+    label: "突发快讯"
+    description: "时效性极强的突发新闻，需在15分钟内完成全流程"
+    priority: 10
+    sla_minutes: 15
+    stages:
+      ingest:
+        module: "platform/1_ingest/radar/radar"
+        config: "breaking"
+        # 触发关键词：突发事件/危机/重大政策/突发事故
+      structure:
+        module: "platform/2_structure/article/article"
+        config: "breaking"
+        # 极简结构：标题 + 导语（3句）+ 关键事实（5点）+ 事件时间线
+      render:
+        engine: "platform/3_render/engines/text/text_engine"
+        config: "breaking"
+        # 语气：客观、快速、专业，避免推测
+      adapt:
+        scorecard: "platform/4_adapt/scorecard/scorecard"
+        config: "breaking"
+        # 阈值：70分（快速通道）
+      deliver:
+        publish: "platform/5_deliver/publish/autopublish"
+        config: "fast"
+        # 自动发布，无需等待
+
+    human_checkpoints:
+      M1: "skip"           # 跳过，快讯选题自动通过
+      M2: "skip"           # 跳过，结构已预设
+      M4: "threshold_70"   # 70分阈值
+      M6: "fast_confirm"   # 快速确认（可由值班编辑完成）
+
+    gray_zone_rules:
+      - trigger: "涉及政治/领导人/领土"
+        action: "hold_publish"  # 暂缓发布，人工确认
+      - trigger: "伤亡人数/损失规模"
+        action: "double_verify" # 双重核实
+
+    channels: ["web", "mobile", "feishu"]
+    brand_voice: "neutral"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 2. 深度行业报告
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  deep_industry_report:
+    label: "深度行业报告"
+    description: "3000-8000字深度分析，面向专业受众"
+    priority: 5
+    sla_hours: 4
+    stages:
+      ingest:
+        module: "platform/1_ingest/radar/radar"
+        config: "industry"
+        # 采集：行业媒体 + 财报 + 政策文件 + 专家访谈
+      structure:
+        module: "platform/2_structure/genre/genre"
+        config: "report"
+        # 结构：摘要 + 背景 + 核心发现 + 深度分析 + 趋势预判 + 结论建议
+      render:
+        engine: "platform/3_render/engines/text/text_engine"
+        config: "deep_report"
+        #语气：专业、数据驱动、有洞察，避免空话套话
+      adapt:
+        scorecard: "platform/4_adapt/scorecard/scorecard"
+        config: "deep_report"
+        # 阈值：85分（高标准）
+      deliver:
+        publish: "platform/5_deliver/publish/autopublish"
+        config: "multi_channel"
+
+    human_checkpoints:
+      M1: "confirm"         # 选题深度评估（主编确认）
+      M2: "confirm"        # 大纲结构确认
+      M4: "threshold_85"   # 85分阈值，低于则退回修改
+      M6: "chief_signoff"  # 主编签批（强制）
+
+    gray_zone_rules:
+      - trigger: "涉及竞争对手负面"
+        action: "legal_review"  # 法务审核
+      - trigger: "数据来源为C级"
+        action: "source_upgrade" # 要求升级来源
+      - trigger: "涉及政策预测"
+        action: "expert_signoff" # 专家签字
+
+    channels: ["web", "feeds", "feishu", "wechat_mp"]
+    brand_voice: "professional"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 3. 科普知识
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  science_fact:
+    label: "科普知识"
+    description: "面向大众的科普内容，追求准确性与可读性平衡"
+    priority: 6
+    sla_hours: 4
+    stages:
+      ingest:
+        module: "platform/1_ingest/smartext/smartext"
+        config: "paper_extraction"
+        # 优先从学术论文/权威科普来源抽取
+      structure:
+        module: "platform/2_structure/knowledge_graph/knowledge_graph"
+        config: "science"
+        # 以知识点图谱为核心组织结构
+      render:
+        engine: "platform/3_render/engines/text/text_engine"
+        config: "science"
+        # 语气：生动有趣、类比清晰、避免专业术语（需解释）
+      adapt:
+        scorecard: "platform/4_adapt/scorecard/scorecard"
+        config: "science"
+        # 阈值：75分
+      deliver:
+        publish: "platform/5_deliver/publish/autopublish"
+        config: "standard"
+
+    human_checkpoints:
+      M1: "confirm"         # 来源权威性确认
+      M2: "confirm"         # 知识准确性初步确认
+      M4: "threshold_75"   # 75分阈值
+      M6: "standard"        # 标准确认
+
+    gray_zone_rules:
+      - trigger: "涉及医疗/健康/药物"
+        action: "medical_review"  # 医疗审核
+      - trigger: "涉及食品安全"
+        action: "safety_check"    # 安全检查
+
+    channels: ["web", "feeds", "wechat_mp"]
+    brand_voice: "accessible"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 4. 观点评论（OpEd）
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  oped_argument:
+    label: "观点评论"
+    description: "有明确立场和论点的评论文章"
+    priority: 7
+    sla_hours: 3
+    stages:
+      ingest:
+        module: "platform/1_ingest/radar/radar"
+        config: "opinion"
+        # 采集：相关事件背景 + 对立观点 + 读者可能反驳点
+      structure:
+        module: "platform/2_structure/article/article"
+        config: "oped"
+        # 结构：论点 + 论据 + 反驳预判 + 结论
+      render:
+        engine: "platform/3_render/engines/text/text_engine"
+        config: "argument"
+        # 语气：鲜明立场、有理有据、不人身攻击
+      adapt:
+        scorecard: "platform/4_adapt/scorecard/scorecard"
+        config: "argument"
+        # 阈值：80分（需逻辑严密）
+      deliver:
+        publish: "platform/5_deliver/publish/autopublish"
+        config: "multi_channel"
+
+    human_checkpoints:
+      M1: "confirm"         # 选题是否有评论价值
+      M2: "confirm"        # 论点大纲确认
+      M4: "threshold_80"   # 80分阈值
+      M6: "chief_signoff"  # 主编签批
+
+    gray_zone_rules:
+      - trigger: "涉及政治/宗教/民族"
+        action: "compliance_review"  # 合规审核（强制）
+      - trigger: "点名批评具体人物"
+        action: "legal_review"       # 法务审核
+
+    channels: ["web", "feeds", "feishu", "wechat_mp"]
+    brand_voice: "assertive"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 5. 产品评测
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  product_review:
+    label: "产品评测"
+    description: "产品/服务评测，含购买建议"
+    priority: 4
+    sla_hours: 24
+    stages:
+      ingest:
+        module: "platform/1_ingest/channels/channels"
+        config: "product_specs"
+        # 采集：官方参数 + 用户评价 + 竞品对比
+      structure:
+        module: "platform/2_structure/article/article"
+        config: "review"
+        # 结构：开箱印象 + 核心体验 + 优缺点 + 竞品对比 + 购买建议
+      render:
+        engine: "platform/3_render/engines/text/text_engine"
+        config: "review"
+        # 语气：诚实中立、有具体数据支撑
+      adapt:
+        scorecard: "platform/4_adapt/scorecard/scorecard"
+        config: "review"
+        # 阈值：80分
+      deliver:
+        publish: "platform/5_deliver/publish/autopublish"
+        config: "standard"
+
+    human_checkpoints:
+      M1: "confirm"         # 产品是否值得评测
+      M2: "skip"            # 结构较固定，跳过
+      M4: "threshold_80"   # 80分阈值
+      M6: "standard"        # 标准确认
+
+    gray_zone_rules:
+      - trigger: "涉及affiliate/返佣链接"
+        action: "disclosure_check"  # 利益披露检查
+      - trigger: "竞品对比数据"
+        action: "data_source_verify"  # 数据来源核实
+
+    channels: ["web", "feeds", "wechat_mp"]
+    brand_voice: "honest"
+    affiliate_disclosure: required
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 6. 创意写作
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  creative:
+    label: "创意写作"
+    description: "非虚构创意写作（人物特稿/故事化报道）"
+    priority: 3
+    sla_hours: 48
+    stages:
+      ingest:
+        module: "platform/1_ingest/radar/radar"
+        config: "story"
+        # 采集：人物访谈/一手素材/背景资料
+      structure:
+        module: "platform/2_structure/genre/genre"
+        config: "creative"
+        # 非线性叙事结构：场景切入 + 冲突展开 + 人物弧线 + 情感落点
+      render:
+        engine: "platform/3_render/engines/text/text_engine"
+        config: "creative"
+        # 语气：文学化、有画面感、情感真实
+      adapt:
+        scorecard: "platform/4_adapt/scorecard/scorecard"
+        config: "creative"
+        # 阈值：75分（文学性评分权重更高）
+      deliver:
+        publish: "platform/5_deliver/publish/autopublish"
+        config: "standard"
+
+    human_checkpoints:
+      M1: "confirm"         # 选题故事性评估
+      M2: "confirm"        # 大纲叙事结构确认
+      M4: "threshold_75"   # 75分阈值
+      M6: "standard"        # 标准确认
+
+    gray_zone_rules:
+      - trigger: "涉及真实人物"
+        action: "consent_check"  # 当事人授权确认
+      - trigger: "涉及未成年人"
+        action: "guardian_consent"  # 监护人授权
+
+    channels: ["web", "feishu", "wechat_mp"]
+    brand_voice: "literary"
+
+# ──────────────────────────────────────────────────────────
+# 全局灰区规则（所有类型通用）
+# ──────────────────────────────────────────────────────────
+
+global_gray_zone_rules:
+  - id: "G-POLITICAL"
+    trigger_keywords: ["政治", "领导人", "领土", "主权", "宗教", "台海", "西藏", "新疆"]
+    action: "escalate_chief_and_compliance"
+    pass_required: true
+
+  - id: "G-SOURCE"
+    trigger: "source_grade == C"
+    action: "require_upgrade"
+    pass_required: true
+
+  - id: "G-TIMELINESS"
+    trigger: "publish_delay > sla_hours * 2"
+    action: "auto_archive"
+    pass_required: false
+
+  - id: "G-FACTUAL"
+    trigger: "factual_score < 60"
+    action: "hold_review"
+    pass_required: true
+
+# ──────────────────────────────────────────────────────────
+# 质量记分卡权重配置（按类型覆盖）
+# ──────────────────────────────────────────────────────────
+
+scorecard_weights:
+  breakdown_news:
+    readability: 0.20
+    factual:    0.35
+    source:     0.20
+    timeliness: 0.25
+
+  deep_industry_report:
+    readability: 0.15
+    factual:    0.30
+    source:     0.25
+    depth:      0.20
+    timeliness: 0.10
+
+  science_fact:
+    readability: 0.30
+    factual:    0.40
+    source:     0.20
+    clarity:    0.10
+
+  oped_argument:
+    readability: 0.20
+    logic:       0.30
+    factual:     0.25
+    source:      0.15
+    brand:       0.10
+
+  product_review:
+    readability: 0.20
+    factual:     0.30
+    source:      0.20
+    objectivity: 0.30
+
+  creative:
+    readability: 0.30
+    emotion:     0.30
+    factual:     0.25
+    creativity:  0.15
