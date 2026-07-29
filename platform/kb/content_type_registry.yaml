@@ -8,9 +8,17 @@
 # ============================================================
 
 ---
-version: "1.0"
+version: "1.1"
 spdt_id: SPDT-005
-last_updated: "2026-07-29"
+last_updated: "2026-07-30"
+
+# ──────────────────────────────────────────────────────────
+# 三维分类说明
+# ──────────────────────────────────────────────────────────
+# accuracy:       事实准确性要求（1=低，5=极高）
+# literary:       文学性要求（1=客观简洁，5=文学化表达）
+# professional_depth: 专业深度要求（1=大众，5=行业专家级）
+# 说明参考：governance/SPDT-005_SOP.md §3
 
 # ──────────────────────────────────────────────────────────
 # 默认路由（未匹配时的兜底）
@@ -57,6 +65,11 @@ content_types:
     label: "突发快讯"
     description: "时效性极强的突发新闻，需在15分钟内完成全流程"
     priority: 10
+    # ── 三维分类 ──────────────────────────────────────
+    pipeline_dimensions:
+      accuracy: 4          # 事实准确性中高（突发事件必须准确）
+      literary: 2          # 文学性低（客观快速，禁止推测）
+      professional_depth: 3  # 专业性中（大众可读，无需深奥术语）
     sla_minutes: 15
     stages:
       ingest:
@@ -102,6 +115,11 @@ content_types:
     label: "深度行业报告"
     description: "3000-8000字深度分析，面向专业受众"
     priority: 5
+    # ── 三维分类 ──────────────────────────────────────
+    pipeline_dimensions:
+      accuracy: 4          # 事实准确性高（多源交叉验证）
+      literary: 3          # 文学性中（专业但不晦涩）
+      professional_depth: 5  # 专业性极高（行业专家级，数据驱动）
     sla_hours: 4
     stages:
       ingest:
@@ -148,6 +166,11 @@ content_types:
     label: "科普知识"
     description: "面向大众的科普内容，追求准确性与可读性平衡"
     priority: 6
+    # ── 三维分类 ──────────────────────────────────────
+    pipeline_dimensions:
+      accuracy: 5          # 事实准确性极高（医疗/科学内容不可出错）
+      literary: 3          # 文学性中（生动有趣但不失严谨）
+      professional_depth: 3  # 专业性中（大众可读，术语需解释）
     sla_hours: 4
     stages:
       ingest:
@@ -192,6 +215,11 @@ content_types:
     label: "观点评论"
     description: "有明确立场和论点的评论文章"
     priority: 7
+    # ── 三维分类 ──────────────────────────────────────
+    pipeline_dimensions:
+      accuracy: 3          # 事实准确性中（论点自洽优先，事实为论点服务）
+      literary: 5          # 文学性极高（情感共鸣，说服力）
+      professional_depth: 4  # 专业性高（有洞察的行业分析视角）
     sla_hours: 3
     stages:
       ingest:
@@ -236,6 +264,11 @@ content_types:
     label: "产品评测"
     description: "产品/服务评测，含购买建议"
     priority: 4
+    # ── 三维分类 ──────────────────────────────────────
+    pipeline_dimensions:
+      accuracy: 4          # 事实准确性高（参数/价格/对比数据必须准确）
+      literary: 3          # 文学性中（清晰易懂，有数据支撑）
+      professional_depth: 4  # 专业性高（懂产品、懂行业、有购买建议）
     sla_hours: 24
     stages:
       ingest:
@@ -281,6 +314,11 @@ content_types:
     label: "创意写作"
     description: "非虚构创意写作（人物特稿/故事化报道）"
     priority: 3
+    # ── 三维分类 ──────────────────────────────────────
+    pipeline_dimensions:
+      accuracy: 2          # 事实准确性低（故事性优先，但基本事实必须真实）
+      literary: 5          # 文学性极高（画面感、情感真实、叙事节奏）
+      professional_depth: 2  # 专业性低（面向大众，无需深奥术语）
     sla_hours: 48
     stages:
       ingest:
