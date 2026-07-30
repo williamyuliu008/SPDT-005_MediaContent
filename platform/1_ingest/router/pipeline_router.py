@@ -158,6 +158,12 @@ CONTENT_TYPE_MODULES = {
         "render":    ("platform.3_render.engines.text.render_breaking", "RenderBreaking"),
         "adapt":     ("platform.4_adapt.scorecard.scorecard_breaking", "ScorecardBreaking"),
     },
+    "science_research": {
+        "ingest":    ("platform.1_ingest.radar.radar_science_fact",   "RadarScienceFact"),
+        "structure": ("platform.2_structure.article.article_science_fact", "ArticleScienceFact"),
+        "render":    ("platform.3_render.engines.text.render_science_fact", "RenderScienceFact"),
+        "adapt":     ("platform.4_adapt.scorecard.scorecard_science_fact", "ScorecardScienceFact"),
+    },
 }
 
 
@@ -285,6 +291,42 @@ class PipelineResult:
             "completed_at": self.completed_at,
             "total_duration_seconds": self.total_duration_seconds,
         }
+
+
+# ─────────────────────────────────────────────────────────────────
+# JSON 序列化辅助
+# ─────────────────────────────────────────────────────────────────
+
+def _json_safe(obj):
+    """
+    JSON 序列化安全处理：
+      - dataclass → 递归 to_dict()
+      - Path / datetime / enum → 原始值
+      - 其他无法序列化对象 → str()
+    """
+    from enum import Enum
+    if isinstance(obj, Enum):
+        return obj.value
+    if hasattr(obj, "to_dict"):
+        return obj.to_dict()
+    if hasattr(obj, "__dict__"):
+        # dataclass without to_dict()
+        result = {}
+        for k, v in obj.__dict__.items():
+            if not k.startswith("_"):
+                result[k] = _json_safe(v)
+        return result
+    if isinstance(obj, Path):
+        return str(obj)
+    if isinstance(obj, (list, tuple)):
+        return [_json_safe(x) for x in obj]
+    if isinstance(obj, dict):
+        return {k: _json_safe(v) for k, v in obj.items()}
+    try:
+        json.dumps(obj)
+        return obj
+    except (TypeError, ValueError):
+        return str(obj)
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -619,12 +661,20 @@ class PipelineRouter:
         module_info = self._get_module(content_spec.content_type, "ingest")
         if module_info:
             module, cls_name = module_info
-            # 动态构造 Request 并调用
-            req = module.RadarBreakingRequest(
-                topic=content_spec.title or "突发新闻",
+            # 动态构造 Request（类名 = cls_name 去掉 "Radar" 前缀 + "Request"）
+            # RadarBreaking → RadarBreakingRequest
+            # RadarScienceFact → RadarScienceFactRequest
+            req_cls_name = cls_name + "Request"
+            if not hasattr(module, req_cls_name):
+                req_cls_name = "RadarBreakingRequest"   # fallback 兼容
+
+            req_cls = getattr(module, req_cls_name)
+            req = req_cls(
+                topic=content_spec.title or self._default_topic_for_type(content_spec.content_type),
                 max_signals=5,
             )
-            result = module.RadarBreaking().run(req)
+            radar_cls = getattr(module, cls_name)
+            result = radar_cls().run(req)
             context.brief = result.brief
             return result.brief
 
@@ -637,6 +687,14 @@ class PipelineRouter:
         }
         context.brief = artifact
         return artifact
+
+    def _default_topic_for_type(self, content_type: str) -> str:
+        """各内容类型的默认主题"""
+        defaults = {
+            "breakdown_news": "突发事件",
+            "science_research": "科学研究",
+        }
+        return defaults.get(content_type, "内容创作")
 
     def _run_structure(self, config: dict, content_spec: ContentSpec, prev: dict, context: PipelineContext) -> dict:
         """阶段 2：结构化（IF-P-2 → ArticleOutline）"""
@@ -790,7 +848,9 @@ class PipelineRouter:
             article_v2=article_v2,
             formatting=formatting_result.__dict__,
             metadata={**metadata_result.__dict__, "scorecard_summary": {
-                "scorecard": scorecard,
+                # scorecard = context.scorecard = adapt artifact = {status, scorecard{...}, ...}
+                # channel_adapter expects: scorecard_summary.scorecard = inner scorecard dict
+                "scorecard": scorecard.get("scorecard", scorecard),
                 "passed": scorecard.get("scorecard", {}).get("total_score", 0) >= 70,
             }},
             content_type=content_spec.content_type,
@@ -1030,7 +1090,7 @@ class PipelineRouter:
         out_dir = REPO_ROOT / "platform" / "5_deliver" / "checkpoint" / "results"
         out_dir.mkdir(parents=True, exist_ok=True)
         path = out_dir / f"{result.pipeline_id}.json"
-        path.write_text(json.dumps(result.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8")
+        path.write_text(json.dumps(result.to_dict(), ensure_ascii=False, indent=2, default=_json_safe), encoding="utf-8")
 
     def _save_checkpoint_ticket(self, ticket: dict):
         """保存 checkpoint 工单"""

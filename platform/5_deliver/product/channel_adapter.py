@@ -330,6 +330,10 @@ class ChannelAdapter:
 
         # ── 正文 blocks ─────────────────────────────────
         body_md = self._render_blocks_to_markdown(request.article_v2)
+        # 去除标题重复：若正文第一个 heading1 与 frontmatter 标题相同，跳过
+        title_text = request.metadata.get("title", "")
+        if body_md.startswith(f"# {title_text}\n"):
+            body_md = body_md[len(f"# {title_text}\n"):]
         md_lines.append(body_md)
         md_lines.append("")
 
