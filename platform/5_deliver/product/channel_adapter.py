@@ -294,7 +294,14 @@ class ChannelAdapter:
         html_parts = []
         for block in article_v2.get("blocks", []):
             btype = block.get("type", "paragraph")
-            text = block.get("text", "")
+            # content 可能是 {"text": "..."} 字典，也可能直接是字符串
+            raw_content = block.get("content", {})
+            if isinstance(raw_content, dict):
+                text = raw_content.get("text", "")
+            elif isinstance(raw_content, str):
+                text = raw_content
+            else:
+                text = block.get("text", "")
 
             if btype == "paragraph":
                 html_parts.append(f"<p>{text}</p>")

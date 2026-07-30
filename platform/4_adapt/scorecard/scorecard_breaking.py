@@ -287,36 +287,63 @@ class ScorecardBreaking:
         return max(min(score, 100), 0)
 
     def _score_readability(self, article: dict) -> float:
-        """可读性评分（20%）：段落长度、句子长度"""
+        """
+        可读性评分（20%）：
+          - 句子长度（突发新闻允许较长句子，最多放宽至70字）
+          - 段落/列表结构（list block 每项视为一句）
+          - 总字数（突发新闻目标250-500字）
+        """
         blocks = article.get("blocks", [])
         if not blocks:
             return 50
 
-        total_text = " ".join(b.get("content", {}).get("text", "") for b in blocks)
-        sentences = re.split(r'[。！？]', total_text)
-        sentences = [s for s in sentences if len(s) > 3]
+        # 收集所有句子片段（中文句末标点 + 逗号）
+        all_sentences: list[str] = []
+        def _safe_text(block: dict) -> str:
+            """从 block 中安全提取纯文本字符串"""
+            raw = block.get("content", {})
+            if isinstance(raw, str):
+                return raw
+            if isinstance(raw, dict):
+                return raw.get("text", "")
+            return ""
 
-        if not sentences:
+        for block in blocks:
+            if block.get("type") == "list":
+                # list block：每项视为一句（数字密集型事实列表）
+                for item in block.get("items", []):
+                    text = str(item) if not isinstance(item, str) else item
+                    if len(text) > 3:
+                        all_sentences.append(text)
+            else:
+                text = _safe_text(block)
+                # 用句末标点和逗号双重断句
+                parts = re.split(r'[。！？，]', text)
+                all_sentences.extend(p for p in parts if len(p) > 3)
+
+        if not all_sentences:
             return 50
 
-        avg_sentence_len = sum(len(s) for s in sentences) / len(sentences)
+        avg_sentence_len = sum(len(s) for s in all_sentences) / len(all_sentences)
 
-        # 平均句长 < 25字 = 优秀，25-40 = 良好，> 40 = 较差
-        if avg_sentence_len <= 25:
+        # 突发新闻宽松评分：≤30=优秀，30-50=良好，50-70=一般，>70=较差
+        if avg_sentence_len <= 30:
             readability = 90
-        elif avg_sentence_len <= 40:
-            readability = 75
-        elif avg_sentence_len <= 60:
-            readability = 60
+        elif avg_sentence_len <= 50:
+            readability = 80
+        elif avg_sentence_len <= 70:
+            readability = 65
         else:
-            readability = 40
+            readability = 45
 
-        # 字数检查：300-500字 = 优秀
+        # 字数检查：突发新闻目标250-500字
         word_count = article.get("word_count", 0)
-        if 300 <= word_count <= 600:
-            readability = max(readability, 75)
-        elif word_count < 200 or word_count > 800:
-            readability -= 15
+        if 250 <= word_count <= 600:
+            readability = max(readability, 80)
+        elif word_count < 150:
+            readability -= 10
+        elif word_count > 900:
+            readability -= 10
 
         return max(min(readability, 100), 0)
 
@@ -405,10 +432,15 @@ class ScorecardBreaking:
         parts = []
         for block in article.get("blocks", []):
             content = block.get("content", {})
-            if "text" in content:
-                parts.append(content["text"])
-            elif "items" in content:
-                parts.extend(content["items"])
+            if isinstance(content, dict):
+                if "text" in content:
+                    parts.append(str(content["text"]))
+                if "items" in content:
+                    parts.extend(str(i) for i in content["items"])
+                if "events" in content:
+                    parts.extend(str(e.get("event", "")) for e in content["events"])
+            elif isinstance(content, str):
+                parts.append(content)
         return " ".join(parts)
 
     def _check_factual_claims(self, article: dict) -> dict:

@@ -282,7 +282,11 @@ class ArticleBreaking:
             "sections": llm_sections,
             "word_count_target": data.get("word_count_target", self.TARGET_WORDS),
             "word_count_range": {"min": 300, "max": 600},
-            "references_plan": source_ids,
+            # 保留完整来源对象（含 grade/source_id），供 render/adapt 读取
+            "references_plan": [
+                {"id": s.get("source_id", ""), **s}
+                for s in brief.get("sources", [])
+            ],
             "terminology_plan": list(terms)[:10],
             "visual_elements_plan": ["timeline"],
             "knowledge_graph": None,
@@ -303,6 +307,11 @@ class ArticleBreaking:
         if brief.get("signals"):
             sig = brief["signals"][0]
             outline["title"] = f"突发：{sig.get('text', '事件速报')[:30]}"
+        # 传入完整来源对象（含 grade），与真实路径一致
+        outline["references_plan"] = [
+            {"id": s.get("source_id", ""), **s}
+            for s in brief.get("sources", [])
+        ]
         return outline
 
 

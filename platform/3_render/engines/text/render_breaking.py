@@ -43,7 +43,7 @@ from typing import Optional
 # 路径配置
 # ─────────────────────────────────────────────────────────────────
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 LLM_GATEWAY_PATH = REPO_ROOT / "platform" / "shared" / "llm_gateway.py"
 
 
@@ -152,7 +152,14 @@ class RenderBreaking:
         )
 
         references_plan = outline.get("references_plan", [])
-        references_text = f"可引用来源：{', '.join(references_plan) if references_plan else '暂无'}"
+        # references_plan 可能是来源对象列表（如 [{"id":"...","name":"...","grade":"A"}]）或字符串列表
+        ref_names = []
+        for r in references_plan:
+            if isinstance(r, dict):
+                ref_names.append(r.get("name", r.get("source_id", r.get("id", ""))))
+            else:
+                ref_names.append(str(r))
+        references_text = f"可引用来源：{', '.join(ref_names) if ref_names else '暂无'}"
         terminology = outline.get("terminology_plan", [])
         terms_text = f"关键词：{', '.join(terminology) if terminology else '无'}"
 
@@ -209,21 +216,40 @@ class RenderBreaking:
         try:
             data = json.loads(response.content)
             blocks = data.get("blocks", [])
+            # 尝试从 LLM 获取 abstract（如果有）
+            abstract = data.get("abstract", "")
         except Exception:
             blocks = []
+            abstract = ""
 
         # 确保有4个 block（对应4个 section）
         blocks = self._ensure_4_blocks(blocks, outline)
 
-        # 计算字数
-        all_text = " ".join(
-            b.get("text", "") for b in blocks
-        ) + " ".join(
-            " ".join(b.get("items", [])) for b in blocks
-        ) + " ".join(
-            b.get("events", [{}]).__repr__() for b in blocks
+        # 计算字数：统计所有非空白字符（中文+数字+英文）
+        def _extract_text(block: dict) -> str:
+            """从 block 中安全提取纯文本字符串（兼容 content.text 或直接 text 字段）"""
+            raw = block.get("content", {})
+            if isinstance(raw, str):
+                return raw
+            if isinstance(raw, dict):
+                # content={} 时（LLM返回的直接格式），回退到 block.text
+                return raw.get("text", "") or block.get("text", "")
+            return block.get("text", "")
+
+        all_text = " ".join(_extract_text(b) for b in blocks)
+        all_text += " ".join(
+            " ".join(str(i) for i in b.get("items", [])) for b in blocks
         )
-        word_count = len(re.findall(r'[\u4e00-\u9fff]+', all_text))
+        all_text += " ".join(
+            " ".join(str(e.get("event", "")) for e in b.get("events", [])) for b in blocks
+        )
+        word_count = len(all_text.replace(" ", ""))  # 统计所有字符，不只是中文
+
+        # abstract 降级处理：LLM 未返回时，取第一段的纯文本前150字
+        if not abstract and blocks:
+            first_block = blocks[0]
+            raw_text = _extract_text(first_block)
+            abstract = raw_text[:150] if len(raw_text) > 150 else raw_text
         reading_time = word_count / 400  # 约400字/分钟
 
         artifact_id = f"ART-ARTICLE-{self.CONTENT_TYPE}-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:8]}"
@@ -245,20 +271,20 @@ class RenderBreaking:
             },
             "title": outline.get("title", "突发：事件速报"),
             "subtitle": outline.get("subtitle", ""),
-            "abstract": "",
+            "abstract": abstract,
             "word_count": word_count,
             "reading_time_minutes": round(reading_time, 1),
             "blocks": blocks,
             "metadata": {
                 "terms": [{"term": t, "defined": False} for t in outline.get("terminology_plan", [])],
                 "knowledge_points": [],
-                "references": [{"id": r} for r in outline.get("references_plan", [])],
+                "references": outline.get("references_plan", []),  # 完整来源对象，含 grade 字段
             },
             "quality_markers": {
                 "factual_claims_count": self._count_claims(blocks),
                 "sources_cited_count": len(outline.get("references_plan", [])),
                 "terms_defined_count": 0,
-                "has_abstract": False,
+                "has_abstract": bool(abstract),
                 "has_references": bool(outline.get("references_plan")),
                 "has_terminology_table": False,
                 "literary_score": 0,
@@ -336,6 +362,8 @@ class RenderBreaking:
         article["header"]["pipeline_id"] = pipeline_id
         article["header"]["produced_at"] = datetime.now(timezone.utc).isoformat()
         article["title"] = outline.get("title", article["title"])
+        # 同步 outline 的 references_plan（含 grade）到 article.metadata.references
+        article["metadata"]["references"] = outline.get("references_plan", [])
         return article
 
 
