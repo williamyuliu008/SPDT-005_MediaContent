@@ -73,19 +73,19 @@ content_types:
     sla_minutes: 15
     stages:
       ingest:
-        module: "platform/1_ingest/radar/radar"
+        module: "platform/1_ingest/radar/radar_breaking"
         config: "breaking"
         # 触发关键词：突发事件/危机/重大政策/突发事故
       structure:
-        module: "platform/2_structure/article/article"
+        module: "platform/2_structure/article/article_breaking"
         config: "breaking"
         # 极简结构：标题 + 导语（3句）+ 关键事实（5点）+ 事件时间线
       render:
-        engine: "platform/3_render/engines/text/text_engine"
+        engine: "platform/3_render/engines/text/render_breaking"
         config: "breaking"
         # 语气：客观、快速、专业，避免推测
       adapt:
-        scorecard: "platform/4_adapt/scorecard/scorecard"
+        scorecard: "platform/4_adapt/scorecard/scorecard_breaking"
         config: "breaking"
         # 阈值：70分（快速通道）
       deliver:

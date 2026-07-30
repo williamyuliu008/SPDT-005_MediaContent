@@ -284,7 +284,7 @@ class LLMGateway:
         self._call_log: list[dict] = []
 
         if self.config.mock_mode:
-            print(f"[LLMGateway] ⚠️  MOCK 模式（未配置 API Key），将返回示例数据")
+            print(f"[LLMGateway] [MOCK MODE] 未配置 API Key，将返回示例数据")
 
     # ── 核心 API ────────────────────────────────────────────────
 

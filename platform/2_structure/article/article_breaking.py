@@ -43,7 +43,23 @@ from typing import Optional
 # 路径配置
 # ─────────────────────────────────────────────────────────────────
 
-REPO_ROOT = Path(__file__).resolve().parents[4]
+REPO_ROOT = Path(__file__).resolve().parents[3]
+LLM_GATEWAY_PATH = REPO_ROOT / "platform" / "shared" / "llm_gateway.py"
+
+
+def _load_llm_gateway():
+    """动态加载 llm_gateway 模块（避免 platform 命名冲突）。"""
+    import importlib.util, sys
+    cache_key = "_spdt_llm_gateway"
+    if cache_key in sys.modules:
+        return sys.modules[cache_key]
+    spec = importlib.util.spec_from_file_location(cache_key, str(LLM_GATEWAY_PATH))
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load llm_gateway from {LLM_GATEWAY_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 @dataclass
@@ -132,7 +148,9 @@ class ArticleBreaking:
         返回：
           ArticleBreakingResult（包含 artifact_id 和 outline dict）
         """
-        from platform.shared.llm_gateway import LLMGateway, BREAKING_NEWS_MOCK_ARTICLE_OUTLINE
+        _llm = _load_llm_gateway()
+        LLMGateway = _llm.LLMGateway
+        BREAKING_NEWS_MOCK_ARTICLE_OUTLINE = _llm.BREAKING_NEWS_MOCK_ARTICLE_OUTLINE
 
         gateway = LLMGateway()
         brief_id = brief["header"]["artifact_id"]
@@ -142,7 +160,8 @@ class ArticleBreaking:
 
         # ── MOCK 模式 ──────────────────────────────────────────
         if gateway.config.mock_mode:
-            outline = self._build_mock_outline(brief, brief_id, pipeline_id)
+            mock_outline = _llm.BREAKING_NEWS_MOCK_ARTICLE_OUTLINE
+            outline = self._build_mock_outline(brief, brief_id, pipeline_id, mock_outline)
             return ArticleBreakingResult(
                 artifact_id=outline["header"]["artifact_id"],
                 outline=outline,
@@ -272,10 +291,10 @@ class ArticleBreaking:
 
         return outline
 
-    def _build_mock_outline(self, brief: dict, brief_id: str, pipeline_id: str) -> dict:
+    def _build_mock_outline(self, brief: dict, brief_id: str, pipeline_id: str, mock_outline_template: dict) -> dict:
         """构建 MOCK ArticleOutline"""
         import copy
-        outline = copy.deepcopy(BREAKING_NEWS_MOCK_ARTICLE_OUTLINE)
+        outline = copy.deepcopy(mock_outline_template)
         outline["header"]["artifact_id"] = f"ART-OUTLINE-{self.CONTENT_TYPE}-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:8]}"
         outline["header"]["brief_id"] = brief_id
         outline["header"]["pipeline_id"] = pipeline_id

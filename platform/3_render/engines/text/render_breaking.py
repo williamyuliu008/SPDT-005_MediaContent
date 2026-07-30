@@ -34,6 +34,7 @@ from __future__ import annotations
 import json
 import re
 import uuid
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -42,7 +43,23 @@ from typing import Optional
 # 路径配置
 # ─────────────────────────────────────────────────────────────────
 
-REPO_ROOT = Path(__file__).resolve().parents[5]
+REPO_ROOT = Path(__file__).resolve().parents[3]
+LLM_GATEWAY_PATH = REPO_ROOT / "platform" / "shared" / "llm_gateway.py"
+
+
+def _load_llm_gateway():
+    """动态加载 llm_gateway 模块（避免 platform 命名冲突）。"""
+    import importlib.util, sys
+    cache_key = "_spdt_llm_gateway"
+    if cache_key in sys.modules:
+        return sys.modules[cache_key]
+    spec = importlib.util.spec_from_file_location(cache_key, str(LLM_GATEWAY_PATH))
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load llm_gateway from {LLM_GATEWAY_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 @dataclass
@@ -51,9 +68,6 @@ class RenderBreakingResult:
     artifact_id: str
     article: dict
     mock: bool
-
-
-from dataclasses import dataclass
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -95,7 +109,9 @@ class RenderBreaking:
         返回：
           RenderBreakingResult（包含 artifact_id 和 article dict）
         """
-        from platform.shared.llm_gateway import LLMGateway, BREAKING_NEWS_MOCK_ARTICLE_V2
+        _llm = _load_llm_gateway()
+        LLMGateway = _llm.LLMGateway
+        BREAKING_NEWS_MOCK_ARTICLE_V2 = _llm.BREAKING_NEWS_MOCK_ARTICLE_V2
 
         gateway = LLMGateway()
         outline_id = outline["header"]["artifact_id"]
@@ -104,7 +120,8 @@ class RenderBreaking:
 
         # ── MOCK 模式 ──────────────────────────────────────────
         if gateway.config.mock_mode:
-            article = self._build_mock_article(outline, outline_id, pipeline_id, brief_id)
+            mock_article = _llm.BREAKING_NEWS_MOCK_ARTICLE_V2
+            article = self._build_mock_article(outline, outline_id, pipeline_id, brief_id, mock_article)
             return RenderBreakingResult(
                 artifact_id=article["header"]["artifact_id"],
                 article=article,
@@ -308,10 +325,10 @@ class RenderBreaking:
             "errors": errors,
         }
 
-    def _build_mock_article(self, outline: dict, outline_id: str, pipeline_id: str, brief_id: str) -> dict:
+    def _build_mock_article(self, outline: dict, outline_id: str, pipeline_id: str, brief_id: str, mock_article_template: dict) -> dict:
         """构建 MOCK Article_v2"""
         import copy
-        article = copy.deepcopy(BREAKING_NEWS_MOCK_ARTICLE_V2)
+        article = copy.deepcopy(mock_article_template)
         new_artifact_id = f"ART-ARTICLE-{self.CONTENT_TYPE}-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:8]}"
         article["header"]["artifact_id"] = new_artifact_id
         article["header"]["outline_id"] = outline_id

@@ -40,8 +40,27 @@ import yaml
 # 路径配置
 # ─────────────────────────────────────────────────────────────────
 
-REPO_ROOT = Path(__file__).resolve().parents[4]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 REGISTRY_PATH = REPO_ROOT / "platform" / "kb" / "content_type_registry.yaml"
+LLM_GATEWAY_PATH = REPO_ROOT / "platform" / "shared" / "llm_gateway.py"
+
+
+def _load_llm_gateway():
+    """
+    动态加载 llm_gateway 模块（避免 platform 命名冲突）。
+    platform/ 是 Python 内置模块，因此不能使用 from platform.shared.llm_gateway import。
+    """
+    import importlib.util, sys
+    cache_key = "_spdt_llm_gateway"
+    if cache_key in sys.modules:
+        return sys.modules[cache_key]
+    spec = importlib.util.spec_from_file_location(cache_key, str(LLM_GATEWAY_PATH))
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load llm_gateway from {LLM_GATEWAY_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -144,13 +163,16 @@ class RadarBreaking:
         返回：
           RadarBreakingResult（包含 artifact_id 和 brief dict）
         """
-        from platform.shared.llm_gateway import LLMGateway, BREAKING_NEWS_MOCK_INTELLIGENCE_BRIEF
+        _llm = _load_llm_gateway()
+        LLMGateway = _llm.LLMGateway
+        BREAKING_NEWS_MOCK_INTELLIGENCE_BRIEF = _llm.BREAKING_NEWS_MOCK_INTELLIGENCE_BRIEF
 
         gateway = LLMGateway()
 
         # ── MOCK 模式 ──────────────────────────────────────────
         if gateway.config.mock_mode:
-            brief = self._build_mock_brief(request.topic)
+            mock_brief = _llm.BREAKING_NEWS_MOCK_INTELLIGENCE_BRIEF
+            brief = self._build_mock_brief(request.topic, mock_brief)
             return RadarBreakingResult(
                 artifact_id=brief["header"]["artifact_id"],
                 brief=brief,
@@ -287,10 +309,10 @@ class RadarBreaking:
 
         return brief
 
-    def _build_mock_brief(self, topic: str) -> dict:
+    def _build_mock_brief(self, topic: str, mock_brief_template: dict) -> dict:
         """构建 MOCK IntelligenceBrief"""
         import copy
-        brief = copy.deepcopy(BREAKING_NEWS_MOCK_INTELLIGENCE_BRIEF)
+        brief = copy.deepcopy(mock_brief_template)
         brief["header"]["artifact_id"] = f"ART-INTEL-{self.CONTENT_TYPE}-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:8]}"
         brief["header"]["produced_at"] = datetime.now(timezone.utc).isoformat()
         brief["signals"][0]["text"] = f"[MOCK] {topic} 相关突发事件"

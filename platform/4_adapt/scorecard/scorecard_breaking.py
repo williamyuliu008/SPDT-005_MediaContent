@@ -46,8 +46,24 @@ import yaml
 # 路径配置
 # ─────────────────────────────────────────────────────────────────
 
-REPO_ROOT = Path(__file__).resolve().parents[4]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 REGISTRY_PATH = REPO_ROOT / "platform" / "kb" / "content_type_registry.yaml"
+LLM_GATEWAY_PATH = REPO_ROOT / "platform" / "shared" / "llm_gateway.py"
+
+
+def _load_llm_gateway():
+    """动态加载 llm_gateway 模块（避免 platform 命名冲突）。"""
+    import importlib.util, sys
+    cache_key = "_spdt_llm_gateway"
+    if cache_key in sys.modules:
+        return sys.modules[cache_key]
+    spec = importlib.util.spec_from_file_location(cache_key, str(LLM_GATEWAY_PATH))
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load llm_gateway from {LLM_GATEWAY_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 @dataclass
@@ -144,7 +160,8 @@ class ScorecardBreaking:
         返回：
           ScorecardBreakingResult
         """
-        from platform.shared.llm_gateway import LLMGateway
+        _llm = _load_llm_gateway()
+        LLMGateway = _llm.LLMGateway
 
         threshold = threshold or self.threshold
         gateway = LLMGateway()

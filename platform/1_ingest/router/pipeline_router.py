@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import sys
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -42,6 +43,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]  # SPDT-005_MediaContent/
 REGISTRY_PATH = REPO_ROOT / "platform" / "kb" / "content_type_registry.yaml"
 SIGNOFF_PATH = REPO_ROOT / "platform" / "5_deliver" / "checkpoint" / "signoff.py"
 CHECKPOINT_DIR = REPO_ROOT / "platform" / "5_deliver" / "checkpoint"
+PRODUCT_DIR = REPO_ROOT / "platform" / "5_deliver" / "product"
 
 # ─────────────────────────────────────────────────────────────────
 # 内容类型 → 模块映射
@@ -131,6 +133,20 @@ class StageResult:
 
 
 @dataclass
+class PipelineContext:
+    """
+    跨阶段上下文：存储中间 artifact，避免重复查询。
+
+    Stage 3 生成的 article_v2 → 供 Stage 4 评分用
+    Stage 4 生成的 scorecard + article_v2 → 供 Stage 5 产品化用
+    """
+    article_v2: dict = field(default_factory=dict)     # IF-P-3，Stage 3 产出
+    scorecard: dict = field(default_factory=dict)     # IF-P-4，Stage 4 产出
+    outline: dict = field(default_factory=dict)       # IF-P-2，Stage 2 产出
+    brief: dict = field(default_factory=dict)         # IF-P-1，Stage 1 产出
+
+
+@dataclass
 class PipelineResult:
     """整条管线执行结果"""
     pipeline_id: str
@@ -190,14 +206,6 @@ class PipelineRouter:
     def __init__(self, registry_path: Optional[Path] = None):
         self.registry_path = registry_path or REGISTRY_PATH
         self.registry: dict = {}
-        self._load_registry()
-        self._signoff_manager = None
-
-    # ── 初始化 ────────────────────────────────────────────────
-
-    def __init__(self, registry_path: Optional[Path] = None):
-        self.registry_path = registry_path or REGISTRY_PATH
-        self.registry: dict = {}
         self._module_cache: dict = {}
         self._signoff_manager = None
         self._load_registry()
@@ -208,6 +216,45 @@ class PipelineRouter:
             raise FileNotFoundError(f"Registry not found: {self.registry_path}")
         data = yaml.safe_load(self.registry_path.read_text(encoding="utf-8"))
         self.registry = data
+
+    def _get_module(self, content_type: str, stage_name: str):
+        """
+        动态加载内容类型对应阶段模块。
+
+        module_path 格式：platform.1_ingest.radar.radar_breaking
+        → 转换为文件系统路径：platform/1_ingest/radar/radar_breaking.py
+
+        返回：(module, class_name) 或 None
+        """
+        cache_key = f"{content_type}:{stage_name}"
+        if cache_key in self._module_cache:
+            return self._module_cache[cache_key]
+
+        if content_type not in CONTENT_TYPE_MODULES:
+            return None
+
+        stage_map = CONTENT_TYPE_MODULES[content_type]
+        if stage_name not in stage_map:
+            return None
+
+        module_path, cls_name = stage_map[stage_name]
+        # platform.1_ingest.radar.radar_breaking → platform/1_ingest/radar/radar_breaking.py
+        relative = module_path.replace(".", "/") + ".py"
+        file_path = REPO_ROOT / relative
+
+        if not file_path.exists():
+            return None
+
+        # 使用 spec_from_file_location 避免命名冲突（platform 是 Python 内置模块）
+        spec = importlib.util.spec_from_file_location(module_path, str(file_path))
+        if spec is None or spec.loader is None:
+            return None
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_path] = module
+        spec.loader.exec_module(module)
+
+        self._module_cache[cache_key] = (module, cls_name)
+        return (module, cls_name)
 
     # ── 路由查找 ──────────────────────────────────────────────
 
@@ -261,6 +308,9 @@ class PipelineRouter:
             started_at=datetime.now(timezone.utc).isoformat(),
         )
 
+        # 跨阶段上下文：存储中间 artifact
+        context = PipelineContext()
+
         start_time = time.time()
         gray_zone_tickets: list[dict] = []
 
@@ -279,6 +329,7 @@ class PipelineRouter:
                 previous_artifact=result.stages.get(
                     self.STAGES[self.STAGES.index(stage_name) - 1]
                 ).artifact if self.STAGES.index(stage_name) > 0 else {},
+                context=context,
             )
 
             result.stages[stage_name] = stage_result
@@ -302,10 +353,14 @@ class PipelineRouter:
 
             # M4 质量阈值检查（adapt 阶段）
             if stage_name == "adapt":
-                scorecard = stage_result.artifact.get("scorecard", {})
-                result.scorecard = scorecard
+                # stage_result.artifact["scorecard"] 结构（来自 ScorecardBreaking.run()）：
+                #   {"header":{}, "scorecard":{"total_score":77.8,...}, "factual_claims_check":{}, ...}
+                # 因此 total_score 路径：artifact["scorecard"]["scorecard"]["total_score"]
+                artifact = stage_result.artifact
+                result.scorecard = artifact       # 存完整 artifact
+                inner_scorecard = artifact.get("scorecard", {})
+                total_score = inner_scorecard.get("scorecard", {}).get("total_score", 0)
                 threshold = self._parse_threshold(checkpoint_action)
-                total_score = scorecard.get("total_score", 0)
                 if total_score < threshold:
                     result.status = PipelineStatus.FAIL
                     break
@@ -330,6 +385,7 @@ class PipelineRouter:
         content_spec: ContentSpec,
         checkpoint_action: str,
         previous_artifact: dict,
+        context: PipelineContext,
     ) -> StageResult:
         """
         执行单个管线阶段。
@@ -344,27 +400,28 @@ class PipelineRouter:
         status = PipelineStatus.PASS
         artifact: dict = {}
         error = ""
+        checkpoint_result: dict = {}
 
         try:
             # ── 阶段 1: ingest ─────────────────────────────────
             if stage_name == "ingest":
-                artifact = self._run_ingest(stage_config, content_spec)
+                artifact = self._run_ingest(stage_config, content_spec, context)
 
             # ── 阶段 2: structure ──────────────────────────────
             elif stage_name == "structure":
-                artifact = self._run_structure(stage_config, content_spec, previous_artifact)
+                artifact = self._run_structure(stage_config, content_spec, previous_artifact, context)
 
             # ── 阶段 3: render ─────────────────────────────────
             elif stage_name == "render":
-                artifact = self._run_render(stage_config, content_spec, previous_artifact)
+                artifact = self._run_render(stage_config, content_spec, previous_artifact, context)
 
             # ── 阶段 4: adapt ─────────────────────────────────
             elif stage_name == "adapt":
-                artifact = self._run_adapt(stage_config, content_spec, previous_artifact)
+                artifact = self._run_adapt(stage_config, content_spec, previous_artifact, context)
 
             # ── 阶段 5: deliver ────────────────────────────────
             elif stage_name == "deliver":
-                artifact = self._run_deliver(stage_config, content_spec, previous_artifact)
+                artifact = self._run_deliver(stage_config, content_spec, context)
 
             # ── checkpoint 检查 ───────────────────────────────
             checkpoint_result = self._run_checkpoint(
@@ -392,7 +449,7 @@ class PipelineRouter:
 
     # ── 各阶段执行器 ──────────────────────────────────────────
 
-    def _run_ingest(self, config: dict, content_spec: ContentSpec) -> dict:
+    def _run_ingest(self, config: dict, content_spec: ContentSpec, context: PipelineContext) -> dict:
         """阶段 1：情报摄取（IF-P-1 → IntelligenceBrief）"""
         module_info = self._get_module(content_spec.content_type, "ingest")
         if module_info:
@@ -403,69 +460,80 @@ class PipelineRouter:
                 max_signals=5,
             )
             result = module.RadarBreaking().run(req)
+            context.brief = result.brief
             return result.brief
 
         # fallback：骨架数据
-        return {
+        artifact = {
             "status": "ingested",
             "sources": [{"type": "radar", "config": config.get("config"), "count": 0}],
             "raw_data": [],
             "content_spec": content_spec.to_dict(),
         }
+        context.brief = artifact
+        return artifact
 
-    def _run_structure(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
+    def _run_structure(self, config: dict, content_spec: ContentSpec, prev: dict, context: PipelineContext) -> dict:
         """阶段 2：结构化（IF-P-2 → ArticleOutline）"""
         brief = prev  # prev = IntelligenceBrief
         module_info = self._get_module(content_spec.content_type, "structure")
         if module_info:
             module, cls_name = module_info
             result = getattr(module, cls_name)().run(brief)
+            context.outline = result.outline
             return result.outline
 
-        return {
+        artifact = {
             "status": "structured",
             "structure_type": config.get("config"),
             "content_spec": content_spec.to_dict(),
             "outline": {},
             "knowledge_points": [],
         }
+        context.outline = artifact
+        return artifact
 
-    def _run_render(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
+    def _run_render(self, config: dict, content_spec: ContentSpec, prev: dict, context: PipelineContext) -> dict:
         """阶段 3：内容生成（IF-P-3 → Article_v2）"""
         outline = prev  # prev = ArticleOutline
         module_info = self._get_module(content_spec.content_type, "render")
         if module_info:
             module, cls_name = module_info
             result = getattr(module, cls_name)().run(outline)
+            context.article_v2 = result.article
             return result.article
 
-        return {
+        artifact = {
             "status": "rendered",
             "engine": config.get("config"),
             "draft_content": "",
             "word_count": 0,
         }
+        context.article_v2 = artifact
+        return artifact
 
-    def _run_adapt(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
+    def _run_adapt(self, config: dict, content_spec: ContentSpec, prev: dict, context: PipelineContext) -> dict:
         """阶段 4：质量适配（IF-P-4 → QualityScorecard）"""
         article = prev  # prev = Article_v2
         module_info = self._get_module(content_spec.content_type, "adapt")
         if module_info:
             module, cls_name = module_info
             result = getattr(module, cls_name)().run(article)
-            return {
+            artifact = {
                 "status": "adapted",
                 "scorecard": result.scorecard,
                 "passed": result.passed,
                 "action": result.action,
                 "gray_zones": result.gray_zones,
             }
+            context.scorecard = result.scorecard
+            return artifact
 
         scorecard_weights = self.registry.get("scorecard_weights", {}).get(
             content_spec.content_type,
             self.registry.get("scorecard_weights", {}).get("deep_industry_report", {})
         )
-        return {
+        artifact = {
             "status": "adapted",
             "scorecard": {
                 "total_score": 0,
@@ -477,16 +545,112 @@ class PipelineRouter:
                 "weights": scorecard_weights,
             }
         }
+        context.scorecard = artifact["scorecard"]
+        return artifact
 
-    def _run_deliver(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
-        """阶段 5：触达交付"""
-        # TODO: 接入真实 autopublish 模块
-        return {
-            "status": "delivered",
-            "publish_config": config.get("config"),
-            "channels": content_spec.channels,
-            "published_at": datetime.now(timezone.utc).isoformat(),
+    def _run_deliver(self, config: dict, content_spec: ContentSpec, context: PipelineContext) -> dict:
+        """
+        阶段 5：触达交付（IF-P-5 → ContentProduct）
+
+        流程：
+          1. 提取 article_v2（来自 context.article_v2）
+          2. 提取 scorecard（来自 context.scorecard）
+          3. 从注册表读取 pipeline_dimensions（accuracy / literary / professional_depth）
+          4. 调用 MetadataGenerator 生成元数据（IF-P-5.metadata）
+          5. 调用 ProductFormatter 生成排版格式（IF-P-5.formatting）
+          6. 为每个目标渠道构建 ChannelPackage
+          7. 输出完整 ContentProduct
+        """
+        article_v2 = context.article_v2
+        scorecard = context.scorecard
+
+        # 获取内容类型维度配置
+        ct_config = self.registry.get("content_types", {}).get(content_spec.content_type, {})
+        dims = ct_config.get("pipeline_dimensions", {})
+        accuracy = dims.get("accuracy", 3)
+        literary = dims.get("literary", 2)
+        professional_depth = dims.get("professional_depth", 3)
+
+        # 默认渠道
+        channels = content_spec.channels or ct_config.get("channels", ["web"])
+
+        # ── 1. 元数据生成 ──────────────────────────────────────
+        mg_spec = importlib.util.spec_from_file_location(
+            "metadata_generator",
+            str(PRODUCT_DIR / "metadata_generator.py"),
+        )
+        mg_module = importlib.util.module_from_spec(mg_spec)
+        sys.modules["metadata_generator"] = mg_module
+        mg_spec.loader.exec_module(mg_module)
+
+        mg_req = mg_module.MetadataRequest(
+            article_v2=article_v2,
+            content_type=content_spec.content_type,
+            accuracy=accuracy,
+            professional_depth=professional_depth,
+            channels=channels,
+            author_name="AI 媒体编辑",
+            author_bio="由 SPDT-005 自动化管线生成",
+        )
+        metadata_result = mg_module.MetadataGenerator().generate(mg_req)
+
+        # ── 2. 排版格式化 ─────────────────────────────────────
+        pf_spec = importlib.util.spec_from_file_location(
+            "product_formatter",
+            str(PRODUCT_DIR / "product_formatter.py"),
+        )
+        pf_module = importlib.util.module_from_spec(pf_spec)
+        sys.modules["product_formatter"] = pf_module
+        pf_spec.loader.exec_module(pf_module)
+
+        pf_req = pf_module.FormattingRequest(
+            article_v2=article_v2,
+            content_type=content_spec.content_type,
+            literary=literary,
+            professional_depth=professional_depth,
+            target_channel="web",  # 主渠道先渲染，后续按需扩展
+        )
+        formatting_result = pf_module.ProductFormatter().format(pf_req)
+
+        # ── 3. 渠道适配 ────────────────────────────────────────
+        ca_spec = importlib.util.spec_from_file_location(
+            "channel_adapter",
+            str(PRODUCT_DIR / "channel_adapter.py"),
+        )
+        ca_module = importlib.util.module_from_spec(ca_spec)
+        sys.modules["channel_adapter"] = ca_module
+        ca_spec.loader.exec_module(ca_module)
+
+        ca_req = ca_module.ChannelAdapterRequest(
+            article_v2=article_v2,
+            formatting=formatting_result.__dict__,
+            metadata=metadata_result.__dict__,
+            content_type=content_spec.content_type,
+            target_channels=channels,
+            literary=literary,
+        )
+        channel_packages_dict = ca_module.ChannelAdapter().adapt(ca_req)
+        # adapt() returns dict[str, ChannelPackage] — convert to dict of dicts
+        channel_packages = {
+            ch: pkg.__dict__ for ch, pkg in channel_packages_dict.items()
         }
+
+        # ── 4. 组装 ContentProduct（IF-P-5）──────────────────
+        content_product = {
+            "content_id": f"CP_{content_spec.content_type}_{uuid.uuid4().hex[:8]}",
+            "article": article_v2,
+            "metadata": metadata_result.__dict__,
+            "formatting": formatting_result.__dict__,
+            "channel_packages": channel_packages,
+            "scorecard_summary": {
+                "total_score": scorecard.get("total_score", 0),
+                "passed": scorecard.get("total_score", 0) >= 70,
+            },
+            "published_at": datetime.now(timezone.utc).isoformat(),
+            "pipeline_id": "",  # 由调用方填充
+        }
+
+        return content_product
 
     # ── 人类检查点 ────────────────────────────────────────────
 
@@ -513,7 +677,8 @@ class PipelineRouter:
 
         if action.startswith("threshold_"):
             threshold = int(action.split("_")[1])
-            score = artifact.get("scorecard", {}).get("total_score", 0)
+            # artifact["scorecard"]["scorecard"]["total_score"]（ScorecardBreaking.run() 返回嵌套结构）
+            score = artifact.get("scorecard", {}).get("scorecard", {}).get("total_score", 0)
             if score >= threshold:
                 return {"status": "pass", "action": action, "threshold": threshold, "score": score}
             else:
