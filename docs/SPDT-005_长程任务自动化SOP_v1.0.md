@@ -363,12 +363,13 @@ result.scorecard = {
 
 | action | 含义 |
 |:---|:---|
-| `hold_publish` | 暂停发布，等待人工审核 |
-| `double_verify` | 双重核实后再决定 |
-| `flag_source_grade` | 标注来源等级降级 |
-| `legal_review` | 法务审核 |
-| `expert_signoff` | 专家签字 |
-| `auto_archive` | 自动归档 |
+| `hold_publish` | 暂停发布，等待人工审核（医疗/法律/真实人物/未成年人）|
+| `double_verify` | 双重核实后再决定（数据来源/政策预测）|
+| `flag_source_grade` | 标注来源等级降级（affiliate链接/单一来源）|
+| `legal_review` | 法务审核（竞争对手负面/合规争议）|
+| `expert_signoff` | 专家签字（政策预测/学术争议）|
+| `auto_archive` | 自动归档（超期/低优先级）|
+| `source_upgrade` | 要求升级来源（C级来源升级为A/B级）|
 
 ---
 

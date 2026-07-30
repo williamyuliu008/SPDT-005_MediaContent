@@ -792,7 +792,7 @@ class PipelineRouter:
           7. 输出完整 ContentProduct
         """
         article_v2 = context.article_v2
-        scorecard = context.scorecard
+        scorecard = context.scorecard or {}   # 防御性：adapt 失败时可能为 None
 
         # 获取内容类型维度配置
         ct_config = self.registry.get("content_types", {}).get(content_spec.content_type, {})
@@ -855,10 +855,12 @@ class PipelineRouter:
             article_v2=article_v2,
             formatting=formatting_result.__dict__,
             metadata={**metadata_result.__dict__, "scorecard_summary": {
-                # scorecard = context.scorecard = adapt artifact = {status, scorecard{...}, ...}
+                # scorecard = context.scorecard = adapt artifact
+                # 结构1（正常）: {status, scorecard{header/scorecard/total_score}, ...}
+                # 结构2（fallback）: {status, total_score: 0, ...}
                 # channel_adapter expects: scorecard_summary.scorecard = inner scorecard dict
-                "scorecard": scorecard.get("scorecard", scorecard),
-                "passed": scorecard.get("scorecard", {}).get("total_score", 0) >= 70,
+                "scorecard": scorecard.get("scorecard", scorecard),  # 兼容两种结构
+                "passed": (scorecard.get("scorecard", {}) or scorecard).get("total_score", 0) >= 70,
             }},
             content_type=content_spec.content_type,
             target_channels=channels,
@@ -878,9 +880,9 @@ class PipelineRouter:
             "formatting": formatting_result.__dict__,
             "channel_packages": channel_packages,
             "scorecard_summary": {
-                # scorecard 结构：{header, scorecard{total_score}, factual_claims_check, ...}
-                "total_score": scorecard.get("scorecard", {}).get("total_score", 0),
-                "passed": scorecard.get("scorecard", {}).get("total_score", 0) >= 70,
+                # scorecard 结构：{header, scorecard{total_score}, factual_claims_check, ...} 或 flat {total_score}
+                "total_score": (scorecard.get("scorecard", {}) or scorecard).get("total_score", 0),
+                "passed": (scorecard.get("scorecard", {}) or scorecard).get("total_score", 0) >= 70,
             },
             "published_at": datetime.now(timezone.utc).isoformat(),
             "pipeline_id": "",  # 由调用方填充

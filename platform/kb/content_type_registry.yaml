@@ -178,21 +178,17 @@ content_types:
     sla_hours: 4
     stages:
       ingest:
-        module: "platform/1_ingest/radar/radar"
-        config: "industry"
-        # 采集：行业媒体 + 财报 + 政策文件 + 专家访谈
+        module: "platform/1_ingest/radar/radar_deep_industry"
+        config: "deep_industry"
       structure:
-        module: "platform/2_structure/genre/genre"
-        config: "report"
-        # 结构：摘要 + 背景 + 核心发现 + 深度分析 + 趋势预判 + 结论建议
+        module: "platform/2_structure/article/article_deep_industry"
+        config: "deep_industry"
       render:
-        engine: "platform/3_render/engines/text/text_engine"
-        config: "deep_report"
-        #语气：专业、数据驱动、有洞察，避免空话套话
+        engine: "platform/3_render/engines/text/render_deep_industry"
+        config: "deep_industry"
       adapt:
-        scorecard: "platform/4_adapt/scorecard/scorecard"
-        config: "deep_report"
-        # 阈值：85分（高标准）
+        scorecard: "platform/4_adapt/scorecard/scorecard_deep_industry"
+        config: "deep_industry"
       deliver:
         publish: "platform/5_deliver/publish/autopublish"
         config: "multi_channel"
@@ -260,9 +256,9 @@ content_types:
 
     gray_zone_rules:
       - trigger: "涉及医疗/健康/药物"
-        action: "medical_review"  # 医疗审核
+        action: "hold_publish"
       - trigger: "涉及食品安全"
-        action: "safety_check"    # 安全检查
+        action: "hold_publish"
 
     channels: ["web", "feeds", "wechat_mp"]
     brand_voice: "accessible"
@@ -309,7 +305,7 @@ content_types:
 
     gray_zone_rules:
       - trigger: "涉及政治/宗教/民族"
-        action: "compliance_review"  # 合规审核（强制）
+        action: "legal_review"
       - trigger: "点名批评具体人物"
         action: "legal_review"       # 法务审核
 
@@ -358,9 +354,9 @@ content_types:
 
     gray_zone_rules:
       - trigger: "涉及affiliate/返佣链接"
-        action: "disclosure_check"  # 利益披露检查
+        action: "flag_source_grade"
       - trigger: "竞品对比数据"
-        action: "data_source_verify"  # 数据来源核实
+        action: "double_verify"
 
     channels: ["web", "feeds", "wechat_mp"]
     brand_voice: "honest"
@@ -408,9 +404,9 @@ content_types:
 
     gray_zone_rules:
       - trigger: "涉及真实人物"
-        action: "consent_check"  # 当事人授权确认
+        action: "hold_publish"
       - trigger: "涉及未成年人"
-        action: "guardian_consent"  # 监护人授权
+        action: "hold_publish"
 
     channels: ["web", "feishu", "wechat_mp"]
     brand_voice: "literary"
