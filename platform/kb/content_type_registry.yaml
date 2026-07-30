@@ -271,7 +271,8 @@ content_types:
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   oped_argument:
     label: "观点评论"
-    description: "有明确立场和论点的评论文章"
+    description: "有明确立场和论点的评论文章，七段式结构（钩子→论点→支撑→对立→反驳→结论→CTA）"
+    routing_hint: "opinion_comment"   # 观点评论型：有立场有论据，SLA=3h，七段式结构
     priority: 7
     # ── 三维分类 ──────────────────────────────────────
     pipeline_dimensions:
@@ -281,21 +282,21 @@ content_types:
     sla_hours: 3
     stages:
       ingest:
-        module: "platform/1_ingest/radar/radar"
+        module: "platform/1_ingest/radar/radar_opinion"
         config: "opinion"
         # 采集：相关事件背景 + 对立观点 + 读者可能反驳点
       structure:
-        module: "platform/2_structure/article/article"
-        config: "oped"
+        module: "platform/2_structure/article/article_opinion"
+        config: "opinion"
         # 结构：论点 + 论据 + 反驳预判 + 结论
       render:
-        engine: "platform/3_render/engines/text/text_engine"
-        config: "argument"
+        engine: "platform/3_render/engines/text/render_opinion"
+        config: "opinion"
         # 语气：鲜明立场、有理有据、不人身攻击
       adapt:
-        scorecard: "platform/4_adapt/scorecard/scorecard"
-        config: "argument"
-        # 阈值：80分（需逻辑严密）
+        scorecard: "platform/4_adapt/scorecard/scorecard_opinion"
+        config: "opinion"
+        # 阈值：80分（需逻辑严密）；factual<65 或 logic<50 一票否决
       deliver:
         publish: "platform/5_deliver/publish/autopublish"
         config: "multi_channel"
@@ -311,6 +312,8 @@ content_types:
         action: "legal_review"
       - trigger: "点名批评具体人物"
         action: "legal_review"       # 法务审核
+      - trigger: "涉及商业竞争对手负面"
+        action: "legal_review"
 
     channels: ["web", "feeds", "feishu", "wechat_mp"]
     brand_voice: "assertive"

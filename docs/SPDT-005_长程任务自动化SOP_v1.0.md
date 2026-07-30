@@ -1,6 +1,6 @@
-# SPDT-005 内容管线 SOP v1.0
+# SPDT-005 内容管线 SOP v1.2
 > 自适应 AI 备考智能体内容管线 · 运营标准手册
-> 版本：v1.0 | 2026-07-31 | 状态：已验证（P0+P1 双类型实战）
+> 版本：v1.2 | 2026-07-31 | 状态：已验证（P0+P1+P3 三类型实战）
 
 ---
 
@@ -541,6 +541,7 @@ keywords: [<关键词列表>]
 | breakdown_news | 标题 + 导语 + 正文 + 来源 |
 | science_research | 标题 + 摘要 + 背景/原理/证据/局限/意义 + 来源 |
 | deep_industry_report | 标题 + 摘要 + 背景/核心发现/深度分析/趋势预判/结论建议 + 来源 |
+| oped_argument | 标题 + 钩子/核心论点/支撑论据/对立论点/反驳/结论/行动号召 + 来源 |
 
 ---
 
@@ -572,8 +573,9 @@ keywords: [<关键词列表>]
 |:---|:---|:---|:---|
 | 2026-07-31 | v1.0 | 初始版本，整合 P0 science_research + P1 deep_industry_report 实战经验 | ✅ P0 验证通过，P1 验证通过 |
 | 2026-07-31 | v1.1 | 对抗性审核修复 + science_research/science_fact 定位决策（保持分离方案A）| ✅ adversarial audit 36→5 findings |
+| 2026-07-31 | v1.2 | P3 oped_argument 全 SOP 验证：4 模块实现 + 验收测试 4/4 PASS + Router E2E 通过 | ✅ P3 验收测试通过 |
 
 ---
 
-*本文档基于 SPDT-005 平台 v2.0 管线架构，通过 science_research 和 deep_industry_report 两个内容类型的实战验证。*
+*本文档基于 SPDT-005 平台 v2.0 管线架构，通过 science_research / deep_industry_report / oped_argument 三个内容类型的实战验证。*
 *每新增一个内容类型后，更新 §十清单和 §十一版本记录。*

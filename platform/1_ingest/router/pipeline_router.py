@@ -170,6 +170,12 @@ CONTENT_TYPE_MODULES = {
         "render":    ("platform.3_render.engines.text.render_deep_industry", "RenderDeepIndustry"),
         "adapt":     ("platform.4_adapt.scorecard.scorecard_deep_industry", "ScorecardDeepIndustry"),
     },
+    "oped_argument": {
+        "ingest":    ("platform.1_ingest.radar.radar_opinion",   "RadarOpinion"),
+        "structure": ("platform.2_structure.article.article_opinion", "ArticleOpinion"),
+        "render":    ("platform.3_render.engines.text.render_opinion", "RenderOpinion"),
+        "adapt":     ("platform.4_adapt.scorecard.scorecard_opinion", "ScorecardOpinion"),
+    },
 }
 
 
@@ -700,6 +706,7 @@ class PipelineRouter:
             "breakdown_news": "突发事件",
             "science_research": "科学研究",
             "deep_industry_report": "深度行业分析",
+            "oped_argument": "观点评论创作",
         }
         return defaults.get(content_type, "内容创作")
 
