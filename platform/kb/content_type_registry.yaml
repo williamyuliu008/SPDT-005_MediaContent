@@ -105,7 +105,7 @@ content_types:
       - trigger: "伤亡人数/损失规模"
         action: "double_verify" # 双重核实
 
-    channels: ["web", "mobile", "feishu"]
+    channels: ["markdown", "web", "mobile", "feishu"]
     brand_voice: "neutral"
 
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

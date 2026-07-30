@@ -80,7 +80,7 @@ class ChannelAdapter:
       # packages["wechat_mp"] → ChannelPackage
     """
 
-    SUPPORTED_CHANNELS = ["web", "wechat_mp", "feishu", "feeds", "mobile"]
+    SUPPORTED_CHANNELS = ["web", "wechat_mp", "feishu", "feeds", "mobile", "markdown"]
 
     def adapt(self, request: ChannelAdapterRequest) -> dict[str, ChannelPackage]:
         """
@@ -109,6 +109,8 @@ class ChannelAdapter:
                 pkg = self._adapt_feeds(request)
             elif channel == "mobile":
                 pkg = self._adapt_mobile(request)
+            elif channel == "markdown":
+                pkg = self._adapt_markdown(request)
             else:
                 continue
 
@@ -288,6 +290,138 @@ class ChannelAdapter:
             "content": request.metadata.get("description", "")[:200],
             "image": request.metadata.get("cover_image", {}).get("url", ""),
         }, ensure_ascii=False)
+
+    # ── Markdown 渠道 ────────────────────────────────────
+
+    def _adapt_markdown(self, request: ChannelAdapterRequest) -> ChannelPackage:
+        """生成人类可读的 Markdown 文档"""
+        content = self._render_markdown(request)
+        config = {
+            "format": "markdown",
+            "encoding": "utf-8",
+        }
+        formatting = self._merge_formatting(request, "markdown")
+        return ChannelPackage(channel="markdown", content=content, config=config, formatting=formatting)
+
+    def _render_markdown(self, request: ChannelAdapterRequest) -> str:
+        """渲染完整 Markdown 文档（含 frontmatter、摘要、来源、评分）"""
+        md_lines = []
+
+        # ── Frontmatter ─────────────────────────────────
+        md_lines.append("---")
+        md_lines.append(f"title: \"{request.metadata.get('title', '')}\"")
+        md_lines.append(f"content_type: {request.content_type}")
+        md_lines.append(f"publish_time: {request.metadata.get('publish_time', '')}")
+        keywords = request.metadata.get("keywords", [])
+        if keywords:
+            md_lines.append(f"keywords: [{', '.join(keywords)}]")
+        md_lines.append("---")
+        md_lines.append("")
+
+        # ── 标题 ─────────────────────────────────────────
+        md_lines.append(f"# {request.metadata.get('title', '')}")
+        md_lines.append("")
+
+        # ── 摘要 ─────────────────────────────────────────
+        abstract = request.metadata.get("abstract", "")
+        if abstract:
+            md_lines.append(f"> **摘要**  {abstract}")
+            md_lines.append("")
+
+        # ── 正文 blocks ─────────────────────────────────
+        body_md = self._render_blocks_to_markdown(request.article_v2)
+        md_lines.append(body_md)
+        md_lines.append("")
+
+        # ── 来源列表 ──────────────────────────────────────
+        references = request.metadata.get("references", [])
+        if references:
+            md_lines.append("## 参考来源")
+            md_lines.append("")
+            for ref in references:
+                name = ref.get("name", ref.get("source_name", ""))
+                grade = ref.get("grade", "")
+                url = ref.get("url", "")
+                if name:
+                    grade_badge = f"[{grade}]" if grade else ""
+                    url_part = f" <{url}>" if url else ""
+                    md_lines.append(f"- {grade_badge} {name}{url_part}")
+            md_lines.append("")
+
+        # ── 质量评分卡 ────────────────────────────────────
+        scorecard_summary = request.metadata.get("scorecard_summary", {})
+        if scorecard_summary:
+            total = scorecard_summary.get("scorecard", {}).get("total_score", 0)
+            passed = scorecard_summary.get("passed", False)
+            status_icon = "✅" if passed else "⚠️"
+            md_lines.append("## 质量评分卡")
+            md_lines.append("")
+            md_lines.append(f"**总分**: {total}/100 {status_icon}  ({'通过' if passed else '建议修订'})")
+            md_lines.append("")
+
+            dims = scorecard_summary.get("scorecard", {}).get("dimensions", {})
+            if dims:
+                md_lines.append("| 维度 | 得分 | 评价 |")
+                md_lines.append("|------|------|------|")
+                for dim_name, dim_data in dims.items():
+                    score = dim_data.get("score", 0) if isinstance(dim_data, dict) else dim_data
+                    quality = "优秀" if score >= 85 else ("良好" if score >= 70 else "需改进")
+                    md_lines.append(f"| {dim_name} | {score} | {quality} |")
+                md_lines.append("")
+
+        # ── 关联标签 ──────────────────────────────────────
+        tags = request.metadata.get("tags", [])
+        if tags:
+            md_lines.append(f"**标签**: {' · '.join(tags)}")
+            md_lines.append("")
+
+        return "\n".join(md_lines)
+
+    def _render_blocks_to_markdown(self, article_v2: dict) -> str:
+        """将 article_v2 blocks 渲染为 Markdown 字符串"""
+        md_parts = []
+        for block in article_v2.get("blocks", []):
+            btype = block.get("type", "paragraph")
+            raw_content = block.get("content", {})
+            if isinstance(raw_content, dict):
+                text = raw_content.get("text", "")
+            elif isinstance(raw_content, str):
+                text = raw_content
+            else:
+                text = block.get("text", "")
+
+            if btype == "paragraph":
+                md_parts.append(f"{text}\n")
+            elif btype == "heading1":
+                md_parts.append(f"# {text}\n")
+            elif btype == "heading2":
+                md_parts.append(f"## {text}\n")
+            elif btype == "heading3":
+                md_parts.append(f"### {text}\n")
+            elif btype == "pullquote":
+                attribution = block.get("attribution", "")
+                attr_line = f"\n> —— *{attribution}*" if attribution else ""
+                md_parts.append(f"> {text}{attr_line}\n")
+            elif btype == "image":
+                alt = block.get("alt", "")
+                caption = block.get("caption", "")
+                if caption:
+                    md_parts.append(f"![{alt}]({caption})\n")
+                else:
+                    md_parts.append(f"![{alt}]\n")
+            elif btype == "infobox":
+                md_parts.append(f"::: info\n{text}\n:::\n")
+            elif btype == "code_block":
+                lang = block.get("language", "")
+                md_parts.append(f"```{lang}\n{text}\n```\n")
+            elif btype == "list":
+                items = block.get("items", [])
+                for item in items:
+                    item_text = item if isinstance(item, str) else item.get("text", "")
+                    md_parts.append(f"- {item_text}\n")
+                md_parts.append("")
+
+        return "".join(md_parts)
 
     def _render_blocks_to_html(self, article_v2: dict, channel: str) -> str:
         """将 article_v2 blocks 渲染为 HTML 字符串"""

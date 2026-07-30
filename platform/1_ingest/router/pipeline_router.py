@@ -624,7 +624,10 @@ class PipelineRouter:
         ca_req = ca_module.ChannelAdapterRequest(
             article_v2=article_v2,
             formatting=formatting_result.__dict__,
-            metadata=metadata_result.__dict__,
+            metadata={**metadata_result.__dict__, "scorecard_summary": {
+                "scorecard": scorecard,
+                "passed": scorecard.get("scorecard", {}).get("total_score", 0) >= 70,
+            }},
             content_type=content_spec.content_type,
             target_channels=channels,
             literary=literary,
