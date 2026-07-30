@@ -21,3 +21,9 @@ node_modules/
 
 # Windows handle locks
 PT-047_SocSciAgent/
+
+# Pipeline runtime artifacts — generated on every run
+platform/5_deliver/checkpoint/results/
+platform/5_deliver/checkpoint/tickets/
+platform/5_deliver/checkpoint/policy_audit.jsonl
+platform/5_deliver/checkpoint/gray_zone_tickets/
