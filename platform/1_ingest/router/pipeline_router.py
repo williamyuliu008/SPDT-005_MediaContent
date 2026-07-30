@@ -43,6 +43,20 @@ REGISTRY_PATH = REPO_ROOT / "platform" / "kb" / "content_type_registry.yaml"
 SIGNOFF_PATH = REPO_ROOT / "platform" / "5_deliver" / "checkpoint" / "signoff.py"
 CHECKPOINT_DIR = REPO_ROOT / "platform" / "5_deliver" / "checkpoint"
 
+# ─────────────────────────────────────────────────────────────────
+# 内容类型 → 模块映射
+# ─────────────────────────────────────────────────────────────────
+# 格式：content_type → {"ingest": (module_path, class_name), ...}
+
+CONTENT_TYPE_MODULES = {
+    "breakdown_news": {
+        "ingest":    ("platform.1_ingest.radar.radar_breaking",   "RadarBreaking"),
+        "structure": ("platform.2_structure.article.article_breaking", "ArticleBreaking"),
+        "render":    ("platform.3_render.engines.text.render_breaking", "RenderBreaking"),
+        "adapt":     ("platform.4_adapt.scorecard.scorecard_breaking", "ScorecardBreaking"),
+    },
+}
+
 
 # ─────────────────────────────────────────────────────────────────
 # 数据结构
@@ -180,6 +194,13 @@ class PipelineRouter:
         self._signoff_manager = None
 
     # ── 初始化 ────────────────────────────────────────────────
+
+    def __init__(self, registry_path: Optional[Path] = None):
+        self.registry_path = registry_path or REGISTRY_PATH
+        self.registry: dict = {}
+        self._module_cache: dict = {}
+        self._signoff_manager = None
+        self._load_registry()
 
     def _load_registry(self):
         """加载内容类型注册表"""
@@ -372,21 +393,35 @@ class PipelineRouter:
     # ── 各阶段执行器 ──────────────────────────────────────────
 
     def _run_ingest(self, config: dict, content_spec: ContentSpec) -> dict:
-        """阶段 1：情报摄取"""
-        # TODO: 接入真实 radar 模块
-        # 当前返回骨架数据
+        """阶段 1：情报摄取（IF-P-1 → IntelligenceBrief）"""
+        module_info = self._get_module(content_spec.content_type, "ingest")
+        if module_info:
+            module, cls_name = module_info
+            # 动态构造 Request 并调用
+            req = module.RadarBreakingRequest(
+                topic=content_spec.title or "突发新闻",
+                max_signals=5,
+            )
+            result = module.RadarBreaking().run(req)
+            return result.brief
+
+        # fallback：骨架数据
         return {
             "status": "ingested",
-            "sources": [
-                {"type": "radar", "config": config.get("config"), "count": 0}
-            ],
+            "sources": [{"type": "radar", "config": config.get("config"), "count": 0}],
             "raw_data": [],
             "content_spec": content_spec.to_dict(),
         }
 
     def _run_structure(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
-        """阶段 2：结构化"""
-        # TODO: 接入真实 structure 模块
+        """阶段 2：结构化（IF-P-2 → ArticleOutline）"""
+        brief = prev  # prev = IntelligenceBrief
+        module_info = self._get_module(content_spec.content_type, "structure")
+        if module_info:
+            module, cls_name = module_info
+            result = getattr(module, cls_name)().run(brief)
+            return result.outline
+
         return {
             "status": "structured",
             "structure_type": config.get("config"),
@@ -396,8 +431,14 @@ class PipelineRouter:
         }
 
     def _run_render(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
-        """阶段 3：内容生成"""
-        # TODO: 接入真实 render 引擎
+        """阶段 3：内容生成（IF-P-3 → Article_v2）"""
+        outline = prev  # prev = ArticleOutline
+        module_info = self._get_module(content_spec.content_type, "render")
+        if module_info:
+            module, cls_name = module_info
+            result = getattr(module, cls_name)().run(outline)
+            return result.article
+
         return {
             "status": "rendered",
             "engine": config.get("config"),
@@ -406,13 +447,24 @@ class PipelineRouter:
         }
 
     def _run_adapt(self, config: dict, content_spec: ContentSpec, prev: dict) -> dict:
-        """阶段 4：质量适配"""
-        # TODO: 接入真实 scorecard 模块
+        """阶段 4：质量适配（IF-P-4 → QualityScorecard）"""
+        article = prev  # prev = Article_v2
+        module_info = self._get_module(content_spec.content_type, "adapt")
+        if module_info:
+            module, cls_name = module_info
+            result = getattr(module, cls_name)().run(article)
+            return {
+                "status": "adapted",
+                "scorecard": result.scorecard,
+                "passed": result.passed,
+                "action": result.action,
+                "gray_zones": result.gray_zones,
+            }
+
         scorecard_weights = self.registry.get("scorecard_weights", {}).get(
             content_spec.content_type,
             self.registry.get("scorecard_weights", {}).get("deep_industry_report", {})
         )
-
         return {
             "status": "adapted",
             "scorecard": {
