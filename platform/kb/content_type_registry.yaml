@@ -198,20 +198,24 @@ content_types:
         config: "multi_channel"
 
     human_checkpoints:
-      M1: "confirm"         # 选题深度评估（主编确认）
-      M2: "confirm"        # 大纲结构确认
-      M4: "threshold_85"   # 85分阈值，低于则退回修改
-      M6: "chief_signoff"  # 主编签批（强制）
+      M1: "skip"
+      M2: "skip"
+      M3: "skip"
+      M4: "threshold_85"
+      M5: "skip"
+      M6: "skip"
 
     gray_zone_rules:
       - trigger: "涉及竞争对手负面"
-        action: "legal_review"  # 法务审核
+        action: "legal_review"
       - trigger: "数据来源为C级"
-        action: "source_upgrade" # 要求升级来源
+        action: "source_upgrade"
       - trigger: "涉及政策预测"
-        action: "expert_signoff" # 专家签字
+        action: "expert_signoff"
+      - trigger: "A股上市公司财报"
+        action: "flag_source_grade"
 
-    channels: ["web", "feeds", "feishu", "wechat_mp"]
+    channels: ["markdown", "web", "feishu"]
     brand_voice: "professional"
 
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

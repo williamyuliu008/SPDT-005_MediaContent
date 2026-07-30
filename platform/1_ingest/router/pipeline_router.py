@@ -164,6 +164,12 @@ CONTENT_TYPE_MODULES = {
         "render":    ("platform.3_render.engines.text.render_science_fact", "RenderScienceFact"),
         "adapt":     ("platform.4_adapt.scorecard.scorecard_science_fact", "ScorecardScienceFact"),
     },
+    "deep_industry_report": {
+        "ingest":    ("platform.1_ingest.radar.radar_deep_industry",   "RadarDeepIndustry"),
+        "structure": ("platform.2_structure.article.article_deep_industry", "ArticleDeepIndustry"),
+        "render":    ("platform.3_render.engines.text.render_deep_industry", "RenderDeepIndustry"),
+        "adapt":     ("platform.4_adapt.scorecard.scorecard_deep_industry", "ScorecardDeepIndustry"),
+    },
 }
 
 
@@ -693,6 +699,7 @@ class PipelineRouter:
         defaults = {
             "breakdown_news": "突发事件",
             "science_research": "科学研究",
+            "deep_industry_report": "深度行业分析",
         }
         return defaults.get(content_type, "内容创作")
 
