@@ -643,8 +643,9 @@ class PipelineRouter:
             "formatting": formatting_result.__dict__,
             "channel_packages": channel_packages,
             "scorecard_summary": {
-                "total_score": scorecard.get("total_score", 0),
-                "passed": scorecard.get("total_score", 0) >= 70,
+                # scorecard 结构：{header, scorecard{total_score}, factual_claims_check, ...}
+                "total_score": scorecard.get("scorecard", {}).get("total_score", 0),
+                "passed": scorecard.get("scorecard", {}).get("total_score", 0) >= 70,
             },
             "published_at": datetime.now(timezone.utc).isoformat(),
             "pipeline_id": "",  # 由调用方填充
