@@ -169,6 +169,47 @@ meta:
 
 ## 四、模块实现规范
 
+### 4.0 内容类型速查与选型指南
+
+> 所有已注册内容类型一览，包含已实现（✅）和规划中（📋骨架）。
+
+| 类型 | routing_hint | 状态 | 核心场景 | SLA | 阈值 | 说明 |
+|:---|:---|:---|:---|:---:|:---:|:---|
+| `breakdown_news` | `breaking` | ✅ | 突发事件/危机/重大政策 | — | 70 | 突发快讯，最快速通道 |
+| `science_research` | `news_report` | ✅ | 有新论文/新发现触发的科研报道 | 2h | 70 | 五段式叙事，快而准 |
+| `deep_industry_report` | `industry_deep` | ✅ | 3000-8000字行业深度分析 | 4h | 85 | 专业受众，数据驱动 |
+| `science_fact` | `deep_knowledge` | 📋骨架 | 长效知识点深度科普（非触发式）| 4h | 75 | 知识图谱结构，面向大众 |
+| `oped_argument` | `opinion` | 📋骨架 | 有明确立场的评论文章 | — | — | 需逻辑性和事实支撑 |
+| `product_review` | `review` | 📋骨架 | 产品测评/对比分析 | — | — | 需利益披露检查 |
+| `creative` | `creative` | 📋骨架 | 创意写作/故事类内容 | — | — | 真实人物需授权 |
+
+**选型决策树：**
+```
+内容触发方式？
+  ├─ 突发事件/危机  → breakdown_news
+  ├─ 新论文/新发现 → science_research  （科研快讯，2h）
+  └─ 无触发，常态化科普
+       ├─ 知识点图谱深度  → science_fact  （规划中，知识图谱）
+       └─ 行业深度分析    → deep_industry_report
+
+内容类型定位？
+  ├─ 需要数据驱动、行业专业受众 → deep_industry_report
+  ├─ 需要客观报道，有据可查     → science_research
+  └─ 需要逻辑论战，明确立场     → oped_argument  （规划中）
+```
+
+**关于 science_research vs science_fact：**
+两者不是重复设计，而是针对不同创作任务的合理分工：
+
+| 维度 | science_research（✅已实现）| science_fact（📋规划中）|
+|:---|:---|:---|
+| 触发方式 | 事件驱动（新论文/发现）| 常态化选题 |
+| 速度要求 | SLA=2h，快 | SLA=4h，深 |
+| 核心能力 | 五段式叙事，快速准确 | 知识图谱，深度可读 |
+| accuracy 维度 | 4（高）| 5（极高，医疗级）|
+
+---
+
 ### 4.1 命名约定
 
 所有新增模块必须遵循以下命名约定：
@@ -530,7 +571,7 @@ keywords: [<关键词列表>]
 | 日期 | 版本 | 变更内容 | 验证状态 |
 |:---|:---|:---|:---|
 | 2026-07-31 | v1.0 | 初始版本，整合 P0 science_research + P1 deep_industry_report 实战经验 | ✅ P0 验证通过，P1 验证通过 |
-| | | | |
+| 2026-07-31 | v1.1 | 对抗性审核修复 + science_research/science_fact 定位决策（保持分离方案A）| ✅ adversarial audit 36→5 findings |
 
 ---
 

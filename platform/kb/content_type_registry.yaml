@@ -114,6 +114,7 @@ content_types:
   science_research:
     label: "科学事实（科研报道）"
     description: "有据可查的科研发现，填补大众认知与学术前沿之间的鸿沟"
+    routing_hint: "news_report"    # 科研快讯型：有新论文/新发现触发，SLA=2h，五段式叙事
     priority: 7
     # ── 三维分类 ──────────────────────────────────────
     pipeline_dimensions:
@@ -220,6 +221,8 @@ content_types:
   science_fact:
     label: "科普知识"
     description: "面向大众的科普内容，追求准确性与可读性平衡"
+    routing_hint: "deep_knowledge"   # 深度科普型：长效知识点，非触发式，SLA=4h，知识图谱结构
+    status: "skeleton"              # 规划类型，模块尚未实现
     priority: 6
     # ── 三维分类 ──────────────────────────────────────
     pipeline_dimensions:
