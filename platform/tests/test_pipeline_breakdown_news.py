@@ -405,6 +405,27 @@ class TestEdgeCases:
         s = json.dumps(d, ensure_ascii=False)
         assert len(s) > 0, "to_dict output should be non-empty JSON"
 
+    def test_markdown_channel_in_output(self):
+        """Stage 5 deliver 输出包含 markdown channel"""
+        router = PipelineRouter()
+        spec = ContentSpec(
+            content_type="breakdown_news",
+            title="Markdown 渠道测试",
+            channels=["markdown", "web"],
+        )
+        result = router.run(spec)
+        deliver_artifact = result.stages["deliver"].artifact
+        packages = deliver_artifact.get("channel_packages", {})
+        assert "markdown" in packages, f"markdown not in {list(packages.keys())}"
+        md = packages["markdown"].get("content", "")
+        assert len(md) > 50, f"markdown too short: {len(md)} chars"
+        # 必须包含 YAML frontmatter 和标题行
+        assert md.startswith("---"), "markdown must start with YAML frontmatter"
+        assert "\n# " in md, "markdown must contain a heading"
+        # 必须包含质量评分卡（Mock模式下有）
+        assert "## 质量评分卡" in md, "markdown must contain quality scorecard section"
+        assert "总分" in md, "markdown must contain total score"
+
 
 # ─────────────────────────────────────────────────────────────────
 # pytest 运行入口
