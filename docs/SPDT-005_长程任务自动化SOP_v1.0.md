@@ -1,6 +1,6 @@
-# SPDT-005 内容管线 SOP v1.2
+# SPDT-005 内容管线 SOP v1.3
 > 自适应 AI 备考智能体内容管线 · 运营标准手册
-> 版本：v1.2 | 2026-07-31 | 状态：已验证（P0+P1+P3 三类型实战）
+> 版本：v1.3 | 2026-07-31 | 新增：真实LLM验收门控 + 数据源质量标准
 
 ---
 
@@ -78,7 +78,25 @@ Step 6  注册到 CONTENT_TYPE_MODULES（pipeline_router.py）
 Step 7  运行 pipeline → 采集 audit log
 Step 8  运行 audit_analyzer.py → 分析 gap_events
 Step 9  修复 gap → 重复 Step 7-8 直至 gap_events = 0
-Step 10 验收测试（mock 通过 + score ≥ 阈值 + markdown 输出可读）
+Step 10 验收测试 — Mock 门控
+  运行 `_run_<type>.py`（无 DEEPSEEK_API_KEY）→ mock 模式
+  通过条件：模块不 crash + scorecard 返回 action = deliver/revise/reject（结构正确）
+
+Step 11 验收测试 — 真实 LLM 门控 ⚠️ 【v1.3 新增】
+  运行 `_run_<type>.py`（设置 DEEPSEEK_API_KEY）→ 真实 API 调用
+  通过条件（必须全部满足）：
+    ✓ 全流程 4 阶段 hit，无 crash
+    ✓ scorecard score ≥ 阈值
+    ✓ markdown 正文长度 ≥ 类型要求（见 §3.3）
+    ✓ 所有维度分数 ≥ 各自否决线
+    ✓ 记录到 policy_audit.jsonl
+  注意：每次新增内容类型或 render 改动后必须执行此门控
+
+> **为什么要单独设立 Step 11？**
+> v1.2 的教训：science_research、deep_industry_report、oped_argument 三个内容类型的 Step 10（mock）
+> 全部通过，但在 Step 11（真实 LLM）验收时才发现：markdown 字段缺失、JSON 解析失败
+> （deep_industry 被截断）、readability 不达标（science_readability=73）。Mock 通过不意味着
+> 真实 LLM 通过——两者是独立的验收门控。
 ```
 
 ### 阶段 3：方法论固化
@@ -124,6 +142,37 @@ meta:
 | 触发条件是什么？ | |
 | 哪些来源不可用？ | |
 | 是否有 Mock 版本？ | |
+| 是否要求真实联网采集？ | **判断标准见下表** |
+| 真实采集失败时的 fallback 策略？ | |
+
+**真实联网 vs Mock 模式判定规则（v1.3 新增）：**
+
+```
+是否需要真实联网采集？
+│
+├─ 内容类型是否属于"情报产品"（时效性 > 24h）？
+│   └─ 是 → 必须真实联网（Fail → fallback 到 LLM 记忆，但需记录 gray_zone）
+│   └─ 否（知识解读型）→ 优先真实联网，失败则 LLM 记忆可接受
+│
+├─ 内容是否涉及具体数字/统计数据？
+│   └─ 是 → 真实联网采集（LLM 记忆数字不可信）
+│   └─ 否（定性分析型）→ Mock 可接受，但真实 LLM 测试必须做
+│
+└─ 是否有可用的采集 API/工具？
+    └─ 有 → 优先接入；无 → 在 gray_zone_rules 中记录为 KnownLimitation
+```
+
+**各内容类型的采集要求：**
+
+| 内容类型 | 采集要求 | fallback |
+|:---|:---|:---|
+| `breakdown_news` | ✅ 必须真实联网 | ❌ 无 fallback（超过 SLA 即废弃）|
+| `deep_industry_report` | ✅ 必须真实联网（数据驱动）| LLM 记忆（标注 gray_zone）|
+| `science_research` | ✅ 必须真实联网（同行评审来源）| LLM 记忆（标注 gray_zone）|
+| `oped_argument` | ✅ 优先真实联网 | LLM 记忆（允许）|
+| `science_fact` | ✅ 优先真实联网 | LLM 记忆（允许）|
+
+> **执行原则（v1.3）**：Mock 模式用于开发调试，真实 LLM 验收（Step 11）是**发布前必须通过的强制门控**。Step 10（mock 通过）不是终点，Step 11（真实 LLM 通过）才是。
 
 ### §3.4 结构设计（structure）
 
@@ -343,6 +392,77 @@ result.scorecard = {
 ```
 
 **⚠️ 重要：`result.scorecard["scorecard"]["total_score"]` 是真实总分，不是 `result.scorecard["total_score"]`。**
+
+### 4.5 Runner 脚本规范（v1.3 新增）
+
+每个内容类型必须配套一个 `_run_<type>.py` 脚本，用于 Step 10（Mock）和 Step 11（真实 LLM）验收测试。
+
+**必须包含的要素：**
+
+```python
+# -*- coding: utf-8 -*-
+"""
+_run_<type>.py — <content_type> Step 10/11 验收脚本
+=====================================================
+用途：Mock 验收（Step 10）+ 真实 LLM 验收（Step 11）
+依赖：DEEPSEEK_API_KEY 环境变量（未设置 = mock 模式）
+"""
+import sys, os, json, time
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent
+_RUN_TS = str(int(time.time() * 1000))  # ← 必须时间戳前缀，避免模块缓存
+
+
+def load_module(file_path, cache_key):
+    import importlib.util
+    key = f"{_RUN_TS}_{cache_key}"      # ← 必须带时间戳
+    spec = importlib.util.spec_from_file_location(key, str(file_path))
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[key] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def get_dict(obj):
+    """安全提取 dict"""
+    if hasattr(obj, "to_dict"):
+        return obj.to_dict()
+    if hasattr(obj, "__dataclass_fields__"):
+        from dataclasses import asdict as _asdict
+        return _asdict(obj)
+    return dict(obj) if obj else {}
+
+
+# 4 个模块必须分别用不同 cache_key 加载（避免阶段间污染）
+RADAR   = load_module(REPO_ROOT / "platform/1_ingest/radar/radar_<type>.py",       "_m_<t>1")
+ARTICLE = load_module(REPO_ROOT / "platform/2_structure/article/article_<type>.py", "_m_<t>2")
+RENDER  = load_module(REPO_ROOT / "platform/3_render/engines/text/render_<type>.py", "_m_<t>3")
+SCARD   = load_module(REPO_ROOT / "platform/4_adapt/scorecard/scorecard_<type>.py", "_m_<t>4")
+
+# Step 1-4 流程...
+# 提取 score...
+# 验证 markdown 字段存在且长度 > 类型要求
+
+# 验收断言
+assert score >= THRESHOLD, f"Score {score} < {THRESHOLD}"
+assert len(markdown) >= MIN_MARKDOWN_CHARS, f"Markdown {len(markdown)} < {MIN_MARKDOWN_CHARS}"
+print(f"✅ Step {'10/11' if os.environ.get('DEEPSEEK_API_KEY') else '10'} PASSED")
+```
+
+**markdown 字段输出最低要求（v1.3 新增）：**
+
+| 内容类型 | 最低正文长度 |
+|:---|---:|
+| `breakdown_news` | 300 字 |
+| `science_research` | 800 字 |
+| `deep_industry_report` | 2000 字 |
+| `oped_argument` | 600 字 |
+
+> **常见 bug（v1.3 教训）：**
+> 1. render 模块返回 `article` 时缺少 `markdown` 字段 → 脚本取到空字符串
+> 2. `_load_llm_gateway()` 使用固定 cache key → 代码更新后不重新加载
+> 3. LLM 返回 JSON 被截断 → 改用 `structured()` 模式 + 括号平衡提取
 
 ---
 
@@ -574,6 +694,7 @@ keywords: [<关键词列表>]
 | 2026-07-31 | v1.0 | 初始版本，整合 P0 science_research + P1 deep_industry_report 实战经验 | ✅ P0 验证通过，P1 验证通过 |
 | 2026-07-31 | v1.1 | 对抗性审核修复 + science_research/science_fact 定位决策（保持分离方案A）| ✅ adversarial audit 36→5 findings |
 | 2026-07-31 | v1.2 | P3 oped_argument 全 SOP 验证：4 模块实现 + 验收测试 4/4 PASS + Router E2E 通过 | ✅ P3 验收测试通过 |
+| 2026-07-31 | v1.3 | **Step 10/11 双门控拆分**：真实 LLM 验收强制门控（§二 Step 11）；§3.3 数据源质量标准（真实联网 vs Mock 判定规则）；§4.5 Runner 脚本规范（含 markdown 长度最低要求）；v1.2 教训：science_research/ deep_industry_report mock通过但真实LLM失败（markdown缺失、JSON截断、readability=73）| 🔄 改造中 |
 
 ---
 
