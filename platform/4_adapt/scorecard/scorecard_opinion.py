@@ -153,6 +153,12 @@ class ScorecardOpinion:
         if source_ratio < QUALIFYING_SOURCE_RATIO:
             gray_zones.append(f"A/B级来源占比 {source_ratio:.0%} < {QUALIFYING_SOURCE_RATIO:.0%}，建议补充高质量来源")
 
+        # v1.3: 来源验证状态（Phase A: oped目前无法追踪来源验证状态，记录为 KnownLimitation）
+        gray_zones.append(
+            "【KnownLimitation】来源验证状态不可追踪（opinion pipeline Brief→Article→Render链路"
+            "未传递source_verified_count）。建议Phase B打通来源验证流（来源类型=llm_generated时penalty=-10）"
+        )
+
         # 动作判定
         if scores.get("_veto_reason"):
             action = "reject"

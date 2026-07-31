@@ -153,6 +153,14 @@ class ScorecardDeepIndustry:
         if metadata.get("references_count", 0) < 2:
             gray_zones.append("参考来源数量不足（< 2条），建议补充机构研报或财报数据")
 
+        # v1.3: 来源验证状态
+        verified = metadata.get("source_verified_count", 0)
+        if verified == 0:
+            gray_zones.append(
+                "【KnownLimitation】所有来源均为 LLM 生成（source_verified=0），"
+                "未通过真实联网采集验证。建议接入 SPDT-011 SemiInfoHub 采集能力（Phase B）"
+            )
+
         # 行动判定
         if factual_score < FACTUAL_THRESHOLD:
             action = "revise"
@@ -329,17 +337,29 @@ class ScorecardDeepIndustry:
 
     def _score_source(self, metadata: dict) -> int:
         """
-        来源可靠性评分：
+        来源可靠性评分（v1.3 新增：来源验证惩罚）：
+          - source_verified_count > 0（真实联网采集）→ 基础分不变
+          - source_verified_count == 0（全部未验证）→ -20 分惩罚
+
+        基础分：
           - A级来源 ≥ 1 → 基础分 80
           - 无来源引用 → 基础分 40
         """
         ref_count = metadata.get("references_count", 0)
+        verified = metadata.get("source_verified_count", 0)  # v1.3
         if ref_count >= 3:
-            return 85
+            base = 85
         elif ref_count >= 1:
-            return 75
+            base = 75
         else:
-            return 40
+            base = 40
+
+        # v1.3: 未验证来源惩罚（Phase A: 所有LLM生成来源）
+        if verified == 0:
+            base = max(30, base - 20)
+            # 记录灰区（在调用方处理）
+
+        return max(0, min(100, base))
 
     def _score_depth(self, blocks: list) -> int:
         """

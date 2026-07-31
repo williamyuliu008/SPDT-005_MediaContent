@@ -94,6 +94,12 @@ def run_pipeline(topic, ct_label):
         res3 = RENDER.RenderScienceFact().run(outline)
         article = res3.article
         article_dict = get_dict(article)
+        # v1.3: 从雷达 brief 注入来源验证状态到 article metadata
+        article_dict.setdefault("metadata", {})["source_verified_count"] = (
+            brief.get("header", {}).get("source_verified_count", 0)
+            if "header" in brief
+            else 0
+        )
         md = article_dict.get("markdown", "")
         print(f"[S3] word_count={article_dict.get('word_count','?')}")
 
@@ -129,6 +135,10 @@ def run_pipeline(topic, ct_label):
         res3 = RENDER.RenderDeepIndustry().run(outline)
         article = res3.article
         article_dict = get_dict(article)
+        # v1.3: 从雷达 brief 注入来源验证状态到 article metadata
+        article_dict.setdefault("metadata", {})["source_verified_count"] = (
+            brief.get("metadata", {}).get("source_verified_count", 0)
+        )
         md = article_dict.get("markdown", "")
         print(f"[S3] word_count={article_dict.get('word_count','?')}")
 

@@ -66,6 +66,7 @@ class OpinionSource:
     key_claim: str = ""   # 核心主张
     evidence: str = ""     # 证据摘要
     rebuttal_point: str = ""  # 潜在反驳点
+    source_verified: bool = False  # v1.3: 是否通过真实联网采集验证
 
 
 @dataclass
@@ -90,6 +91,9 @@ class OpinionBrief:
     rebuttal_points: list[str]           # 潜在反驳点
     key_facts: list[str]                # 核心事实（可用于支撑论点）
     timestamp: str = ""
+    # v1.3 新增：来源验证状态
+    source_verified_count: int = 0      # 真实联网采集的来源数
+    source_total_count: int = 0          # 总来源数
 
     def to_dict(self) -> dict:
         return {
@@ -102,6 +106,8 @@ class OpinionBrief:
             "rebuttal_points": self.rebuttal_points,
             "key_facts": self.key_facts,
             "timestamp": self.timestamp,
+            "source_verified_count": self.source_verified_count,
+            "source_total_count": self.source_total_count,
         }
 
 
@@ -155,6 +161,11 @@ class RadarOpinion:
             rebuttal_points=rebuttals,
             key_facts=facts,
             timestamp=ts,
+            # v1.3: 来源验证统计
+            source_verified_count=sum(
+                1 for s in supporting + opposing if s.source_verified
+            ),
+            source_total_count=len(supporting) + len(opposing),
         )
 
     # ──────────────────────────── 内部方法 ────────────────────────────

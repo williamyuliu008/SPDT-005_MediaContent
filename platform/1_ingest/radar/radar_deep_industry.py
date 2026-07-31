@@ -64,6 +64,7 @@ class IndustrySource:
     published_date: str = ""
     key_data: str = ""   # 关键数据点（如营收、增长率、市占率）
     summary: str = ""   # 摘要
+    source_verified: bool = False  # v1.3: 是否通过真实联网采集验证（False = LLM生成/Mock；True = 真实API/Web）
 
 
 @dataclass
@@ -218,6 +219,9 @@ class RadarDeepIndustry:
                 "signal_count": len(signals),
                 "producer": "platform/1_ingest/radar/radar_deep_industry.py",
                 "mock_mode": True,
+                # v1.3 新增：来源验证状态
+                "source_verified_count": sum(1 for s in sources if s.source_verified),
+                "source_verification_complete": False,  # Phase B 接入真实 API 后设为 True
             },
         }
 
@@ -286,6 +290,9 @@ JSON 格式：
                 "signal_count": len(signals),
                 "producer": "platform/1_ingest/radar/radar_deep_industry.py",
                 "mock_mode": False,
+                # v1.3 新增：来源验证状态
+                "source_verified_count": sum(1 for s in sources if s.source_verified),
+                "source_verification_complete": False,  # Phase B 接入真实 API 后设为 True
             },
         }
 
@@ -364,6 +371,7 @@ JSON 格式：
             "url": src.url,
             "key_data": src.key_data,
             "summary": src.summary,
+            "source_verified": src.source_verified,  # v1.3: 来源验证标记
         }
 
     def _extract_json(self, text: str) -> dict | None:

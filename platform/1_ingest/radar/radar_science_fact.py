@@ -170,6 +170,7 @@ class RadarScienceFact:
                 "url": "https://arxiv.org/abs/2401.00001",
                 "doi": "",                  # 无DOI（预印本）
                 "journal": "arXiv",
+                "source_verified": False,  # v1.3: Mock模式，标注为未验证
             },
             {
                 "signal_id": f"SIG-SCI-{uuid.uuid4().hex[:8]}",
@@ -210,6 +211,7 @@ class RadarScienceFact:
                 "url": "https://www.technologyreview.com/2024/s41586-00001",
                 "doi": "",
                 "journal": "MIT Technology Review",
+                "source_verified": False,  # v1.3: Mock模式，标注为未验证
             },
             {
                 "signal_id": f"SIG-SCI-{uuid.uuid4().hex[:8]}",
@@ -230,17 +232,26 @@ class RadarScienceFact:
                 "url": "https://en.wikipedia.org/wiki/Topic_Placeholder",
                 "doi": "",
                 "journal": "Wikipedia",
+                "source_verified": False,  # v1.3: Mock模式，标注为未验证
             },
         ]
 
     def _fetch_science_signals(self, topic: str, max_signals: int) -> list[dict]:
-        """真实模式：从各数据源抓取科学发现"""
-        # TODO: 实现真实数据采集
+        """真实模式：从各数据源抓取科学发现
+
+        Phase A（当前）：LLM 模式 → source_verified = False（LLM 生成，非真实联网）
+        Phase B（规划）：接入真实 API（arXiv/Nature/Wikipedia）→ source_verified = True
+        """
+        # TODO(Phase B): 实现真实数据采集
         # 1. arXiv API: https://export.arxiv.org/api/query?search_query=all:{topic}&max_results={max_signals}
         # 2. Nature 新闻: RSS feed
         # 3. MIT Tech Review: page fetch
         # 4. Wikipedia: API
-        return self._build_mock_signals(topic)[:max_signals]
+        signals = self._build_mock_signals(topic)[:max_signals]
+        # Phase A: 标注为未验证（LLM 生成）
+        for sig in signals:
+            sig["source_verified"] = False
+        return signals
 
     # ── Brief 构建 ───────────────────────────────────────────────
 
@@ -258,6 +269,10 @@ class RadarScienceFact:
             },
             "produced_at": datetime.now(timezone.utc).isoformat(),
             "producer": "platform/1_ingest/radar/radar_science_fact.py",
+            # v1.3 新增：来源验证状态
+            "source_verified_count": sum(1 for s in signals if s.get("source_verified")),
+            "source_total_count": len(signals),
+            "source_verification_complete": False,  # Phase B 接入真实 API 后设为 True
         }
 
         return {
@@ -286,6 +301,7 @@ class RadarScienceFact:
                 "url": sig.get("url", ""),
                 "journal": sig.get("journal", ""),
                 "doi": sig.get("doi", ""),
+                "source_verified": sig.get("source_verified", False),  # v1.3: 来源验证标记
             }
         return list(seen.values())
 

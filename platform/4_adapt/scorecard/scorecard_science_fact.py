@@ -150,6 +150,14 @@ class ScorecardScienceFact:
         if peer_reviewed_ratio < 2:
             gray_zones.append("同行评审引用数量不足（< 2篇），建议补充")
 
+        # v1.3: 来源验证状态
+        verified = metadata.get("source_verified_count", 0)
+        if verified == 0:
+            gray_zones.append(
+                "【KnownLimitation】所有来源均为 LLM 生成（source_verified=0），"
+                "未通过真实联网采集验证。建议接入真实 arXiv/Semantic Scholar API（Phase B）"
+            )
+
         # ── 行动判定 ─────────────────────────────────────────
         if factual_score < FACTUAL_THRESHOLD:
             action = "revise"
@@ -374,20 +382,32 @@ class ScorecardScienceFact:
 
     def _score_source(self, metadata: dict) -> int:
         """
-        来源可靠性评分：
+        来源可靠性评分（v1.3 新增：来源验证惩罚）：
+          - source_verified_count > 0（真实联网采集）→ 基础分不变
+          - source_verified_count == 0（全部未验证）→ -15 分惩罚
+
+        基础分：
+          - 同行评审文献（A级）≥ 3篇 → 基础分 85
           - 同行评审文献（A级）≥ 2篇 → 基础分 80
           - 每少一篇 → -10
           - 仅有科普媒体 → -20
         """
         ref_count = metadata.get("references_count", 0)
         if ref_count >= 3:
-            return 85
+            base = 85
         elif ref_count >= 2:
-            return 80
+            base = 80
         elif ref_count >= 1:
-            return 65
+            base = 65
         else:
-            return 40
+            base = 40
+
+        # v1.3: 未验证来源惩罚（Phase A: 所有来源均为 LLM 生成）
+        verified = metadata.get("source_verified_count", 0)
+        if verified == 0:
+            base = max(30, base - 15)
+
+        return max(0, min(100, base))
 
     def _score_depth(self, blocks: list) -> int:
         """
