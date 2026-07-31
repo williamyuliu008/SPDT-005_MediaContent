@@ -113,7 +113,15 @@ class RadarOpinion:
     """观点评论情报采集雷达"""
 
     def __init__(self):
+        self._llm = None
         self.sources = self._build_source_registry()
+
+    @property
+    def llm(self):
+        if self._llm is None:
+            llm_mod = _load_llm_gateway()
+            self._llm = llm_mod.LLMGateway()
+        return self._llm
 
     # ──────────────────────────── 公开接口 ────────────────────────────
 
@@ -199,9 +207,9 @@ class RadarOpinion:
         )
 
         try:
-            response = llm.call_deepseek(prompt, model="deepseek-chat")
+            response = self.llm.chat(prompt)
             import json
-            data = json.loads(response)
+            data = json.loads(response.content if hasattr(response, "content") else response)
             supporting = self._parse_signals(data.get("supporting", []), "支持")
             opposing = self._parse_signals(data.get("opposing", []), "反对")
             return supporting, opposing, data.get("rebuttals", []), data.get("key_facts", []), data.get("event_context", "")
@@ -209,7 +217,7 @@ class RadarOpinion:
             return self._mock_data(req, keywords)
 
     def _parse_signals(self, raw: list, perspective: str) -> list[OpinionSource]:
-        """解析信号列表"""
+        """解析信号列表（支持 dict 或 string 格式）"""
         signals = []
         for item in raw[:3]:
             if isinstance(item, dict):
@@ -219,10 +227,23 @@ class RadarOpinion:
                     source_type=item.get("type", "media"),
                     grade=item.get("grade", "B"),
                     perspective=perspective,
-                    key_claim=item.get("claim", ""),
+                    key_claim=item.get("claim", "") or item.get("key_claim", ""),
                     evidence=item.get("evidence", ""),
-                    rebuttal_point=item.get("rebuttal", ""),
+                    rebuttal_point=item.get("rebuttal", "") or item.get("rebuttal_point", ""),
                 ))
+            elif isinstance(item, str) and item.strip():
+                # LLM 可能返回字符串格式的信号名
+                signals.append(OpinionSource(
+                    source_id=f"SIG_{uuid.uuid4().hex[:6].upper()}",
+                    name=item.strip(),
+                    source_type="llm_generated",
+                    grade="B",
+                    perspective=perspective,
+                    key_claim="LLM 生成信号",
+                    evidence="",
+                    rebuttal_point="",
+                ))
+        return signals
         return signals
 
     def _mock_data(self, req: RadarOpinionRequest, keywords: list[str]) -> tuple:

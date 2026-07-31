@@ -97,6 +97,16 @@ class ScorecardOpinionResult:
 class ScorecardOpinion:
     """观点评论质量评分卡"""
 
+    def __init__(self):
+        self._llm = None
+
+    @property
+    def llm(self):
+        if self._llm is None:
+            llm_mod = _load_llm_gateway()
+            self._llm = llm_mod.LLMGateway()
+        return self._llm
+
     def run(self, render_result) -> ScorecardOpinionResult:
         """
         执行评分
@@ -255,8 +265,6 @@ class ScorecardOpinion:
         word_count: int, sections_summary: dict
     ) -> dict:
         """LLM 五维评分"""
-        llm = _load_llm_gateway()
-
         citation_str = "\n".join(citations) or "无引用"
         tone_passed = "通过" if tone_check.get("passed") else f"失败，原因：{tone_check.get('violations')}"
 
@@ -277,9 +285,10 @@ class ScorecardOpinion:
         )
 
         try:
-            response = llm.call_deepseek(prompt, model="deepseek-chat")
+            response = self.llm.chat(prompt)
             import json
-            data = json.loads(response)
+            raw = response.content if hasattr(response, "content") else str(response)
+            data = json.loads(raw)
             scores = {k: float(v) for k, v in data.items() if k != "reasoning"}
             scores["reasoning"] = data.get("reasoning", "")
             return scores

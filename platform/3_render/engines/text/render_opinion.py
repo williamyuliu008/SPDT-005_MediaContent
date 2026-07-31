@@ -117,6 +117,16 @@ TONE_RULES = {
 class RenderOpinion:
     """观点评论渲染引擎"""
 
+    def __init__(self):
+        self._llm = None
+
+    @property
+    def llm(self):
+        if self._llm is None:
+            llm_mod = _load_llm_gateway()
+            self._llm = llm_mod.LLMGateway()
+        return self._llm
+
     def run(self, article_result, brand_voice: str = "assertive") -> RenderOpinionResult:
         """
         执行渲染
@@ -150,8 +160,8 @@ class RenderOpinion:
         # 语气检查
         tone_check = self._check_tone(markdown, brand_voice)
 
-        # 提取引用
-        citations = self._extract_citations(sections)
+        # 提取引用（从 sections 来源 + Markdown 内联引用）
+        citations = self._extract_citations(sections, markdown)
 
         # 字数
         word_count = len(markdown) // 2  # 中文字符粗估
@@ -225,8 +235,6 @@ class RenderOpinion:
         self, title: str, sections: dict, perspective: str, brand_voice: str
     ) -> tuple[str, dict]:
         """LLM 渲染：生成高质量 Markdown"""
-        llm = _load_llm_gateway()
-
         tone_config = TONE_RULES.get(brand_voice, TONE_RULES["assertive"])
         banned_str = "、".join(tone_config["banned"])
 
@@ -252,9 +260,10 @@ class RenderOpinion:
         )
 
         try:
-            response = llm.call_deepseek(prompt, model="deepseek-chat")
+            response = self.llm.chat(prompt)
+            raw = response.content if hasattr(response, "content") else str(response)
             sections_summary = {sec.get("name", k): sec.get("word_count", 0) for k, sec in sections.items()}
-            return response, sections_summary
+            return raw, sections_summary
         except Exception:
             return self._render_mock(title, sections, perspective)
 
@@ -286,10 +295,13 @@ class RenderOpinion:
             "brand_voice": brand_voice,
         }
 
-    def _extract_citations(self, sections: dict) -> list[str]:
-        """提取所有引用来源"""
+    def _extract_citations(self, sections: dict, markdown: str = "") -> list[str]:
+        """提取所有引用来源（从 sections 来源 + Markdown 内联【X】格式）"""
+        import re
         citations = []
         seen = set()
+
+        # 1. 从 sections 的 sources 字段提取
         for sec in sections.values():
             for src in sec.get("sources", []):
                 if isinstance(src, dict):
@@ -302,6 +314,17 @@ class RenderOpinion:
                 if name and key not in seen:
                     seen.add(key)
                     citations.append(f"【{grade}】{name}")
+
+        # 2. 从 Markdown 正文扫描【X】来源名 格式
+        if markdown:
+            inline = re.findall(r'【([A-Z])】([^[\n【】]+)', markdown)
+            for grade, name in inline:
+                name = name.strip()
+                key = f"{grade}:{name}"
+                if name and key not in seen:
+                    seen.add(key)
+                    citations.append(f"【{grade}】{name}")
+
         return citations
 
 

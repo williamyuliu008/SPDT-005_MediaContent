@@ -110,6 +110,16 @@ class ArticleOpinionResult:
 class ArticleOpinion:
     """观点评论文章结构生成器"""
 
+    def __init__(self):
+        self._llm = None
+
+    @property
+    def llm(self):
+        if self._llm is None:
+            llm_mod = _load_llm_gateway()
+            self._llm = llm_mod.LLMGateway()
+        return self._llm
+
     # 七段式结构模板
     SECTION_TEMPLATE = {
         "hook": {
@@ -354,8 +364,6 @@ class ArticleOpinion:
         self, brief: OpinionBriefInput, title: str, opposing_presented: bool
     ) -> dict:
         """LLM 生成各节内容"""
-        llm = _load_llm_gateway()
-
         brief_dict = {
             "topic": brief.topic,
             "perspective": brief.perspective,
@@ -381,9 +389,10 @@ class ArticleOpinion:
         )
 
         try:
-            response = llm.call_deepseek(prompt, model="deepseek-chat")
+            response = self.llm.chat(prompt)
             import json
-            data = json.loads(response)
+            raw = response.content if hasattr(response, "content") else str(response)
+            data = json.loads(raw)
             return self._parse_llm_sections(data, brief)
         except Exception:
             return self._mock_sections(brief, title, opposing_presented)
