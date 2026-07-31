@@ -216,6 +216,7 @@ class RenderScienceFact:
             },
             "title": topic,
             "blocks": blocks,
+            "markdown": self._blocks_to_markdown(blocks),
             "word_count": word_count,
             "metadata": {
                 "literary": 3,
@@ -336,9 +337,35 @@ class RenderScienceFact:
 
 请输出JSON格式："""
 
+        # JSON Schema（用于 structured 模式）
+        schema = {
+            "type": "object",
+            "properties": {
+                "blocks": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": {"type": "string", "enum": ["heading1", "heading2", "paragraph", "infobox"]},
+                            "content": {"type": "object", "properties": {"text": {"type": "string"}}, "required": ["text"]}
+                        },
+                        "required": ["type", "content"]
+                    }
+                }
+            },
+            "required": ["blocks"]
+        }
+
         try:
-            response = self.llm.chat(user_prompt, system=system_prompt)
-            data = self._extract_json(response)
+            response = self.llm.structured(
+                prompt=user_prompt,
+                schema=schema,
+                system=system_prompt,
+                max_tokens=8192,
+                temperature=0.3,
+            )
+            text = response.content if hasattr(response, "content") else str(response)
+            data = self._extract_json(text)
             if data and "blocks" in data:
                 all_text = self._extract_text_from_blocks(data["blocks"])
                 word_count = len(all_text.replace(" ", ""))
@@ -352,6 +379,7 @@ class RenderScienceFact:
                     },
                     "title": topic,
                     "blocks": data["blocks"],
+                    "markdown": self._blocks_to_markdown(data["blocks"]),
                     "word_count": word_count,
                     "metadata": {
                         "literary": 3,
@@ -368,14 +396,83 @@ class RenderScienceFact:
         return self._build_mock_article(outline)
 
     def _extract_json(self, text: str) -> dict | None:
-        """从 LLM 输出中提取 JSON"""
-        match = re.search(r'\{[\s\S]*\}', text.strip())
-        if match:
+        """从 LLM 输出中提取 JSON。
+
+        处理两种常见 LLM 错误格式：
+        1. 多行文本包含未转义换行符（collapse whitespace 修复）
+        2. 多个 JSON 对象拼接（取第一个完整 JSON）
+        """
+        stripped = text.strip()
+        first_brace = stripped.find('{')
+        if first_brace == -1:
+            return None
+
+        # 方法1：括号平衡法（最可靠）
+        depth = 0
+        bracket_depth = 0
+        end = -1
+        for i in range(first_brace, len(stripped)):
+            ch = stripped[i]
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0 and bracket_depth == 0:
+                    end = i + 1
+                    break
+            elif ch == '[':
+                bracket_depth += 1
+            elif ch == ']':
+                bracket_depth -= 1
+
+        if end > first_brace:
+            first_json = stripped[first_brace:end]
+            collapsed = re.sub(r'\s+', ' ', first_json)
             try:
-                return json.loads(match.group())
+                return json.loads(collapsed)
             except json.JSONDecodeError:
                 pass
+
+        # 方法2：直接解析（无多余文本）
+        target = re.sub(r'\s+', ' ', stripped[first_brace:])
+        try:
+            return json.loads(target)
+        except json.JSONDecodeError:
+            pass
+
+        # 方法3：激进清理
+        try:
+            return json.loads(re.sub(r'\s+', ' ', stripped[first_brace:]))
+        except json.JSONDecodeError:
+            pass
+
         return None
+
+    def _blocks_to_markdown(self, blocks: list) -> str:
+        """将 blocks 数组渲染为 Markdown 文本"""
+        parts = []
+        for block in blocks:
+            btype = block.get("type", "")
+            raw = block.get("content", {})
+            if isinstance(raw, dict):
+                text = raw.get("text", "")
+            elif isinstance(raw, str):
+                text = raw
+            else:
+                text = block.get("text", "")
+            if btype == "heading1":
+                parts.append(f"# {text}\n")
+            elif btype == "heading2":
+                parts.append(f"\n## {text}\n")
+            elif btype == "heading3":
+                parts.append(f"\n### {text}\n")
+            elif btype == "paragraph":
+                parts.append(f"{text}\n")
+            elif btype == "infobox":
+                parts.append(f"> {text}\n")
+            else:
+                parts.append(f"{text}\n")
+        return "\n".join(parts)
 
     def _extract_text_from_blocks(self, blocks: list) -> str:
         """从 blocks 中提取所有文本"""

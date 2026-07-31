@@ -3,20 +3,24 @@
 _run_all_llm.py — science_research + deep_industry_report 真实 LLM 管线
 ========================================================================
 """
-import sys, os, json
+import sys, os, json, time
 from pathlib import Path
 
 os.environ["DEEPSEEK_API_KEY"] = "sk-91c9278a57b84e909c823c2acc4fae10"
 REPO_ROOT = Path(__file__).resolve().parent
 
+# 时间戳 cache key（避免复用旧模块实例）
+_RUN_TS = str(int(time.time() * 1000))
+
 
 def load_module(file_path, cache_key):
     import importlib.util
-    if cache_key in sys.modules:
-        return sys.modules[cache_key]
-    spec = importlib.util.spec_from_file_location(cache_key, str(file_path))
+    key = f"{_RUN_TS}_{cache_key}"
+    if key in sys.modules:
+        return sys.modules[key]
+    spec = importlib.util.spec_from_file_location(key, str(file_path))
     module = importlib.util.module_from_spec(spec)
-    sys.modules[cache_key] = module
+    sys.modules[key] = module
     spec.loader.exec_module(module)
     return module
 
