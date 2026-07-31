@@ -1,6 +1,6 @@
-# SPDT-005 内容管线 SOP v1.3
+# SPDT-005 内容管线 SOP v1.4
 > 自适应 AI 备考智能体内容管线 · 运营标准手册
-> 版本：v1.3 | 2026-07-31 | 新增：真实LLM验收门控 + 数据源质量标准
+> 版本：v1.4 | 2026-07-31 | 新增：§十一自动化开发框架 + CI/CD规范
 
 ---
 
@@ -665,6 +665,225 @@ keywords: [<关键词列表>]
 
 ---
 
+## 十一、自动化开发框架（v1.4 新增）
+
+> **设计理念**：SOP 不仅是"内容运营手册"，也是"内容类型开发方法论"。
+> 核心原则——**真实 LLM 是开发过程的一部分，不是开发完成后的额外测试**。
+>
+> 真实 LLM 在开发中有三个角色：
+> - **D-1 骨架辅助**：输入 §三设计模板，LLM 辅助生成 4 模块骨架代码
+> - **D-4 强制门控**：render 模块任何改动后，必须跑 Step 11 真实 LLM，PASS 才并入主线
+> - **D-5 对抗验证**：用 adversarial_audit.py 对新类型做对抗性测试
+
+### 11.1 SOP 驱动开发流程
+
+当需要新增一个内容类型时，遵循以下加速工作流（D = Develop 阶段）：
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  SOP 驱动开发工作流（内容类型开发加速器）                                 │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                       │
+│  D-0  选定内容类型                                                     │
+│          填写 §三 设计模板（7 个子节必须全部完成）                        │
+│          填写 §七 评分权重                                             │
+│          定义 §六 灰区规则                                             │
+│                                                                       │
+│  D-1  骨架生成（LLM 辅助）                                            │
+│          输入：§三 + §四类模板                                         │
+│          输出：radar_<type>.py 骨架                                   │
+│          验证：模块能 import + dataclass 结构正确                       │
+│          工具：参考 tools/sop_develop.py 规范（§11.2）                  │
+│                                                                       │
+│  D-2  四模块实现（参考已有点）                                          │
+│          参考 science_research / deep_industry / oped_argument 的实现   │
+│          遵循 §四 §七 规范                                             │
+│          命名约定：radar_<type>.py / article_<type>.py /               │
+│                   render_<type>.py / scorecard_<type>.py             │
+│                                                                       │
+│  D-3  Mock 门控（Step 10）                                            │
+│          _run_<type>.py（无 DEEPSEEK_API_KEY）→ mock 模式             │
+│          验证：4 阶段全部 PASS                                         │
+│                scorecard 返回结构正确（passed / action 字段存在）        │
+│                                                                       │
+│  D-4  真实 LLM 门控（Step 11）⚠️ 【强制门控，开发的一部分】              │
+│          _run_<type>.py（设置 DEEPSEEK_API_KEY）→ 真实 API 调用        │
+│          必须全部满足：                                                 │
+│            ✓ 4 阶段全部 PASS，无 crash                                 │
+│            ✓ scorecard score ≥ 阈值（§七）                            │
+│            ✓ markdown 正文长度 ≥ 类型最低要求（§4.5）                   │
+│            ✓ 所有维度分数 ≥ 各自否决线（§七）                          │
+│            ✓ policy_audit.jsonl 有记录                                │
+│          失败处理：gray_zone 记录 → 修复 prompt → 重跑 D-4             │
+│                                                                       │
+│  D-5  对抗性审核                                                       │
+│          python tools/adversarial_audit.py                            │
+│          验证：critical findings ≤ 3                                  │
+│                                                                       │
+│  D-6  SOP 更新                                                        │
+│          §三 末尾加入新类型设计模板（"已完成"状态）                      │
+│          §四 §四.0 表格加入新行                                        │
+│          §十 清单加入新类型                                            │
+│          版本升级 v1.N → v1.N+1                                       │
+│                                                                       │
+│  D-7  CI/CD 接入（可选但推荐）                                         │
+│          .github/workflows/llm-acceptance.yml（§11.3）                  │
+│          push 后自动触发所有类型的 Step 11                             │
+│                                                                       │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### 11.2 sop_develop.py 开发加速器规范（规划中）
+
+> **v1.4 状态**：规范定义，工具待实现。
+> 预计 v1.5 完成。
+
+`sop_develop.py` 是 SOP 驱动的骨架生成工具。输入 §三设计模板的 YAML/JSON，输出完整 4 模块骨架。
+
+**输入 schema**：
+
+```yaml
+meta:
+  name: "deep_industry_report"   # snake_case
+  label: "深度行业报告"
+  version: "1.0"
+content_spec:
+  target: "3000-8000字行业深度分析"
+  audience: "专业投资者/从业者"
+  sla: "4h"
+quality:
+  threshold: 85
+  veto_line: "factual < 70"
+weights:
+  factual: 0.30
+  source: 0.25
+  depth: 0.20
+  readability: 0.15
+  timeliness: 0.10
+gray_zone_rules:
+  - trigger: "涉及A股上市公司"
+    action: "double_verify"
+```
+
+**输出**：
+- `platform/1_ingest/radar/radar_<name>.py`（骨架 + Mock 模板）
+- `platform/2_structure/article/article_<name>.py`（骨架）
+- `platform/3_render/engines/text/render_<name>.py`（骨架）
+- `platform/4_adapt/scorecard/scorecard_<name>.py`（骨架）
+- `_run_<name>.py`（验收脚本）
+- `content_type_registry.yaml`（增量 patch）
+
+### 11.3 CI/CD 接入规范（v1.4 新增）
+
+**触发条件**：
+- push 到 main 分支
+- push 到 `feat/*` / `fix/*` / `content/*` 分支
+- 手动触发（workflow_dispatch）
+
+**执行内容**：
+
+```yaml
+# .github/workflows/llm-acceptance.yml
+jobs:
+  acceptance:
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+
+      - name: Read DeepSeek API Key
+        run: echo "DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Run all LLM acceptance tests
+        run: python _run_all_llm.py
+        # _run_all_llm.py 必须满足：
+        #   1. exit code = 0（所有类型 PASS）
+        #   2. 每个内容类型的 score ≥ 阈值
+        #   3. 每个 markdown 正文长度 ≥ §4.5 最低要求
+        #   4. policy_audit.jsonl 记录存在
+
+      - name: Upload results artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-acceptance-results
+          path: |
+            platform/5_deliver/results/delivered/**/*.md
+            platform/5_deliver/checkpoint/policy_audit.jsonl
+            tools/audit_report.md
+```
+
+**断言规范**（_run_all_llm.py 必须包含）：
+
+```python
+# §11.3 CI/CD 断言 — 每个类型必须验证
+assert score >= THRESHOLD, f"Score {score} < {THRESHOLD}"
+assert len(markdown) >= MIN_CHARS[type_], f"Markdown {len(markdown)} < {MIN_CHARS}"
+assert all_dimensions_above_veto_lines(scorecard), "Dimension below veto line"
+assert policy_audit_logged(content_type), "No audit log for {content_type}"
+```
+
+### 11.4 Phase B 真实联网采集规范（v1.4 新增）
+
+> **v1.4 状态**：规划定义，接入待实施。目标 v1.5 完成 SPDT-011 接入。
+
+Phase A（当前）：所有数据源 `source_verified = False`（LLM 模式），scorecard 记录 -15/-20 惩罚并写入 gray_zone。
+
+Phase B 目标：将真实联网 API 接入后，`source_verified = True`，移除惩罚。
+
+**接入优先级**：
+
+| 优先级 | 内容类型 | 数据源 | 工具 |
+|:---:|:---|:---|:---|
+| P0 | `science_research` | arXiv API + Semantic Scholar API | SPDT-011 SemiInfoHub |
+| P0 | `deep_industry_report` | Bloomberg / 36Kr / 行业报告 | SPDT-011 SemiInfoHub |
+| P1 | `breakdown_news` | 新闻聚合 API（财经/科技垂类）| 待选型 |
+| P2 | `science_fact` | Wikipedia / 百度百科（结构化）| 待选型 |
+
+**Phase B 验收标准**：
+
+```
+source_verified = True 当且仅当：
+  1. API 调用成功返回（非超时 / 非 4xx / 非 5xx）
+  2. 返回内容包含非空文本 / 数据数组
+  3. 时间戳新鲜度 ≤ SLA（science_research 2h / deep_industry 4h）
+
+失败处理：
+  - API 调用失败 → source_verified = False + gray_zone 记录
+  - 数据过期 → source_verified = False + gray_zone 记录
+  - 不得静默忽略 → 必须写入 policy_audit.jsonl
+```
+
+**SPD-SPDT-011 集成约定**：
+
+```
+SemiInfoHub → SPDT-005 注入点：
+  integration/spdt09_interface/feed_bridge.py（已有）
+  ↑ 待新增：
+  integration/spdt05_interface/content_feed.py
+    输入：情报数据包（MASTER.json schema）
+    输出：Radar<type>Request.signals[] 格式
+    触发：每日 09:00 CST（mavis cron daily）
+```
+
+### 11.5 SOP 版本管理约定
+
+SOP 版本号语义：
+
+| 版本 | 变更类型 | 示例 |
+|:---:|:---|:---|
+| v1.N.patch | 错别字/格式修正 | 标点修正 |
+| v1.N.minor | 新增章节/附录，不破坏已有流程 | §十一新增 |
+| v1.N.major | 破坏性变更（模块命名/接口/阈值）| LLM API 切换 |
+
+**SOP 更新触发条件**：
+- 新增内容类型完成 → SOP 版本 +1.minor
+- render 模块 prompt 改动且影响评分 → SOP 版本 +1.minor
+- 阈值/否决线变更 → SOP 版本 +1.minor
+- 架构重构（影响已有管线）→ SOP 版本 +1.major
+
+---
+
 ## 十、实战清单（每新增一个内容类型）
 
 > 复制此清单，每完成一项打 ✅
@@ -687,14 +906,14 @@ keywords: [<关键词列表>]
 
 ---
 
-## 十一、版本记录
+## 十二、版本记录
 
 | 日期 | 版本 | 变更内容 | 验证状态 |
 |:---|:---|:---|:---|
 | 2026-07-31 | v1.0 | 初始版本，整合 P0 science_research + P1 deep_industry_report 实战经验 | ✅ P0 验证通过，P1 验证通过 |
 | 2026-07-31 | v1.1 | 对抗性审核修复 + science_research/science_fact 定位决策（保持分离方案A）| ✅ adversarial audit 36→5 findings |
 | 2026-07-31 | v1.2 | P3 oped_argument 全 SOP 验证：4 模块实现 + 验收测试 4/4 PASS + Router E2E 通过 | ✅ P3 验收测试通过 |
-| 2026-07-31 | v1.3 | **Step 10/11 双门控拆分**：真实 LLM 验收强制门控（§二 Step 11）；§3.3 数据源质量标准（真实联网 vs Mock 判定规则）；§4.5 Runner 脚本规范（含 markdown 长度最低要求）；v1.2 教训：science_research/ deep_industry_report mock通过但真实LLM失败（markdown缺失、JSON截断、readability=73）| 🔄 改造中 |
+| 2026-07-31 | v1.4 | **§十一自动化开发框架**：SOP即开发引擎理念；D-0→D-7 SOP驱动开发工作流（新增D-4强制门控说明）；§11.2 sop_develop.py规范定义（规划v1.5实现）；§11.3 CI/CD接入规范（GitHub Actions workflow）；§11.4 Phase B真实联网采集规范（SPD-SPDT-011集成约定）；§11.5 SOP版本管理约定；render_science_fact.py可读性专项prompt（目标≥80，每段≤3句，禁止连续2+技术名词，字数提升至1200-2000）| ✅ SOP已升级，CI/CD待配置 |
 
 ---
 
