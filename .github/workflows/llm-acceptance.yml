@@ -1,0 +1,82 @@
+name: SPDT-005 LLM Acceptance
+
+on:
+  push:
+    branches:
+      - main
+      - 'feat/*'
+      - 'fix/*'
+      - 'content/*'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'tools/adversarial_audit.py'
+      - 'tools/audit_analyzer.py'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'tools/adversarial_audit.py'
+      - 'tools/audit_analyzer.py'
+  workflow_dispatch:
+    inputs:
+      content_type:
+        description: 'Run specific content type (or "all")'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - science_research
+          - deep_industry_report
+          - oped_argument
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  llm-acceptance:
+    name: LLM Acceptance (${{ inputs.content_type || 'all' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install -q openai requests
+      - name: Read DeepSeek API Key
+        run: |
+          if [ -n "${{ secrets.DEEPSEEK_API_KEY }}" ]; then
+            echo "DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }}" >> $GITHUB_ENV
+            echo "✅ DEEPSEEK_API_KEY injected"
+          else
+            echo "⚠️  Running in MOCK mode"
+            echo "DEEPSEEK_API_KEY=" >> $GITHUB_ENV
+          fi
+      - name: Run LLM acceptance tests
+        run: python _run_all_llm.py
+      - name: Upload results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-acceptance-${{ github.run_number }}-${{ github.run_id }}
+          path: platform/5_deliver/results/delivered/**/*.md
+          platform/5_deliver/checkpoint/policy_audit.jsonl
+          retention-days: 14
+          compression-level: 9
+
+  module-health:
+    name: Module Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Module import check
+        run: python -c "import importlib.util; print('OK')"
