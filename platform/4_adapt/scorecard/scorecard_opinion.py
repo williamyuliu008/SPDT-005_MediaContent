@@ -229,7 +229,7 @@ class ScorecardOpinion:
         # 2. Factual（事实）：检查数据引用和来源标注
         data_mentions = len(re.findall(r'\d+[年月日亿元万美元%个百分点]', markdown))
         has_citations = len(citations) > 0
-        factual_base = 50
+        factual_base = 60  # 提高基础分（规则+LLM混合）
         if data_mentions > 0:
             factual_base += min(data_mentions * 5, 20)
         if has_citations:
@@ -243,7 +243,7 @@ class ScorecardOpinion:
         ratio = grade_a_b / max(len(citations), 1)
         scores["source"] = ratio * 80 + 20  # 占比映射到 20-100
 
-        # 4. Readability（可读性）：字数合理 + 无长段落 + 无乱码
+        # 4. Readability（可读性）：字数合理 + 段落数 + 段落长度惩罚
         if 1200 <= word_count <= 2200:
             wc_score = 70
         elif word_count < 800:
@@ -254,7 +254,11 @@ class ScorecardOpinion:
         paragraph_count = markdown.count("\n\n")
         para_score = min(paragraph_count / 5 * 30, 30)  # 5段以上满分
 
-        scores["readability"] = min(wc_score + para_score, 100)
+        # 段落长度惩罚：检测超长段落
+        long_paragraphs = re.findall(r'[^#\n][^\n]{180,}', markdown)
+        length_penalty = min(len(long_paragraphs) * 5, 25)  # 每超长段扣5分，上限25分
+
+        scores["readability"] = min(wc_score + para_score - length_penalty, 100)
 
         # 5. Brand（品牌）：语气检查通过 + 无绝对化表达
         if tone_check.get("passed", False):
