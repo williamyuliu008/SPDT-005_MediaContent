@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 import time
 import uuid
@@ -44,6 +45,11 @@ REGISTRY_PATH = REPO_ROOT / "platform" / "kb" / "content_type_registry.yaml"
 SIGNOFF_PATH = REPO_ROOT / "platform" / "5_deliver" / "checkpoint" / "signoff.py"
 CHECKPOINT_DIR = REPO_ROOT / "platform" / "5_deliver" / "checkpoint"
 PRODUCT_DIR = REPO_ROOT / "platform" / "5_deliver" / "product"
+# ── 输出目录结构（v1.2+）────────────────────────────────────────
+RESULTS_DELIVERED = REPO_ROOT / "platform" / "5_deliver" / "results" / "delivered"
+RESULTS_REVISE    = REPO_ROOT / "platform" / "5_deliver" / "results" / "revise"
+RESULTS_ARCHIVE   = REPO_ROOT / "platform" / "5_deliver" / "results" / "archive"
+RESULTS_LEGACY    = REPO_ROOT / "platform" / "5_deliver" / "checkpoint" / "results"
 
 # ─────────────────────────────────────────────────────────────────
 # Policy Audit Logger — 政策审计日志（Policy File 决策闭环）
@@ -1102,11 +1108,56 @@ class PipelineRouter:
         return artifact
 
     def _save_result(self, result: PipelineResult):
-        """保存管线执行结果"""
-        out_dir = REPO_ROOT / "platform" / "5_deliver" / "checkpoint" / "results"
-        out_dir.mkdir(parents=True, exist_ok=True)
-        path = out_dir / f"{result.pipeline_id}.json"
-        path.write_text(json.dumps(result.to_dict(), ensure_ascii=False, indent=2, default=_json_safe), encoding="utf-8")
+        """
+        保存管线执行结果（v1.2 新目录结构）
+
+        分发规则：
+          action = deliver → results/delivered/{content_type}/
+          action = revise  → results/revise/{content_type}/
+          其他               → results/archive/{content_type}/
+
+        同时保留一份在 legacy 路径（checkpoint/results/）以兼容旧流程。
+        """
+        rd = result.to_dict()
+        ct = rd.get("content_spec", {}).get("content_type", "unknown")
+
+        # 判断 action
+        artifact = rd.get("artifact", {})
+        scorecard = artifact.get("scorecard", {}) or {}
+        if isinstance(scorecard, dict):
+            inner = scorecard.get("scorecard", {}) or scorecard
+            action = inner.get("action", artifact.get("action", "unknown"))
+        else:
+            action = artifact.get("action", "unknown")
+
+        # 选择目标目录
+        if action == "deliver":
+            base_dir = RESULTS_DELIVERED
+        elif action == "revise":
+            base_dir = RESULTS_REVISE
+        else:
+            base_dir = RESULTS_ARCHIVE
+
+        ct_dir = base_dir / ct
+        ct_dir.mkdir(parents=True, exist_ok=True)
+        path = ct_dir / f"{result.pipeline_id}.json"
+        path.write_text(json.dumps(rd, ensure_ascii=False, indent=2, default=_json_safe), encoding="utf-8")
+
+        # 兼容旧路径（仅保留，不作为主要存储位置）
+        RESULTS_LEGACY.mkdir(parents=True, exist_ok=True)
+        legacy_path = RESULTS_LEGACY / f"{result.pipeline_id}.json"
+        if not legacy_path.exists():
+            legacy_path.write_text(json.dumps(rd, ensure_ascii=False, indent=2, default=_json_safe), encoding="utf-8")
+
+        # 同时保存 Markdown（如果有）
+        markdown = artifact.get("markdown", "")
+        if markdown:
+            ts = rd.get("completed_at", "")[:10] if rd.get("completed_at") else ""
+            title_slug = re.sub(r'[\\/:*?"<>|]', "", rd.get("content_spec", {}).get("title", "无题"))[:30]
+            score = inner.get("total_score", 0)
+            md_name = f"{ct}_{title_slug}_{ts}_{score:.0f}.md"
+            md_path = ct_dir / md_name
+            md_path.write_text(markdown, encoding="utf-8")
 
     def _save_checkpoint_ticket(self, ticket: dict):
         """保存 checkpoint 工单"""

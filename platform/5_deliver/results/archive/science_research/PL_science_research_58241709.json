@@ -1,0 +1,1019 @@
+{
+  "pipeline_id": "PL_science_research_58241709",
+  "content_spec": {
+    "content_type": "science_research",
+    "title": "室温超导材料新发现",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "markdown"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "科学事实（科研报道）",
+  "status": "complete",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-science_fact-20260730-07cda2d2",
+          "artifact_type": "intelligence_brief",
+          "content_type": "science_fact",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 3,
+            "professional_depth": 4
+          },
+          "produced_at": "2026-07-30T13:39:36.067649+00:00",
+          "producer": "platform/1_ingest/radar/radar_science_fact.py"
+        },
+        "signals": [
+          {
+            "signal_id": "SIG-SCI-f1b198d4",
+            "type": "research_signal",
+            "text": "[MOCK] 室温超导材料新发现 相关科学研究新进展",
+            "confidence": 0.92,
+            "source_id": "arxiv_cs_ai",
+            "key_claims": [
+              "室温超导材料新发现 研究取得重要进展",
+              "实验数据支持核心假说",
+              "研究结果已在预印本平台发布"
+            ],
+            "entities": [
+              "室温超导材料新发现",
+              "arXiv"
+            ],
+            "topics": [
+              "科学研究",
+              "学术发现"
+            ],
+            "research_method": "experimental",
+            "peer_reviewed": false,
+            "published_at": "2026-07-30T13:39:36.067594+00:00",
+            "url": "https://arxiv.org/abs/2401.00001",
+            "doi": "",
+            "journal": "arXiv"
+          },
+          {
+            "signal_id": "SIG-SCI-65041b13",
+            "type": "research_signal",
+            "text": "室温超导材料新发现 研究被 Nature 新闻稿报道",
+            "confidence": 0.95,
+            "source_id": "nature_news",
+            "key_claims": [
+              "Nature 新闻稿介绍了 室温超导材料新发现 相关突破",
+              "专家称该研究具有重要意义",
+              "同行评审版本即将发表"
+            ],
+            "entities": [
+              "室温超导材料新发现",
+              "Nature"
+            ],
+            "topics": [
+              "科学研究",
+              "学术新闻"
+            ],
+            "research_method": "review",
+            "peer_reviewed": true,
+            "published_at": "2026-07-30T13:39:36.067602+00:00",
+            "url": "https://www.nature.com/articles/d41586-2024-00001",
+            "doi": "10.1038/d41586-2024-00001",
+            "journal": "Nature"
+          },
+          {
+            "signal_id": "SIG-SCI-b7ca4b05",
+            "type": "research_signal",
+            "text": "MIT Tech Review 分析 室温超导材料新发现 的影响",
+            "confidence": 0.85,
+            "source_id": "mit_tech_review",
+            "key_claims": [
+              "MIT 技术评论深度分析 室温超导材料新发现",
+              "研究局限性被指出",
+              "实际应用仍需时日"
+            ],
+            "entities": [
+              "室温超导材料新发现",
+              "MIT"
+            ],
+            "topics": [
+              "科学研究",
+              "科技评论"
+            ],
+            "research_method": "review",
+            "peer_reviewed": false,
+            "published_at": "2026-07-30T13:39:36.067606+00:00",
+            "url": "https://www.technologyreview.com/2024/s41586-00001",
+            "doi": "",
+            "journal": "MIT Technology Review"
+          },
+          {
+            "signal_id": "SIG-SCI-18e6bb79",
+            "type": "research_signal",
+            "text": "维基百科更新了 室温超导材料新发现 相关词条",
+            "confidence": 0.75,
+            "source_id": "wikipedia_api",
+            "key_claims": [
+              "维基百科收录了 室温超导材料新发现 相关知识",
+              "引用了多项学术来源",
+              "内容经过社区审核"
+            ],
+            "entities": [
+              "室温超导材料新发现",
+              "Wikipedia"
+            ],
+            "topics": [
+              "知识百科",
+              "基础背景"
+            ],
+            "research_method": "review",
+            "peer_reviewed": false,
+            "published_at": "2026-07-30T13:39:36.067610+00:00",
+            "url": "https://en.wikipedia.org/wiki/Topic_Placeholder",
+            "doi": "",
+            "journal": "Wikipedia"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "arxiv_cs_ai",
+            "grade": "B",
+            "name": "arXiv CS.AI",
+            "peer_reviewed": false,
+            "url": "https://arxiv.org/abs/2401.00001",
+            "journal": "arXiv",
+            "doi": ""
+          },
+          {
+            "source_id": "nature_news",
+            "grade": "A",
+            "name": "Nature News",
+            "peer_reviewed": true,
+            "url": "https://www.nature.com/articles/d41586-2024-00001",
+            "journal": "Nature",
+            "doi": "10.1038/d41586-2024-00001"
+          },
+          {
+            "source_id": "mit_tech_review",
+            "grade": "C",
+            "name": "MIT Technology Review",
+            "peer_reviewed": false,
+            "url": "https://www.technologyreview.com/2024/s41586-00001",
+            "journal": "MIT Technology Review",
+            "doi": ""
+          },
+          {
+            "source_id": "wikipedia_api",
+            "grade": "C",
+            "name": "Wikipedia",
+            "peer_reviewed": false,
+            "url": "https://en.wikipedia.org/wiki/Topic_Placeholder",
+            "journal": "Wikipedia",
+            "doi": ""
+          }
+        ],
+        "topic": "室温超导材料新发现",
+        "confidence": 0.8674999999999999,
+        "peer_reviewed_count": 1,
+        "research_methods": [
+          "experimental",
+          "review"
+        ]
+      },
+      "error": "",
+      "duration_seconds": 0.0015730857849121094,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "structure_type": "science_fact",
+        "sections": [
+          {
+            "section_id": "sec_background",
+            "heading": "研究背景：这个问题是什么？",
+            "type": "background",
+            "description": "介绍研究问题的来龙去脉，为什么重要",
+            "knowledge_nodes": [
+              "室温超导材料新发现的研究背景",
+              "该领域此前的核心问题"
+            ]
+          },
+          {
+            "section_id": "sec_principle",
+            "heading": "核心原理：它是怎么工作的？",
+            "type": "explanation",
+            "description": "用通俗语言解释核心机制/原理，避免过度技术化",
+            "knowledge_nodes": [
+              "室温超导材料新发现的核心机制",
+              "关键参数和条件"
+            ]
+          },
+          {
+            "section_id": "sec_evidence",
+            "heading": "关键证据：研究怎么证明的？",
+            "type": "evidence",
+            "description": "介绍实验/计算方法、数据规模、关键发现",
+            "knowledge_nodes": [
+              "室温超导材料新发现的实验/计算方法",
+              "数据规模和关键指标"
+            ]
+          },
+          {
+            "section_id": "sec_limitations",
+            "heading": "研究局限：还不知道什么？",
+            "type": "limitations",
+            "description": "诚实讨论研究不足、不确定性、未来方向",
+            "knowledge_nodes": [
+              "当前研究的局限性",
+              "未来需要解决的问题"
+            ]
+          },
+          {
+            "section_id": "sec_significance",
+            "heading": "现实意义：普通人应该关心什么？",
+            "type": "significance",
+            "description": "从科普角度说明研究的实际意义和影响",
+            "knowledge_nodes": [
+              "室温超导材料新发现的现实应用前景",
+              "对普通人生活的潜在影响"
+            ]
+          }
+        ],
+        "references_plan": [
+          {
+            "source_id": "arxiv_cs_ai",
+            "grade": "B",
+            "name": "arXiv CS.AI",
+            "peer_reviewed": false,
+            "url": "https://arxiv.org/abs/2401.00001",
+            "journal": "arXiv",
+            "doi": ""
+          },
+          {
+            "source_id": "nature_news",
+            "grade": "A",
+            "name": "Nature News",
+            "peer_reviewed": true,
+            "url": "https://www.nature.com/articles/d41586-2024-00001",
+            "journal": "Nature",
+            "doi": "10.1038/d41586-2024-00001"
+          },
+          {
+            "source_id": "mit_tech_review",
+            "grade": "C",
+            "name": "MIT Technology Review",
+            "peer_reviewed": false,
+            "url": "https://www.technologyreview.com/2024/s41586-00001",
+            "journal": "MIT Technology Review",
+            "doi": ""
+          },
+          {
+            "source_id": "wikipedia_api",
+            "grade": "C",
+            "name": "Wikipedia",
+            "peer_reviewed": false,
+            "url": "https://en.wikipedia.org/wiki/Topic_Placeholder",
+            "journal": "Wikipedia",
+            "doi": ""
+          }
+        ],
+        "status": "structured",
+        "content_spec": {
+          "content_type": "science_fact",
+          "topic": "室温超导材料新发现"
+        },
+        "knowledge_points": [
+          "室温超导材料新发现的研究背景",
+          "该领域此前的核心问题",
+          "室温超导材料新发现的核心机制",
+          "关键参数和条件",
+          "室温超导材料新发现的实验/计算方法",
+          "数据规模和关键指标",
+          "当前研究的局限性",
+          "未来需要解决的问题",
+          "室温超导材料新发现的现实应用前景",
+          "对普通人生活的潜在影响"
+        ]
+      },
+      "error": "",
+      "duration_seconds": 0.0009644031524658203,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-ARTICLE-science_fact-20260730-e8f654b5",
+          "artifact_type": "article_v2",
+          "content_type": "science_fact",
+          "produced_at": "2026-07-30T13:39:36.069766+00:00",
+          "producer": "platform/3_render/engines/text/render_science_fact.py"
+        },
+        "title": "室温超导材料新发现",
+        "blocks": [
+          {
+            "type": "heading1",
+            "content": {
+              "text": "室温超导材料新发现"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "近日，一项关于室温超导材料新发现的研究引发了科学界的广泛关注。该研究【来源等级待标注】，为这一领域提供了新的视角。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "研究背景：这个问题是什么？"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "室温超导材料新发现是近年来科学界持续关注的重要课题。【A级来源】显示，该领域长期存在若干核心问题未获解决。此次研究正是在这一背景下展开。"
+            }
+          },
+          {
+            "type": "infobox",
+            "content": {
+              "text": "关键概念：室温超导材料新发现的研究背景 | 该领域此前的核心问题"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "核心原理：它是怎么工作的？"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "通俗地理解，室温超导材料新发现的核心机制。【A级来源】指出，这背后的核心机制可概括为以下几点：首先，关键参数X决定结果走向；其次，条件Y起到调控作用；最后，环境因素Z也会对最终效果产生可测量的影响。"
+            }
+          },
+          {
+            "type": "infobox",
+            "content": {
+              "text": "关键概念：室温超导材料新发现的核心机制 | 关键参数和条件"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "关键证据：研究怎么证明的？"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "研究团队采用了室温超导材料新发现的实验/计算方法的方法展开工作。【A级来源】报道，该实验共收集了超过1000组数据点，统计分析显示关键指标达到p<0.01的显著水平。值得注意的是，数据同时也显示出一定的变异范围，研究者已就此作出说明。"
+            }
+          },
+          {
+            "type": "infobox",
+            "content": {
+              "text": "关键概念：室温超导材料新发现的实验/计算方法 | 数据规模和关键指标"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "研究局限：还不知道什么？"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "科学研究的价值不仅在于发现，也在于诚实地面对局限。【C级/科普媒体】指出，当前研究存在若干尚待解决的问题：首先，样本规模仍有提升空间；其次，部分条件的可重复性需要进一步验证；此外，长期效应尚未得到充分评估。该研究团队也表示，期待后续工作加以完善。"
+            }
+          },
+          {
+            "type": "infobox",
+            "content": {
+              "text": "关键概念：当前研究的局限性 | 未来需要解决的问题"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "现实意义：普通人应该关心什么？"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "对于普通读者而言，这项研究的意义在于：【A级来源】认为，如果后续研究能够验证这些发现，那么这一方向有望在室温超导材料新发现的现实应用前景带来实际应用。但研究者同时强调，距离真正落地仍需大量后续工作，目前下结论为时尚早。"
+            }
+          },
+          {
+            "type": "infobox",
+            "content": {
+              "text": "关键概念：室温超导材料新发现的现实应用前景 | 对普通人生活的潜在影响"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "参考来源"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【B级[预印本/科普]】arXiv CS.AI https://arxiv.org/abs/2401.00001"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【A级[同行评审]】Nature News https://www.nature.com/articles/d41586-2024-00001"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【C级[预印本/科普]】MIT Technology Review https://www.technologyreview.com/2024/s41586-00001"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【C级[预印本/科普]】Wikipedia https://en.wikipedia.org/wiki/Topic_Placeholder"
+            }
+          }
+        ],
+        "word_count": 1069,
+        "metadata": {
+          "literary": 3,
+          "professional_depth": 4,
+          "has_abstract": false,
+          "has_references": true,
+          "references_count": 4,
+          "citation_check_passed": true
+        }
+      },
+      "error": "",
+      "duration_seconds": 0.001069784164428711,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "adapt": {
+      "status": "pass",
+      "artifact": {
+        "status": "adapted",
+        "scorecard": {
+          "header": {
+            "artifact_id": "ART-SCORE-science_fact-20260730-ae2e803c",
+            "artifact_type": "quality_scorecard",
+            "content_type": "science_fact",
+            "scored_at": "2026-07-30T13:39:36.071056+00:00",
+            "producer": "platform/4_adapt/scorecard/scorecard_science_fact.py",
+            "mock_mode": true
+          },
+          "scorecard": {
+            "total_score": 94.0,
+            "dimensions": {
+              "readability": {
+                "score": 88,
+                "weight": 0.25
+              },
+              "factual": {
+                "score": 100,
+                "weight": 0.35
+              },
+              "source": {
+                "score": 85,
+                "weight": 0.2
+              },
+              "depth": {
+                "score": 100,
+                "weight": 0.2
+              }
+            },
+            "factual_claims_check": {
+              "absolute_statements": [],
+              "citations_found": true,
+              "uncertainty_acknowledged": true
+            },
+            "source_grade_check": {
+              "total_sources": 4,
+              "has_peer_reviewed": true
+            },
+            "readability_check": {
+              "word_count": 0,
+              "avg_sentence_length": 42.52,
+              "has_terminology_explained": true
+            },
+            "weights": {
+              "readability": 0.25,
+              "factual": 0.35,
+              "source": 0.2,
+              "depth": 0.2
+            },
+            "threshold": 70.0
+          },
+          "passed": true,
+          "action": "deliver",
+          "gray_zones": [],
+          "revision_suggestions": [
+            "文章质量良好，可直接发布"
+          ]
+        },
+        "passed": true,
+        "action": "deliver",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 0.0011098384857177734,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "threshold_70",
+        "threshold": 70,
+        "score": 94.0
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "artifact": {
+        "content_id": "CP_science_research_0a2a6574",
+        "article": {
+          "header": {
+            "artifact_id": "ART-ARTICLE-science_fact-20260730-e8f654b5",
+            "artifact_type": "article_v2",
+            "content_type": "science_fact",
+            "produced_at": "2026-07-30T13:39:36.069766+00:00",
+            "producer": "platform/3_render/engines/text/render_science_fact.py"
+          },
+          "title": "室温超导材料新发现",
+          "blocks": [
+            {
+              "type": "heading1",
+              "content": {
+                "text": "室温超导材料新发现"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "近日，一项关于室温超导材料新发现的研究引发了科学界的广泛关注。该研究【来源等级待标注】，为这一领域提供了新的视角。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "研究背景：这个问题是什么？"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "室温超导材料新发现是近年来科学界持续关注的重要课题。【A级来源】显示，该领域长期存在若干核心问题未获解决。此次研究正是在这一背景下展开。"
+              }
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的研究背景 | 该领域此前的核心问题"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "核心原理：它是怎么工作的？"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "通俗地理解，室温超导材料新发现的核心机制。【A级来源】指出，这背后的核心机制可概括为以下几点：首先，关键参数X决定结果走向；其次，条件Y起到调控作用；最后，环境因素Z也会对最终效果产生可测量的影响。"
+              }
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的核心机制 | 关键参数和条件"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "关键证据：研究怎么证明的？"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "研究团队采用了室温超导材料新发现的实验/计算方法的方法展开工作。【A级来源】报道，该实验共收集了超过1000组数据点，统计分析显示关键指标达到p<0.01的显著水平。值得注意的是，数据同时也显示出一定的变异范围，研究者已就此作出说明。"
+              }
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的实验/计算方法 | 数据规模和关键指标"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "研究局限：还不知道什么？"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "科学研究的价值不仅在于发现，也在于诚实地面对局限。【C级/科普媒体】指出，当前研究存在若干尚待解决的问题：首先，样本规模仍有提升空间；其次，部分条件的可重复性需要进一步验证；此外，长期效应尚未得到充分评估。该研究团队也表示，期待后续工作加以完善。"
+              }
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：当前研究的局限性 | 未来需要解决的问题"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "现实意义：普通人应该关心什么？"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "对于普通读者而言，这项研究的意义在于：【A级来源】认为，如果后续研究能够验证这些发现，那么这一方向有望在室温超导材料新发现的现实应用前景带来实际应用。但研究者同时强调，距离真正落地仍需大量后续工作，目前下结论为时尚早。"
+              }
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的现实应用前景 | 对普通人生活的潜在影响"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "参考来源"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【B级[预印本/科普]】arXiv CS.AI https://arxiv.org/abs/2401.00001"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【A级[同行评审]】Nature News https://www.nature.com/articles/d41586-2024-00001"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【C级[预印本/科普]】MIT Technology Review https://www.technologyreview.com/2024/s41586-00001"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【C级[预印本/科普]】Wikipedia https://en.wikipedia.org/wiki/Topic_Placeholder"
+              }
+            }
+          ],
+          "word_count": 1069,
+          "metadata": {
+            "literary": 3,
+            "professional_depth": 4,
+            "has_abstract": false,
+            "has_references": true,
+            "references_count": 4,
+            "citation_check_passed": true
+          }
+        },
+        "metadata": {
+          "title": "室温超导材料新发现",
+          "SEO_title": "室温超导材料新发现",
+          "description": "本文深入分析了室温超导材料新发现。",
+          "keywords": [
+            "关键概念",
+            "级来源",
+            "预印本",
+            "科普",
+            "室温超导材料新发现的核心机制",
+            "指出",
+            "首先",
+            "其次"
+          ],
+          "tags": [
+            "预印本",
+            "科普",
+            "级来源",
+            "关键概念",
+            "室温超导材料新发现的核心机制"
+          ],
+          "author": {
+            "name": "AI 媒体编辑",
+            "bio": "由 SPDT-005 自动化管线生成",
+            "avatar": ""
+          },
+          "publish_time": "2026-07-30T13:39:36.073323+00:00",
+          "update_time": "2026-07-30T13:39:36.073323+00:00",
+          "language": "zh-CN",
+          "cover_image": {
+            "url": "",
+            "suggestion": {
+              "subject": "室温超导材料新发现",
+              "style": [
+                "通用",
+                "蓝色系"
+              ],
+              "colors": [
+                "#37474F",
+                "#ECEFF1",
+                "#263238"
+              ]
+            },
+            "alt": "室温超导材料新发现",
+            "credit": ""
+          },
+          "thumbnail": "",
+          "channel_specific": {}
+        },
+        "formatting": {
+          "typography": {
+            "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+            "font_size": "16px",
+            "line_height": 1.8,
+            "paragraph_spacing": "1em"
+          },
+          "layout": {
+            "type": "mixed",
+            "max_width": "800px",
+            "has_toc": true,
+            "compact": false
+          },
+          "visual_elements": [
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的研究背景 | 该领域此前的核心问题"
+              },
+              "position": "float_right",
+              "caption": "",
+              "attribution": ""
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的核心机制 | 关键参数和条件"
+              },
+              "position": "float_right",
+              "caption": "",
+              "attribution": ""
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的实验/计算方法 | 数据规模和关键指标"
+              },
+              "position": "float_right",
+              "caption": "",
+              "attribution": ""
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：当前研究的局限性 | 未来需要解决的问题"
+              },
+              "position": "float_right",
+              "caption": "",
+              "attribution": ""
+            },
+            {
+              "type": "infobox",
+              "content": {
+                "text": "关键概念：室温超导材料新发现的现实应用前景 | 对普通人生活的潜在影响"
+              },
+              "position": "float_right",
+              "caption": "",
+              "attribution": ""
+            }
+          ],
+          "special_sections": {
+            "abstract": ""
+          },
+          "channel_specific": {
+            "typography": {
+              "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+              "font_size": "16px",
+              "line_height": 1.8,
+              "paragraph_spacing": "1em"
+            },
+            "layout": {
+              "type": "mixed",
+              "max_width": "800px",
+              "has_toc": true,
+              "compact": false
+            }
+          }
+        },
+        "channel_packages": {
+          "markdown": {
+            "channel": "markdown",
+            "content": "---\ntitle: \"室温超导材料新发现\"\ncontent_type: science_research\npublish_time: 2026-07-30T13:39:36.073323+00:00\nkeywords: [关键概念, 级来源, 预印本, 科普, 室温超导材料新发现的核心机制, 指出, 首先, 其次]\n---\n\n# 室温超导材料新发现\n\n近日，一项关于室温超导材料新发现的研究引发了科学界的广泛关注。该研究【来源等级待标注】，为这一领域提供了新的视角。\n## 研究背景：这个问题是什么？\n室温超导材料新发现是近年来科学界持续关注的重要课题。【A级来源】显示，该领域长期存在若干核心问题未获解决。此次研究正是在这一背景下展开。\n::: info\n关键概念：室温超导材料新发现的研究背景 | 该领域此前的核心问题\n:::\n## 核心原理：它是怎么工作的？\n通俗地理解，室温超导材料新发现的核心机制。【A级来源】指出，这背后的核心机制可概括为以下几点：首先，关键参数X决定结果走向；其次，条件Y起到调控作用；最后，环境因素Z也会对最终效果产生可测量的影响。\n::: info\n关键概念：室温超导材料新发现的核心机制 | 关键参数和条件\n:::\n## 关键证据：研究怎么证明的？\n研究团队采用了室温超导材料新发现的实验/计算方法的方法展开工作。【A级来源】报道，该实验共收集了超过1000组数据点，统计分析显示关键指标达到p<0.01的显著水平。值得注意的是，数据同时也显示出一定的变异范围，研究者已就此作出说明。\n::: info\n关键概念：室温超导材料新发现的实验/计算方法 | 数据规模和关键指标\n:::\n## 研究局限：还不知道什么？\n科学研究的价值不仅在于发现，也在于诚实地面对局限。【C级/科普媒体】指出，当前研究存在若干尚待解决的问题：首先，样本规模仍有提升空间；其次，部分条件的可重复性需要进一步验证；此外，长期效应尚未得到充分评估。该研究团队也表示，期待后续工作加以完善。\n::: info\n关键概念：当前研究的局限性 | 未来需要解决的问题\n:::\n## 现实意义：普通人应该关心什么？\n对于普通读者而言，这项研究的意义在于：【A级来源】认为，如果后续研究能够验证这些发现，那么这一方向有望在室温超导材料新发现的现实应用前景带来实际应用。但研究者同时强调，距离真正落地仍需大量后续工作，目前下结论为时尚早。\n::: info\n关键概念：室温超导材料新发现的现实应用前景 | 对普通人生活的潜在影响\n:::\n## 参考来源\n【B级[预印本/科普]】arXiv CS.AI https://arxiv.org/abs/2401.00001\n【A级[同行评审]】Nature News https://www.nature.com/articles/d41586-2024-00001\n【C级[预印本/科普]】MIT Technology Review https://www.technologyreview.com/2024/s41586-00001\n【C级[预印本/科普]】Wikipedia https://en.wikipedia.org/wiki/Topic_Placeholder\n\n\n## 质量评分卡\n\n**总分**: 94.0/100 ✅  (通过)\n\n| 维度 | 得分 | 评价 |\n|------|------|------|\n| readability | 88 | 优秀 |\n| factual | 100 | 优秀 |\n| source | 85 | 优秀 |\n| depth | 100 | 优秀 |\n\n**标签**: 预印本 · 科普 · 级来源 · 关键概念 · 室温超导材料新发现的核心机制\n",
+            "config": {
+              "format": "markdown",
+              "encoding": "utf-8"
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                "font_size": "16px",
+                "line_height": 1.8,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "mixed",
+                "max_width": "800px",
+                "has_toc": true,
+                "compact": false
+              },
+              "visual_elements": [
+                {
+                  "type": "infobox",
+                  "content": {
+                    "text": "关键概念：室温超导材料新发现的研究背景 | 该领域此前的核心问题"
+                  },
+                  "position": "float_right",
+                  "caption": "",
+                  "attribution": ""
+                },
+                {
+                  "type": "infobox",
+                  "content": {
+                    "text": "关键概念：室温超导材料新发现的核心机制 | 关键参数和条件"
+                  },
+                  "position": "float_right",
+                  "caption": "",
+                  "attribution": ""
+                },
+                {
+                  "type": "infobox",
+                  "content": {
+                    "text": "关键概念：室温超导材料新发现的实验/计算方法 | 数据规模和关键指标"
+                  },
+                  "position": "float_right",
+                  "caption": "",
+                  "attribution": ""
+                },
+                {
+                  "type": "infobox",
+                  "content": {
+                    "text": "关键概念：当前研究的局限性 | 未来需要解决的问题"
+                  },
+                  "position": "float_right",
+                  "caption": "",
+                  "attribution": ""
+                },
+                {
+                  "type": "infobox",
+                  "content": {
+                    "text": "关键概念：室温超导材料新发现的现实应用前景 | 对普通人生活的潜在影响"
+                  },
+                  "position": "float_right",
+                  "caption": "",
+                  "attribution": ""
+                }
+              ],
+              "special_sections": {
+                "abstract": ""
+              },
+              "channel_specific": {
+                "typography": {
+                  "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.8,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "mixed",
+                  "max_width": "800px",
+                  "has_toc": true,
+                  "compact": false
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          }
+        },
+        "scorecard_summary": {
+          "total_score": 94.0,
+          "passed": true
+        },
+        "published_at": "2026-07-30T13:39:36.080232+00:00",
+        "pipeline_id": ""
+      },
+      "error": "",
+      "duration_seconds": 0.009169816970825195,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    }
+  },
+  "scorecard": {
+    "status": "adapted",
+    "scorecard": {
+      "header": {
+        "artifact_id": "ART-SCORE-science_fact-20260730-ae2e803c",
+        "artifact_type": "quality_scorecard",
+        "content_type": "science_fact",
+        "scored_at": "2026-07-30T13:39:36.071056+00:00",
+        "producer": "platform/4_adapt/scorecard/scorecard_science_fact.py",
+        "mock_mode": true
+      },
+      "scorecard": {
+        "total_score": 94.0,
+        "dimensions": {
+          "readability": {
+            "score": 88,
+            "weight": 0.25
+          },
+          "factual": {
+            "score": 100,
+            "weight": 0.35
+          },
+          "source": {
+            "score": 85,
+            "weight": 0.2
+          },
+          "depth": {
+            "score": 100,
+            "weight": 0.2
+          }
+        },
+        "factual_claims_check": {
+          "absolute_statements": [],
+          "citations_found": true,
+          "uncertainty_acknowledged": true
+        },
+        "source_grade_check": {
+          "total_sources": 4,
+          "has_peer_reviewed": true
+        },
+        "readability_check": {
+          "word_count": 0,
+          "avg_sentence_length": 42.52,
+          "has_terminology_explained": true
+        },
+        "weights": {
+          "readability": 0.25,
+          "factual": 0.35,
+          "source": 0.2,
+          "depth": 0.2
+        },
+        "threshold": 70.0
+      },
+      "passed": true,
+      "action": "deliver",
+      "gray_zones": [],
+      "revision_suggestions": [
+        "文章质量良好，可直接发布"
+      ]
+    },
+    "passed": true,
+    "action": "deliver",
+    "gray_zones": []
+  },
+  "gray_zone_tickets": [],
+  "policy_audit": {
+    "total_events": 6,
+    "gap_events": 0,
+    "gap_event_types": [],
+    "severity_breakdown": {
+      "info": 6
+    },
+    "audit_log_path": "D:\\2_products\\media\\SPDT-005_MediaContent\\platform\\5_deliver\\checkpoint\\policy_audit.jsonl"
+  },
+  "started_at": "2026-07-30T13:39:36.066346+00:00",
+  "completed_at": "2026-07-30T13:39:36.080549+00:00",
+  "total_duration_seconds": 0.014190912246704102
+}

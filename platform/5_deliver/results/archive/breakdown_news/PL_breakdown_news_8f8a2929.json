@@ -1,0 +1,978 @@
+{
+  "pipeline_id": "PL_breakdown_news_8f8a2929",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "美联储维持利率不变 现货黄金突破4100美元",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web",
+      "feishu"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "complete",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-888faac4",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:38:35.313994+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-e5027114"
+        },
+        "signals": [
+          {
+            "text": "美联储宣布维持联邦基金利率目标区间在5.25%-5.50%不变，符合市场预期。",
+            "confidence": 0.95,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "利率维持不变",
+              "符合预期"
+            ],
+            "entities": [
+              "美联储",
+              "联邦基金利率"
+            ],
+            "topics": [
+              "货币政策",
+              "利率决策"
+            ],
+            "signal_id": "SIG-001",
+            "published_at": "2026-07-30T09:38:35.313905+00:00"
+          },
+          {
+            "text": "现货黄金价格突破4100美元/盎司，创历史新高，市场避险情绪升温。",
+            "confidence": 0.9,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "金价突破4100美元",
+              "历史新高"
+            ],
+            "entities": [
+              "现货黄金"
+            ],
+            "topics": [
+              "贵金属",
+              "避险资产"
+            ],
+            "signal_id": "SIG-002",
+            "published_at": "2026-07-30T09:38:35.313911+00:00"
+          },
+          {
+            "text": "市场分析认为，美联储维持利率不变叠加通胀预期上升，推动黄金需求激增。",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "利率不变推高黄金",
+              "通胀预期上升"
+            ],
+            "entities": [
+              "美联储",
+              "黄金"
+            ],
+            "topics": [
+              "市场分析",
+              "通胀"
+            ],
+            "signal_id": "SIG-003",
+            "published_at": "2026-07-30T09:38:35.313915+00:00"
+          },
+          {
+            "text": "社交媒体上投资者热议黄金突破4100美元，部分用户预测金价将冲向4500美元。",
+            "confidence": 0.65,
+            "type": "breaking_signal",
+            "source_type": "social_media",
+            "key_claims": [
+              "金价预测4500美元",
+              "投资者热议"
+            ],
+            "entities": [
+              "黄金"
+            ],
+            "topics": [
+              "市场情绪",
+              "预测"
+            ],
+            "signal_id": "SIG-004",
+            "published_at": "2026-07-30T09:38:35.313917+00:00"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-OFFICIAL-001",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "美联储宣布维持联邦基金利率目标区间在5.25%-5.50%不变，符合市场预期。"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-002",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "现货黄金价格突破4100美元/盎司，创历史新高，市场避险情绪升温。"
+          },
+          {
+            "source_id": "SRC-NEWS-003",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "市场分析认为，美联储维持利率不变叠加通胀预期上升，推动黄金需求激增。"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-004",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上投资者热议黄金突破4100美元，部分用户预测金价将冲向4500美元。"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 10,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "货币政策",
+          "避险资产",
+          "市场分析",
+          "贵金属",
+          "通胀"
+        ],
+        "sla_deadline": "2026-07-30T09:53:35.314022+00:00",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 3.540586471557617,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-bdfa2447",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-888faac4",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:38:38.991835+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-e5027114"
+        },
+        "title": "现货黄金突破4100美元创历史新高",
+        "subtitle": "美联储维持利率不变，避险情绪推动金价飙升",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "title": "导语",
+            "order": 1,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "一句话交代核心事件：美联储维持利率不变后，现货黄金价格突破4100美元/盎司，创历史新高。"
+          },
+          {
+            "section_id": "SEC-002",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "5个要点：1.美联储维持利率5.25%-5.50%不变；2.现货黄金突破4100美元；3.创历史新高；4.市场避险情绪升温；5.分析指通胀预期推动需求。"
+          },
+          {
+            "section_id": "SEC-003",
+            "title": "时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "3-5个时间节点：1.美联储宣布利率决定；2.金价突破4100美元；3.社交媒体热议。"
+          },
+          {
+            "section_id": "SEC-004",
+            "title": "背景",
+            "order": 4,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "说明事件重要性：美联储维持利率不变叠加通胀预期上升，推动黄金需求激增，金价创历史新高，反映市场避险情绪。"
+          }
+        ],
+        "word_count_target": 450,
+        "word_count_range": {
+          "min": 300,
+          "max": 600
+        },
+        "references_plan": [
+          {
+            "id": "SRC-OFFICIAL-001",
+            "source_id": "SRC-OFFICIAL-001",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "美联储宣布维持联邦基金利率目标区间在5.25%-5.50%不变，符合市场预期。"
+          },
+          {
+            "id": "SRC-INDUSTRY_MEDIA-002",
+            "source_id": "SRC-INDUSTRY_MEDIA-002",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "现货黄金价格突破4100美元/盎司，创历史新高，市场避险情绪升温。"
+          },
+          {
+            "id": "SRC-NEWS-003",
+            "source_id": "SRC-NEWS-003",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "市场分析认为，美联储维持利率不变叠加通胀预期上升，推动黄金需求激增。"
+          },
+          {
+            "id": "SRC-SOCIAL_MEDIA-004",
+            "source_id": "SRC-SOCIAL_MEDIA-004",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上投资者热议黄金突破4100美元，部分用户预测金价将冲向4500美元。"
+          }
+        ],
+        "terminology_plan": [
+          "黄金",
+          "货币政策",
+          "联邦基金利率",
+          "预测",
+          "避险资产",
+          "市场情绪",
+          "市场分析",
+          "现货黄金",
+          "贵金属",
+          "通胀"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ],
+        "knowledge_graph": null,
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 3.6777920722961426,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-ARTICLE-breakdown_news-20260730-d0e7467a",
+          "artifact_type": "article_v2",
+          "version": "2.0.0",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "outline_id": "ART-OUTLINE-breakdown_news-20260730-bdfa2447",
+          "source_brief_id": "ART-INTEL-breakdown_news-20260730-888faac4",
+          "produced_at": "2026-07-30T09:38:42.517312+00:00",
+          "producer": "platform/3_render/engines/text/render_breaking.py",
+          "pipeline_id": "PL-breakdown_news-e5027114"
+        },
+        "title": "现货黄金突破4100美元创历史新高",
+        "subtitle": "美联储维持利率不变，避险情绪推动金价飙升",
+        "abstract": "美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。",
+        "word_count": 345,
+        "reading_time_minutes": 0.9,
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。",
+            "block_id": "B001"
+          },
+          {
+            "type": "list",
+            "items": [
+              "美联储将联邦基金利率目标区间维持在5.25%-5.50%不变 [official 来源]",
+              "现货黄金价格突破4100美元/盎司 [industry_media 来源]",
+              "金价创下历史新高 [industry_media 来源]",
+              "市场避险情绪显著升温 [news 来源]",
+              "分析人士指出，通胀预期上升推动黄金需求激增 [market_analysis 来源]"
+            ],
+            "block_id": "B002"
+          },
+          {
+            "type": "timeline",
+            "events": [
+              {
+                "time": "北京时间2:00 PM",
+                "event": "美联储公布利率决议，维持利率不变 [official 来源]"
+              },
+              {
+                "time": "北京时间2:15 PM",
+                "event": "现货黄金价格突破4100美元/盎司 [industry_media 来源]"
+              },
+              {
+                "time": "北京时间3:00 PM",
+                "event": "社交媒体上“黄金突破4100”成为热门话题 [social_media 来源]"
+              }
+            ],
+            "block_id": "B003"
+          },
+          {
+            "type": "paragraph",
+            "text": "美联储维持利率不变叠加通胀预期上升，推动黄金需求激增，金价创历史新高，反映市场避险情绪浓厚。",
+            "block_id": "B004"
+          }
+        ],
+        "metadata": {
+          "terms": [
+            {
+              "term": "黄金",
+              "defined": false
+            },
+            {
+              "term": "货币政策",
+              "defined": false
+            },
+            {
+              "term": "联邦基金利率",
+              "defined": false
+            },
+            {
+              "term": "预测",
+              "defined": false
+            },
+            {
+              "term": "避险资产",
+              "defined": false
+            },
+            {
+              "term": "市场情绪",
+              "defined": false
+            },
+            {
+              "term": "市场分析",
+              "defined": false
+            },
+            {
+              "term": "现货黄金",
+              "defined": false
+            },
+            {
+              "term": "贵金属",
+              "defined": false
+            },
+            {
+              "term": "通胀",
+              "defined": false
+            }
+          ],
+          "knowledge_points": [],
+          "references": [
+            {
+              "id": "SRC-OFFICIAL-001",
+              "source_id": "SRC-OFFICIAL-001",
+              "grade": "A",
+              "name": "official 来源",
+              "type": "official",
+              "claim": "美联储宣布维持联邦基金利率目标区间在5.25%-5.50%不变，符合市场预期。"
+            },
+            {
+              "id": "SRC-INDUSTRY_MEDIA-002",
+              "source_id": "SRC-INDUSTRY_MEDIA-002",
+              "grade": "B",
+              "name": "industry_media 来源",
+              "type": "industry_media",
+              "claim": "现货黄金价格突破4100美元/盎司，创历史新高，市场避险情绪升温。"
+            },
+            {
+              "id": "SRC-NEWS-003",
+              "source_id": "SRC-NEWS-003",
+              "grade": "B",
+              "name": "news 来源",
+              "type": "news",
+              "claim": "市场分析认为，美联储维持利率不变叠加通胀预期上升，推动黄金需求激增。"
+            },
+            {
+              "id": "SRC-SOCIAL_MEDIA-004",
+              "source_id": "SRC-SOCIAL_MEDIA-004",
+              "grade": "C",
+              "name": "social_media 来源",
+              "type": "social_media",
+              "claim": "社交媒体上投资者热议黄金突破4100美元，部分用户预测金价将冲向4500美元。"
+            }
+          ]
+        },
+        "quality_markers": {
+          "factual_claims_count": 5,
+          "sources_cited_count": 4,
+          "terms_defined_count": 0,
+          "has_abstract": true,
+          "has_references": true,
+          "has_terminology_table": false,
+          "literary_score": 0,
+          "readability_score": 0
+        },
+        "gray_zones": [],
+        "validation": {
+          "schema_valid": true,
+          "required_fields": true,
+          "word_count_ok": true,
+          "errors": []
+        }
+      },
+      "error": "",
+      "duration_seconds": 3.525486707687378,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "adapt": {
+      "status": "pass",
+      "artifact": {
+        "status": "adapted",
+        "scorecard": {
+          "header": {
+            "artifact_id": "ART-SCORE-breakdown_news-20260730-e6ce71dc",
+            "artifact_type": "quality_scorecard",
+            "article_id": "ART-ARTICLE-breakdown_news-20260730-d0e7467a",
+            "content_type": "breakdown_news",
+            "pipeline_id": "PL-breakdown_news-e5027114",
+            "threshold": 70.0,
+            "produced_at": "2026-07-30T09:38:42.544048+00:00",
+            "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+          },
+          "scorecard": {
+            "total_score": 88.2,
+            "dimensions": {
+              "factual": {
+                "score": 95,
+                "weight": 0.35,
+                "weighted": 33.25
+              },
+              "readability": {
+                "score": 80,
+                "weight": 0.2,
+                "weighted": 16.0
+              },
+              "source": {
+                "score": 70.0,
+                "weight": 0.2,
+                "weighted": 14.0
+              },
+              "timeliness": {
+                "score": 100,
+                "weight": 0.25,
+                "weighted": 25.0
+              }
+            },
+            "factual_claims_check": {
+              "total_claims": 1,
+              "verified": 4,
+              "unverified": -3,
+              "false": 0,
+              "status": "pass"
+            },
+            "source_grade_check": {
+              "total_sources": 4,
+              "grade_a": 1,
+              "grade_b": 2,
+              "grade_c": 1,
+              "ungraded": 0,
+              "status": "pass"
+            },
+            "readability_check": {
+              "avg_sentence_length": 0,
+              "avg_word_length": 2.0,
+              "paragraph_count": 4,
+              "terminology_ratio": 0.05,
+              "status": "pass"
+            }
+          },
+          "passed": true,
+          "action": "deliver",
+          "threshold": 70.0,
+          "gray_zones": [],
+          "revision_suggestions": []
+        },
+        "passed": true,
+        "action": "deliver",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 0.026711463928222656,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "threshold_70",
+        "threshold": 70,
+        "score": 88.2
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "artifact": {
+        "content_id": "CP_breakdown_news_3b4b4a59",
+        "article": {
+          "header": {
+            "artifact_id": "ART-ARTICLE-breakdown_news-20260730-d0e7467a",
+            "artifact_type": "article_v2",
+            "version": "2.0.0",
+            "content_type": "breakdown_news",
+            "pipeline_dimensions": {
+              "accuracy": 4,
+              "literary": 2,
+              "professional_depth": 3
+            },
+            "outline_id": "ART-OUTLINE-breakdown_news-20260730-bdfa2447",
+            "source_brief_id": "ART-INTEL-breakdown_news-20260730-888faac4",
+            "produced_at": "2026-07-30T09:38:42.517312+00:00",
+            "producer": "platform/3_render/engines/text/render_breaking.py",
+            "pipeline_id": "PL-breakdown_news-e5027114"
+          },
+          "title": "现货黄金突破4100美元创历史新高",
+          "subtitle": "美联储维持利率不变，避险情绪推动金价飙升",
+          "abstract": "美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。",
+          "word_count": 345,
+          "reading_time_minutes": 0.9,
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。",
+              "block_id": "B001"
+            },
+            {
+              "type": "list",
+              "items": [
+                "美联储将联邦基金利率目标区间维持在5.25%-5.50%不变 [official 来源]",
+                "现货黄金价格突破4100美元/盎司 [industry_media 来源]",
+                "金价创下历史新高 [industry_media 来源]",
+                "市场避险情绪显著升温 [news 来源]",
+                "分析人士指出，通胀预期上升推动黄金需求激增 [market_analysis 来源]"
+              ],
+              "block_id": "B002"
+            },
+            {
+              "type": "timeline",
+              "events": [
+                {
+                  "time": "北京时间2:00 PM",
+                  "event": "美联储公布利率决议，维持利率不变 [official 来源]"
+                },
+                {
+                  "time": "北京时间2:15 PM",
+                  "event": "现货黄金价格突破4100美元/盎司 [industry_media 来源]"
+                },
+                {
+                  "time": "北京时间3:00 PM",
+                  "event": "社交媒体上“黄金突破4100”成为热门话题 [social_media 来源]"
+                }
+              ],
+              "block_id": "B003"
+            },
+            {
+              "type": "paragraph",
+              "text": "美联储维持利率不变叠加通胀预期上升，推动黄金需求激增，金价创历史新高，反映市场避险情绪浓厚。",
+              "block_id": "B004"
+            }
+          ],
+          "metadata": {
+            "terms": [
+              {
+                "term": "黄金",
+                "defined": false
+              },
+              {
+                "term": "货币政策",
+                "defined": false
+              },
+              {
+                "term": "联邦基金利率",
+                "defined": false
+              },
+              {
+                "term": "预测",
+                "defined": false
+              },
+              {
+                "term": "避险资产",
+                "defined": false
+              },
+              {
+                "term": "市场情绪",
+                "defined": false
+              },
+              {
+                "term": "市场分析",
+                "defined": false
+              },
+              {
+                "term": "现货黄金",
+                "defined": false
+              },
+              {
+                "term": "贵金属",
+                "defined": false
+              },
+              {
+                "term": "通胀",
+                "defined": false
+              }
+            ],
+            "knowledge_points": [],
+            "references": [
+              {
+                "id": "SRC-OFFICIAL-001",
+                "source_id": "SRC-OFFICIAL-001",
+                "grade": "A",
+                "name": "official 来源",
+                "type": "official",
+                "claim": "美联储宣布维持联邦基金利率目标区间在5.25%-5.50%不变，符合市场预期。"
+              },
+              {
+                "id": "SRC-INDUSTRY_MEDIA-002",
+                "source_id": "SRC-INDUSTRY_MEDIA-002",
+                "grade": "B",
+                "name": "industry_media 来源",
+                "type": "industry_media",
+                "claim": "现货黄金价格突破4100美元/盎司，创历史新高，市场避险情绪升温。"
+              },
+              {
+                "id": "SRC-NEWS-003",
+                "source_id": "SRC-NEWS-003",
+                "grade": "B",
+                "name": "news 来源",
+                "type": "news",
+                "claim": "市场分析认为，美联储维持利率不变叠加通胀预期上升，推动黄金需求激增。"
+              },
+              {
+                "id": "SRC-SOCIAL_MEDIA-004",
+                "source_id": "SRC-SOCIAL_MEDIA-004",
+                "grade": "C",
+                "name": "social_media 来源",
+                "type": "social_media",
+                "claim": "社交媒体上投资者热议黄金突破4100美元，部分用户预测金价将冲向4500美元。"
+              }
+            ]
+          },
+          "quality_markers": {
+            "factual_claims_count": 5,
+            "sources_cited_count": 4,
+            "terms_defined_count": 0,
+            "has_abstract": true,
+            "has_references": true,
+            "has_terminology_table": false,
+            "literary_score": 0,
+            "readability_score": 0
+          },
+          "gray_zones": [],
+          "validation": {
+            "schema_valid": true,
+            "required_fields": true,
+            "word_count_ok": true,
+            "errors": []
+          }
+        },
+        "metadata": {
+          "title": "现货黄金突破4100美元创历史新高",
+          "SEO_title": "现货黄金突破4100美元创历史新高",
+          "description": "美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。",
+          "keywords": [
+            "美联储宣布维持利率不变后",
+            "现货黄金价格突破",
+            "美元",
+            "盎司",
+            "创下历史新高",
+            "美联储维持利率不变叠加通胀预期上升",
+            "推动黄金需求激增",
+            "金价创历史新高"
+          ],
+          "tags": [
+            "现货黄金价格突破",
+            "创下历史新高",
+            "新闻",
+            "美联储宣布维持利率不变后",
+            "盎司",
+            "美元",
+            "快讯"
+          ],
+          "author": {
+            "name": "AI 媒体编辑",
+            "bio": "由 SPDT-005 自动化管线生成",
+            "avatar": ""
+          },
+          "publish_time": "2026-07-30T09:38:42.546771+00:00",
+          "update_time": "2026-07-30T09:38:42.546771+00:00",
+          "language": "zh-CN",
+          "cover_image": {
+            "url": "",
+            "suggestion": {
+              "subject": "现货黄金突破4100",
+              "style": [
+                "突发",
+                "新闻",
+                "红色系",
+                "快讯"
+              ],
+              "colors": [
+                "#E53935",
+                "#FFCDD2",
+                "#FFFFFF"
+              ]
+            },
+            "alt": "现货黄金突破4100美元创历史新高",
+            "credit": ""
+          },
+          "thumbnail": "",
+          "channel_specific": {}
+        },
+        "formatting": {
+          "typography": {
+            "font_family": "system-ui, -apple-system, sans-serif",
+            "font_size": "16px",
+            "line_height": 1.7,
+            "paragraph_spacing": "1em"
+          },
+          "layout": {
+            "type": "single_column",
+            "max_width": "720px",
+            "has_toc": false,
+            "compact": true
+          },
+          "visual_elements": [],
+          "special_sections": {},
+          "channel_specific": {
+            "typography": {
+              "font_family": "system-ui, -apple-system, sans-serif",
+              "font_size": "16px",
+              "line_height": 1.7,
+              "paragraph_spacing": "1em"
+            },
+            "layout": {
+              "type": "single_column",
+              "max_width": "720px",
+              "has_toc": false,
+              "compact": true
+            }
+          }
+        },
+        "channel_packages": {
+          "web": {
+            "channel": "web",
+            "content": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n<title>现货黄金突破4100美元创历史新高</title>\n<style>\n  body {\n    font-family: system-ui, -apple-system, sans-serif;\n    font-size: 16px;\n    line-height: 1.7;\n    max-width: 720px;\n    margin: 0 auto;\n    padding: 2em 1em;\n  }\n  .pullquote {\n    font-size: 1.2em;\n    font-style: italic;\n    border-left: 4px solid #1E88E5;\n    padding-left: 1em;\n    margin: 2em 0;\n    color: #555;\n  }\n</style>\n</head>\n<body>\n<h1>现货黄金突破4100美元创历史新高</h1>\n<p></p>\n<ul><li>美联储将联邦基金利率目标区间维持在5.25%-5.50%不变 [official 来源]</li><li>现货黄金价格突破4100美元/盎司 [industry_media 来源]</li><li>金价创下历史新高 [industry_media 来源]</li><li>市场避险情绪显著升温 [news 来源]</li><li>分析人士指出，通胀预期上升推动黄金需求激增 [market_analysis 来源]</li></ul>\n<p></p>\n</body>\n</html>",
+            "config": {
+              "format": "html",
+              "encoding": "utf-8",
+              "has_toc": false,
+              "related_articles": [
+                "现货黄金价格突破",
+                "创下历史新高",
+                "新闻"
+              ],
+              "SEO": {
+                "title": "现货黄金突破4100美元创历史新高",
+                "description": "美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。",
+                "keywords": [
+                  "美联储宣布维持利率不变后",
+                  "现货黄金价格突破",
+                  "美元",
+                  "盎司",
+                  "创下历史新高",
+                  "美联储维持利率不变叠加通胀预期上升",
+                  "推动黄金需求激增",
+                  "金价创历史新高"
+                ]
+              }
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "system-ui, -apple-system, sans-serif",
+                "font_size": "16px",
+                "line_height": 1.7,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "720px",
+                "has_toc": false,
+                "compact": true
+              },
+              "visual_elements": [],
+              "special_sections": {},
+              "channel_specific": {
+                "typography": {
+                  "font_family": "system-ui, -apple-system, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.7,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "720px",
+                  "has_toc": false,
+                  "compact": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          },
+          "feishu": {
+            "channel": "feishu",
+            "content": "{\"title\": \"现货黄金突破4100美元创历史新高\", \"blocks\": [{\"type\": \"paragraph\", \"text\": \"美联储宣布维持利率不变后，现货黄金价格突破4100美元/盎司，创下历史新高。\"}, {\"type\": \"list\", \"text\": \"\"}, {\"type\": \"timeline\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"美联储维持利率不变叠加通胀预期上升，推动黄金需求激增，金价创历史新高，反映市场避险情绪浓厚。\"}], \"author\": \"AI 媒体编辑\"}",
+            "config": {
+              "format": "lark_docx",
+              "share_permission": "editor",
+              "comment_enabled": true
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "Lark Emoji",
+                "font_size": "16px",
+                "line_height": 1.7,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "720px",
+                "has_toc": false,
+                "compact": true
+              },
+              "visual_elements": [],
+              "special_sections": {},
+              "channel_specific": {
+                "typography": {
+                  "font_family": "system-ui, -apple-system, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.7,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "720px",
+                  "has_toc": false,
+                  "compact": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          }
+        },
+        "scorecard_summary": {
+          "total_score": 88.2,
+          "passed": true
+        },
+        "published_at": "2026-07-30T09:38:42.550712+00:00",
+        "pipeline_id": ""
+      },
+      "error": "",
+      "duration_seconds": 0.006606578826904297,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    }
+  },
+  "scorecard": {
+    "status": "adapted",
+    "scorecard": {
+      "header": {
+        "artifact_id": "ART-SCORE-breakdown_news-20260730-e6ce71dc",
+        "artifact_type": "quality_scorecard",
+        "article_id": "ART-ARTICLE-breakdown_news-20260730-d0e7467a",
+        "content_type": "breakdown_news",
+        "pipeline_id": "PL-breakdown_news-e5027114",
+        "threshold": 70.0,
+        "produced_at": "2026-07-30T09:38:42.544048+00:00",
+        "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+      },
+      "scorecard": {
+        "total_score": 88.2,
+        "dimensions": {
+          "factual": {
+            "score": 95,
+            "weight": 0.35,
+            "weighted": 33.25
+          },
+          "readability": {
+            "score": 80,
+            "weight": 0.2,
+            "weighted": 16.0
+          },
+          "source": {
+            "score": 70.0,
+            "weight": 0.2,
+            "weighted": 14.0
+          },
+          "timeliness": {
+            "score": 100,
+            "weight": 0.25,
+            "weighted": 25.0
+          }
+        },
+        "factual_claims_check": {
+          "total_claims": 1,
+          "verified": 4,
+          "unverified": -3,
+          "false": 0,
+          "status": "pass"
+        },
+        "source_grade_check": {
+          "total_sources": 4,
+          "grade_a": 1,
+          "grade_b": 2,
+          "grade_c": 1,
+          "ungraded": 0,
+          "status": "pass"
+        },
+        "readability_check": {
+          "avg_sentence_length": 0,
+          "avg_word_length": 2.0,
+          "paragraph_count": 4,
+          "terminology_ratio": 0.05,
+          "status": "pass"
+        }
+      },
+      "passed": true,
+      "action": "deliver",
+      "threshold": 70.0,
+      "gray_zones": [],
+      "revision_suggestions": []
+    },
+    "passed": true,
+    "action": "deliver",
+    "gray_zones": []
+  },
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T09:38:31.773454+00:00",
+  "completed_at": "2026-07-30T09:38:42.550731+00:00",
+  "total_duration_seconds": 10.777257919311523
+}

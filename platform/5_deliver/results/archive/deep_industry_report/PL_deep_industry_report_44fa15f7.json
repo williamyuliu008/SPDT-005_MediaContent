@@ -1,0 +1,40 @@
+{
+  "pipeline_id": "PL_deep_industry_report_44fa15f7",
+  "content_spec": {
+    "content_type": "deep_industry_report",
+    "title": "2026年中国新能源汽车行业深度分析",
+    "description": "",
+    "target_audience": "",
+    "channels": [],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "深度行业报告",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "RadarDeepIndustryRequest.__init__() got an unexpected keyword argument 'max_signals'",
+      "duration_seconds": 0.00218963623046875,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "policy_audit": {
+    "total_events": 3,
+    "gap_events": 2,
+    "gap_event_types": [
+      "stage_failed"
+    ],
+    "severity_breakdown": {
+      "info": 1,
+      "error": 2
+    },
+    "audit_log_path": "D:\\2_products\\media\\SPDT-005_MediaContent\\platform\\5_deliver\\checkpoint\\policy_audit.jsonl"
+  },
+  "started_at": "2026-07-30T14:16:10.997935+00:00",
+  "completed_at": "2026-07-30T14:16:11.000333+00:00",
+  "total_duration_seconds": 0.0023870468139648438
+}

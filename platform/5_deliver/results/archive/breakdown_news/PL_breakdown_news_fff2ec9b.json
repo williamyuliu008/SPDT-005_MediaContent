@@ -1,0 +1,303 @@
+{
+  "pipeline_id": "PL_breakdown_news_fff2ec9b",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "日本九州6.8级地震",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-59d159a8",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:30:10.300154+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-fc6882bb"
+        },
+        "signals": [
+          {
+            "text": "日本九州地区发生6.8级地震，震源深度约30公里，震中位于宫崎县附近。日本气象厅发布海啸预警，预计可能出现1米高海啸。",
+            "confidence": 0.85,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "九州地区发生6.8级地震",
+              "震源深度约30公里",
+              "日本气象厅发布海啸预警"
+            ],
+            "entities": [
+              "日本",
+              "九州",
+              "宫崎县",
+              "日本气象厅"
+            ],
+            "topics": [
+              "地震",
+              "海啸预警",
+              "自然灾害"
+            ],
+            "signal_id": "SIG-001",
+            "published_at": "2026-07-30T09:30:10.300064+00:00"
+          },
+          {
+            "text": "九州新干线部分路段暂停运行，以进行安全检查和确认轨道状况。鹿儿岛本线等普通铁路也出现延误。",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "九州新干线部分路段暂停运行",
+              "普通铁路出现延误"
+            ],
+            "entities": [
+              "九州新干线",
+              "鹿儿岛本线"
+            ],
+            "topics": [
+              "交通中断",
+              "铁路运营"
+            ],
+            "signal_id": "SIG-002",
+            "published_at": "2026-07-30T09:30:10.300067+00:00"
+          },
+          {
+            "text": "社交媒体上大量用户报告震感强烈，宫崎县、熊本县等地有建筑物晃动，部分居民紧急疏散至避难所。",
+            "confidence": 0.7,
+            "type": "breaking_signal",
+            "source_type": "social_media",
+            "key_claims": [
+              "用户报告震感强烈",
+              "宫崎县、熊本县有建筑物晃动",
+              "部分居民紧急疏散"
+            ],
+            "entities": [
+              "宫崎县",
+              "熊本县"
+            ],
+            "topics": [
+              "震感",
+              "居民反应",
+              "疏散"
+            ],
+            "signal_id": "SIG-003",
+            "published_at": "2026-07-30T09:30:10.300070+00:00"
+          },
+          {
+            "text": "日本气象厅表示，此次地震可能引发九州沿岸地区海啸，呼吁民众远离海岸线，并关注后续预警信息。",
+            "confidence": 0.8,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "地震可能引发海啸",
+              "呼吁民众远离海岸线"
+            ],
+            "entities": [
+              "日本气象厅",
+              "九州沿岸"
+            ],
+            "topics": [
+              "海啸预警",
+              "安全提醒"
+            ],
+            "signal_id": "SIG-004",
+            "published_at": "2026-07-30T09:30:10.300071+00:00"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-OFFICIAL-001",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本九州地区发生6.8级地震，震源深度约30公里，震中位于宫崎县附近。日本气象厅发布海啸预警，预计可能出现1米高海啸。"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-002",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "九州新干线部分路段暂停运行，以进行安全检查和确认轨道状况。鹿儿岛本线等普通铁路也出现延误。"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上大量用户报告震感强烈，宫崎县、熊本县等地有建筑物晃动，部分居民紧急疏散至避难所。"
+          },
+          {
+            "source_id": "SRC-NEWS-004",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本气象厅表示，此次地震可能引发九州沿岸地区海啸，呼吁民众远离海岸线，并关注后续预警信息。"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 10,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "自然灾害",
+          "居民反应",
+          "震感",
+          "铁路运营",
+          "交通中断"
+        ],
+        "sla_deadline": "2026-07-30T09:45:10.300259+00:00",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 5.669177770614624,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-bc45c5d5",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-59d159a8",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:30:14.445622+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-fc6882bb"
+        },
+        "title": "日本九州地区发生6.8级地震 海啸预警发布",
+        "subtitle": "新干线部分停运，多地居民紧急疏散",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "title": "导语",
+            "order": 1,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "一句话交代核心事件：日本九州地区发生6.8级地震，震源深度约30公里，气象厅发布海啸预警，预计可能出现1米高海啸。"
+          },
+          {
+            "section_id": "SEC-002",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "5个要点：1. 地震震级6.8级，震源深度30公里，震中宫崎县附近。2. 气象厅发布海啸预警，预计浪高1米。3. 九州新干线部分路段暂停运行。4. 鹿儿岛本线等普通铁路出现延误。5. 宫崎县、熊本县等地居民紧急疏散。"
+          },
+          {
+            "section_id": "SEC-003",
+            "title": "时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "3-5个时间节点：1. 地震发生时刻（待补充）。2. 气象厅发布海啸预警。3. 新干线暂停运行。4. 社交媒体报告震感。5. 居民疏散。"
+          },
+          {
+            "section_id": "SEC-004",
+            "title": "背景",
+            "order": 4,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "说明事件重要性：日本位于环太平洋地震带，地震频发。此次地震震级较高，且引发海啸预警，可能对九州地区交通和居民安全造成影响。气象厅呼吁民众远离海岸线。"
+          }
+        ],
+        "word_count_target": 450,
+        "word_count_range": {
+          "min": 300,
+          "max": 600
+        },
+        "references_plan": [
+          {
+            "id": "SRC-OFFICIAL-001",
+            "source_id": "SRC-OFFICIAL-001",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本九州地区发生6.8级地震，震源深度约30公里，震中位于宫崎县附近。日本气象厅发布海啸预警，预计可能出现1米高海啸。"
+          },
+          {
+            "id": "SRC-INDUSTRY_MEDIA-002",
+            "source_id": "SRC-INDUSTRY_MEDIA-002",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "九州新干线部分路段暂停运行，以进行安全检查和确认轨道状况。鹿儿岛本线等普通铁路也出现延误。"
+          },
+          {
+            "id": "SRC-SOCIAL_MEDIA-003",
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上大量用户报告震感强烈，宫崎县、熊本县等地有建筑物晃动，部分居民紧急疏散至避难所。"
+          },
+          {
+            "id": "SRC-NEWS-004",
+            "source_id": "SRC-NEWS-004",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本气象厅表示，此次地震可能引发九州沿岸地区海啸，呼吁民众远离海岸线，并关注后续预警信息。"
+          }
+        ],
+        "terminology_plan": [
+          "自然灾害",
+          "居民反应",
+          "九州新干线",
+          "宫崎县",
+          "安全提醒",
+          "震感",
+          "鹿儿岛本线",
+          "九州沿岸",
+          "日本",
+          "交通中断"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ],
+        "knowledge_graph": null,
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 4.1453492641448975,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "fail",
+      "artifact": {},
+      "error": "sequence item 0: expected str instance, dict found",
+      "duration_seconds": 0.0066068172454833984,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T09:30:04.631083+00:00",
+  "completed_at": "2026-07-30T09:30:14.452299+00:00",
+  "total_duration_seconds": 9.82118844985962
+}

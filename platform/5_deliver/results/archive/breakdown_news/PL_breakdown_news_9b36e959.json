@@ -1,0 +1,331 @@
+{
+  "pipeline_id": "PL_breakdown_news_9b36e959",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "日本九州6.8级地震",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-a6b80910",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:33:06.529363+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-8d89b941"
+        },
+        "signals": [
+          {
+            "text": "日本气象厅发布九州地区6.8级地震警报，震源深度约30公里，可能引发海啸",
+            "confidence": 0.85,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "地震震级6.8级",
+              "震源深度约30公里",
+              "可能引发海啸"
+            ],
+            "entities": [
+              "日本气象厅",
+              "九州地区"
+            ],
+            "topics": [
+              "地震",
+              "海啸预警"
+            ],
+            "signal_id": "SIG-001",
+            "published_at": "2026-07-30T09:33:06.529246+00:00"
+          },
+          {
+            "text": "九州电力公司确认川内核电站未出现异常，但已启动应急检查程序",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "川内核电站未出现异常",
+              "启动应急检查程序"
+            ],
+            "entities": [
+              "九州电力公司",
+              "川内核电站"
+            ],
+            "topics": [
+              "核安全",
+              "地震应急"
+            ],
+            "signal_id": "SIG-002",
+            "published_at": "2026-07-30T09:33:06.529250+00:00"
+          },
+          {
+            "text": "社交媒体上大量用户报告九州地区震感强烈，部分建筑物受损",
+            "confidence": 0.7,
+            "type": "breaking_signal",
+            "source_type": "social_media",
+            "key_claims": [
+              "震感强烈",
+              "部分建筑物受损"
+            ],
+            "entities": [
+              "九州地区"
+            ],
+            "topics": [
+              "地震影响",
+              "建筑物损坏"
+            ],
+            "signal_id": "SIG-003",
+            "published_at": "2026-07-30T09:33:06.529253+00:00"
+          },
+          {
+            "text": "日本政府设立紧急灾害对策本部，自卫队已待命准备救援",
+            "confidence": 0.8,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "设立紧急灾害对策本部",
+              "自卫队待命"
+            ],
+            "entities": [
+              "日本政府",
+              "自卫队"
+            ],
+            "topics": [
+              "政府响应",
+              "救援准备"
+            ],
+            "signal_id": "SIG-004",
+            "published_at": "2026-07-30T09:33:06.529255+00:00"
+          },
+          {
+            "text": "九州新干线及部分铁路线路暂停运行，进行安全检查",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "九州新干线暂停运行",
+              "进行安全检查"
+            ],
+            "entities": [
+              "九州新干线"
+            ],
+            "topics": [
+              "交通中断",
+              "地震影响"
+            ],
+            "signal_id": "SIG-005",
+            "published_at": "2026-07-30T09:33:06.529256+00:00"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-OFFICIAL-001",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本气象厅发布九州地区6.8级地震警报，震源深度约30公里，可能引发海啸"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-002",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "九州电力公司确认川内核电站未出现异常，但已启动应急检查程序"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上大量用户报告九州地区震感强烈，部分建筑物受损"
+          },
+          {
+            "source_id": "SRC-NEWS-004",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本政府设立紧急灾害对策本部，自卫队已待命准备救援"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-005",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "九州新干线及部分铁路线路暂停运行，进行安全检查"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 10,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "地震应急",
+          "核安全",
+          "建筑物损坏",
+          "地震影响",
+          "地震"
+        ],
+        "sla_deadline": "2026-07-30T09:48:06.529506+00:00",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 5.99850606918335,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-c674a724",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-a6b80910",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:33:10.608758+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-8d89b941"
+        },
+        "title": "日本九州发生6.8级地震 海啸预警发布",
+        "subtitle": "川内核电站未现异常 新干线暂停运行",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "title": "导语",
+            "order": 1,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "一句话交代核心事件：日本九州地区发生6.8级地震，震源深度30公里，可能引发海啸。"
+          },
+          {
+            "section_id": "SEC-002",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "5个要点：1. 日本气象厅发布6.8级地震警报，震源深度30公里。2. 九州电力确认川内核电站无异常，启动应急检查。3. 社交媒体报告震感强烈，部分建筑受损。4. 日本政府设立灾害对策本部，自卫队待命。5. 九州新干线及部分铁路暂停运行。"
+          },
+          {
+            "section_id": "SEC-003",
+            "title": "时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "3-5个时间节点：1. 地震发生时刻。2. 气象厅发布海啸预警。3. 电力公司启动检查。4. 政府设立对策本部。5. 铁路暂停运行。"
+          },
+          {
+            "section_id": "SEC-004",
+            "title": "背景",
+            "order": 4,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "说明事件重要性：九州地区是日本重要工业区，川内核电站是主要核设施，地震可能影响交通和能源供应。"
+          }
+        ],
+        "word_count_target": 450,
+        "word_count_range": {
+          "min": 300,
+          "max": 600
+        },
+        "references_plan": [
+          {
+            "id": "SRC-OFFICIAL-001",
+            "source_id": "SRC-OFFICIAL-001",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本气象厅发布九州地区6.8级地震警报，震源深度约30公里，可能引发海啸"
+          },
+          {
+            "id": "SRC-INDUSTRY_MEDIA-002",
+            "source_id": "SRC-INDUSTRY_MEDIA-002",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "九州电力公司确认川内核电站未出现异常，但已启动应急检查程序"
+          },
+          {
+            "id": "SRC-SOCIAL_MEDIA-003",
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上大量用户报告九州地区震感强烈，部分建筑物受损"
+          },
+          {
+            "id": "SRC-NEWS-004",
+            "source_id": "SRC-NEWS-004",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本政府设立紧急灾害对策本部，自卫队已待命准备救援"
+          },
+          {
+            "id": "SRC-INDUSTRY_MEDIA-005",
+            "source_id": "SRC-INDUSTRY_MEDIA-005",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "九州新干线及部分铁路线路暂停运行，进行安全检查"
+          }
+        ],
+        "terminology_plan": [
+          "日本气象厅",
+          "九州新干线",
+          "核安全",
+          "地震应急",
+          "建筑物损坏",
+          "救援准备",
+          "自卫队",
+          "地震影响",
+          "川内核电站",
+          "政府响应"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ],
+        "knowledge_graph": null,
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 4.079182863235474,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "fail",
+      "artifact": {},
+      "error": "sequence item 0: expected str instance, dict found",
+      "duration_seconds": 0.0068094730377197266,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T09:33:00.531046+00:00",
+  "completed_at": "2026-07-30T09:33:10.615634+00:00",
+  "total_duration_seconds": 10.084562301635742
+}

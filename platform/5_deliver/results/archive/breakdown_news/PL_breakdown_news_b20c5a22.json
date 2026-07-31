@@ -1,0 +1,28 @@
+{
+  "pipeline_id": "PL_breakdown_news_b20c5a22",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "Schema 验证测试",
+    "description": "",
+    "target_audience": "",
+    "channels": [],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "module '_spdt_llm_gateway' has no attribute 'LLMGateway'",
+      "duration_seconds": 0.00170135498046875,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T07:33:28.490028+00:00",
+  "completed_at": "2026-07-30T07:33:28.491747+00:00",
+  "total_duration_seconds": 0.0017082691192626953
+}

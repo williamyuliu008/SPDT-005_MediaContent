@@ -1,0 +1,28 @@
+{
+  "pipeline_id": "PL_breakdown_news_9aecd2d9",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "高分测试",
+    "description": "",
+    "target_audience": "",
+    "channels": [],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "No module named 'platform.shared'; 'platform' is not a package",
+      "duration_seconds": 0.002385377883911133,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T07:30:04.792591+00:00",
+  "completed_at": "2026-07-30T07:30:04.795015+00:00",
+  "total_duration_seconds": 0.002398252487182617
+}

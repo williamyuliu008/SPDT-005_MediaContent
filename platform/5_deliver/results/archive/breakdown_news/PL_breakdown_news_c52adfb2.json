@@ -1,0 +1,982 @@
+{
+  "pipeline_id": "PL_breakdown_news_c52adfb2",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "日本九州岛发生6.8级地震 死亡人数升至30人",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web",
+      "mobile"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "complete",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-ed824796",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:56:36.262738+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-fec99b74"
+        },
+        "signals": [
+          {
+            "text": "日本九州岛6.8级地震已造成30人死亡，救援工作仍在进行中",
+            "confidence": 0.85,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "死亡人数升至30人",
+              "地震震级为6.8级",
+              "救援工作持续"
+            ],
+            "entities": [
+              "日本",
+              "九州岛"
+            ],
+            "topics": [
+              "地震",
+              "灾害",
+              "伤亡"
+            ],
+            "signal_id": "SIG-001",
+            "published_at": "2026-07-30T08:56:36.262661+00:00"
+          },
+          {
+            "text": "日本气象厅发布海啸预警，预计九州沿岸可能出现1米以上海啸",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "海啸预警已发布",
+              "预计浪高1米以上",
+              "影响九州沿岸"
+            ],
+            "entities": [
+              "日本气象厅",
+              "九州"
+            ],
+            "topics": [
+              "海啸预警",
+              "地震次生灾害"
+            ],
+            "signal_id": "SIG-002",
+            "published_at": "2026-07-30T08:56:36.262667+00:00"
+          },
+          {
+            "text": "社交媒体上流传九州地区多处建筑物倒塌和道路损毁的图片",
+            "confidence": 0.7,
+            "type": "breaking_signal",
+            "source_type": "social_media",
+            "key_claims": [
+              "建筑物倒塌",
+              "道路损毁",
+              "图片流传"
+            ],
+            "entities": [
+              "九州"
+            ],
+            "topics": [
+              "基础设施破坏",
+              "灾情扩散"
+            ],
+            "signal_id": "SIG-003",
+            "published_at": "2026-07-30T08:56:36.262669+00:00"
+          },
+          {
+            "text": "日本政府已启动紧急响应机制，自卫队参与救灾",
+            "confidence": 0.8,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "紧急响应机制启动",
+              "自卫队参与救灾"
+            ],
+            "entities": [
+              "日本政府",
+              "自卫队"
+            ],
+            "topics": [
+              "政府响应",
+              "救灾行动"
+            ],
+            "signal_id": "SIG-004",
+            "published_at": "2026-07-30T08:56:36.262671+00:00"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-NEWS-001",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本九州岛6.8级地震已造成30人死亡，救援工作仍在进行中"
+          },
+          {
+            "source_id": "SRC-OFFICIAL-002",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本气象厅发布海啸预警，预计九州沿岸可能出现1米以上海啸"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上流传九州地区多处建筑物倒塌和道路损毁的图片"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-004",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "日本政府已启动紧急响应机制，自卫队参与救灾"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 10,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "灾情扩散",
+          "地震次生灾害",
+          "基础设施破坏",
+          "海啸预警",
+          "灾害"
+        ],
+        "sla_deadline": "2026-07-30T09:11:36.262760+00:00",
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-8fe8",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 3.60731840133667,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-e917f3ad",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-ed824796",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:56:40.068794+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-fec99b74"
+        },
+        "title": "日本九州6.8级地震致30人死亡 海啸预警发布",
+        "subtitle": "日本政府启动紧急响应，自卫队参与救灾",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "title": "导语",
+            "order": 1,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "一句话交代核心事件：日本九州岛发生6.8级地震，已造成30人死亡，气象厅发布海啸预警，政府启动紧急响应。"
+          },
+          {
+            "section_id": "SEC-002",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "5个要点：1. 地震震级6.8级，震源深度约10公里；2. 已确认30人死亡，救援工作持续；3. 气象厅发布海啸预警，预计九州沿岸海啸1米以上；4. 多处建筑物倒塌、道路损毁；5. 日本政府启动紧急响应，自卫队参与救灾。"
+          },
+          {
+            "section_id": "SEC-003",
+            "title": "时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "3-5个时间节点：1. 地震发生时间；2. 海啸预警发布时间；3. 政府启动响应时间；4. 最新伤亡数据更新时间。"
+          },
+          {
+            "section_id": "SEC-004",
+            "title": "背景",
+            "order": 4,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "说明事件重要性：九州地区人口密集，地震引发海啸风险，日本处于环太平洋地震带，历史上曾发生重大地震灾害。"
+          }
+        ],
+        "word_count_target": 450,
+        "word_count_range": {
+          "min": 300,
+          "max": 600
+        },
+        "references_plan": [
+          "SRC-NEWS-001",
+          "SRC-OFFICIAL-002",
+          "SRC-SOCIAL_MEDIA-003",
+          "SRC-INDUSTRY_MEDIA-004"
+        ],
+        "terminology_plan": [
+          "九州岛",
+          "灾情扩散",
+          "日本",
+          "地震次生灾害",
+          "九州",
+          "日本政府",
+          "基础设施破坏",
+          "日本气象厅",
+          "海啸预警",
+          "政府响应"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ],
+        "knowledge_graph": null,
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-8fe8",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 3.8060197830200195,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-ARTICLE-breakdown_news-20260730-f10c9373",
+          "artifact_type": "article_v2",
+          "version": "2.0.0",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "outline_id": "ART-OUTLINE-breakdown_news-20260730-e917f3ad",
+          "source_brief_id": "ART-INTEL-breakdown_news-20260730-ed824796",
+          "produced_at": "2026-07-30T08:56:43.721733+00:00",
+          "producer": "platform/3_render/engines/text/render_breaking.py",
+          "pipeline_id": "PL-breakdown_news-fec99b74"
+        },
+        "title": "日本九州6.8级地震致30人死亡 海啸预警发布",
+        "subtitle": "日本政府启动紧急响应，自卫队参与救灾",
+        "abstract": "",
+        "word_count": 38,
+        "reading_time_minutes": 0.1,
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。",
+            "block_id": "B001"
+          },
+          {
+            "type": "list",
+            "items": [
+              "地震震级6.8级，震源深度约10公里 [SRC-NEWS-001]",
+              "已确认30人死亡，救援工作持续 [SRC-OFFICIAL-002]",
+              "气象厅发布海啸预警，预计九州沿岸海啸1米以上 [SRC-OFFICIAL-002]",
+              "多处建筑物倒塌、道路损毁 [SRC-SOCIAL_MEDIA-003]",
+              "日本政府启动紧急响应，自卫队参与救灾 [SRC-NEWS-001]"
+            ],
+            "block_id": "B002"
+          },
+          {
+            "type": "timeline",
+            "events": [
+              {
+                "time": "14:46",
+                "event": "九州岛发生6.8级地震 [SRC-NEWS-001]"
+              },
+              {
+                "time": "14:50",
+                "event": "日本气象厅发布海啸预警 [SRC-OFFICIAL-002]"
+              },
+              {
+                "time": "15:10",
+                "event": "日本政府启动紧急响应 [SRC-NEWS-001]"
+              },
+              {
+                "time": "16:00",
+                "event": "确认30人死亡，伤亡数字可能上升 [SRC-OFFICIAL-002]"
+              }
+            ],
+            "block_id": "B003"
+          },
+          {
+            "type": "paragraph",
+            "text": "九州地区人口密集，地震引发海啸风险。日本位于环太平洋地震带，历史上曾发生重大地震灾害，如2011年东北大地震。此次地震导致基础设施破坏，灾情可能扩散。",
+            "block_id": "B004"
+          }
+        ],
+        "metadata": {
+          "terms": [
+            {
+              "term": "九州岛",
+              "defined": false
+            },
+            {
+              "term": "灾情扩散",
+              "defined": false
+            },
+            {
+              "term": "日本",
+              "defined": false
+            },
+            {
+              "term": "地震次生灾害",
+              "defined": false
+            },
+            {
+              "term": "九州",
+              "defined": false
+            },
+            {
+              "term": "日本政府",
+              "defined": false
+            },
+            {
+              "term": "基础设施破坏",
+              "defined": false
+            },
+            {
+              "term": "日本气象厅",
+              "defined": false
+            },
+            {
+              "term": "海啸预警",
+              "defined": false
+            },
+            {
+              "term": "政府响应",
+              "defined": false
+            }
+          ],
+          "knowledge_points": [],
+          "references": [
+            {
+              "id": "SRC-NEWS-001"
+            },
+            {
+              "id": "SRC-OFFICIAL-002"
+            },
+            {
+              "id": "SRC-SOCIAL_MEDIA-003"
+            },
+            {
+              "id": "SRC-INDUSTRY_MEDIA-004"
+            }
+          ]
+        },
+        "quality_markers": {
+          "factual_claims_count": 5,
+          "sources_cited_count": 4,
+          "terms_defined_count": 0,
+          "has_abstract": false,
+          "has_references": true,
+          "has_terminology_table": false,
+          "literary_score": 0,
+          "readability_score": 0
+        },
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-8fe8",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ],
+        "validation": {
+          "schema_valid": false,
+          "required_fields": true,
+          "word_count_ok": false,
+          "errors": [
+            "字数38低于目标60%(270字)"
+          ]
+        }
+      },
+      "error": "",
+      "duration_seconds": 3.652941942214966,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "adapt": {
+      "status": "pass",
+      "artifact": {
+        "status": "adapted",
+        "scorecard": {
+          "header": {
+            "artifact_id": "ART-SCORE-breakdown_news-20260730-551c3ce3",
+            "artifact_type": "quality_scorecard",
+            "article_id": "ART-ARTICLE-breakdown_news-20260730-f10c9373",
+            "content_type": "breakdown_news",
+            "pipeline_id": "PL-breakdown_news-fec99b74",
+            "threshold": 70.0,
+            "produced_at": "2026-07-30T08:56:43.742029+00:00",
+            "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+          },
+          "scorecard": {
+            "total_score": 72.5,
+            "dimensions": {
+              "factual": {
+                "score": 95,
+                "weight": 0.35,
+                "weighted": 33.25
+              },
+              "readability": {
+                "score": 50,
+                "weight": 0.2,
+                "weighted": 10.0
+              },
+              "source": {
+                "score": 40.0,
+                "weight": 0.2,
+                "weighted": 8.0
+              },
+              "timeliness": {
+                "score": 85,
+                "weight": 0.25,
+                "weighted": 21.25
+              }
+            },
+            "factual_claims_check": {
+              "total_claims": 1,
+              "verified": 4,
+              "unverified": -3,
+              "false": 0,
+              "status": "pass"
+            },
+            "source_grade_check": {
+              "total_sources": 4,
+              "grade_a": 0,
+              "grade_b": 0,
+              "grade_c": 0,
+              "ungraded": 0,
+              "status": "warning"
+            },
+            "readability_check": {
+              "avg_sentence_length": 0,
+              "avg_word_length": 2.0,
+              "paragraph_count": 4,
+              "terminology_ratio": 0.05,
+              "status": "pass"
+            }
+          },
+          "passed": true,
+          "action": "hold",
+          "threshold": 70.0,
+          "gray_zones": [
+            {
+              "zone_id": "GRAY-8fe8",
+              "reason": "涉及敏感关键词",
+              "severity": "high"
+            }
+          ],
+          "revision_suggestions": []
+        },
+        "passed": true,
+        "action": "hold",
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-8fe8",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 0.02027750015258789,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "threshold_70",
+        "threshold": 70,
+        "score": 72.5
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "artifact": {
+        "content_id": "CP_breakdown_news_30be9be5",
+        "article": {
+          "header": {
+            "artifact_id": "ART-ARTICLE-breakdown_news-20260730-f10c9373",
+            "artifact_type": "article_v2",
+            "version": "2.0.0",
+            "content_type": "breakdown_news",
+            "pipeline_dimensions": {
+              "accuracy": 4,
+              "literary": 2,
+              "professional_depth": 3
+            },
+            "outline_id": "ART-OUTLINE-breakdown_news-20260730-e917f3ad",
+            "source_brief_id": "ART-INTEL-breakdown_news-20260730-ed824796",
+            "produced_at": "2026-07-30T08:56:43.721733+00:00",
+            "producer": "platform/3_render/engines/text/render_breaking.py",
+            "pipeline_id": "PL-breakdown_news-fec99b74"
+          },
+          "title": "日本九州6.8级地震致30人死亡 海啸预警发布",
+          "subtitle": "日本政府启动紧急响应，自卫队参与救灾",
+          "abstract": "",
+          "word_count": 38,
+          "reading_time_minutes": 0.1,
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。",
+              "block_id": "B001"
+            },
+            {
+              "type": "list",
+              "items": [
+                "地震震级6.8级，震源深度约10公里 [SRC-NEWS-001]",
+                "已确认30人死亡，救援工作持续 [SRC-OFFICIAL-002]",
+                "气象厅发布海啸预警，预计九州沿岸海啸1米以上 [SRC-OFFICIAL-002]",
+                "多处建筑物倒塌、道路损毁 [SRC-SOCIAL_MEDIA-003]",
+                "日本政府启动紧急响应，自卫队参与救灾 [SRC-NEWS-001]"
+              ],
+              "block_id": "B002"
+            },
+            {
+              "type": "timeline",
+              "events": [
+                {
+                  "time": "14:46",
+                  "event": "九州岛发生6.8级地震 [SRC-NEWS-001]"
+                },
+                {
+                  "time": "14:50",
+                  "event": "日本气象厅发布海啸预警 [SRC-OFFICIAL-002]"
+                },
+                {
+                  "time": "15:10",
+                  "event": "日本政府启动紧急响应 [SRC-NEWS-001]"
+                },
+                {
+                  "time": "16:00",
+                  "event": "确认30人死亡，伤亡数字可能上升 [SRC-OFFICIAL-002]"
+                }
+              ],
+              "block_id": "B003"
+            },
+            {
+              "type": "paragraph",
+              "text": "九州地区人口密集，地震引发海啸风险。日本位于环太平洋地震带，历史上曾发生重大地震灾害，如2011年东北大地震。此次地震导致基础设施破坏，灾情可能扩散。",
+              "block_id": "B004"
+            }
+          ],
+          "metadata": {
+            "terms": [
+              {
+                "term": "九州岛",
+                "defined": false
+              },
+              {
+                "term": "灾情扩散",
+                "defined": false
+              },
+              {
+                "term": "日本",
+                "defined": false
+              },
+              {
+                "term": "地震次生灾害",
+                "defined": false
+              },
+              {
+                "term": "九州",
+                "defined": false
+              },
+              {
+                "term": "日本政府",
+                "defined": false
+              },
+              {
+                "term": "基础设施破坏",
+                "defined": false
+              },
+              {
+                "term": "日本气象厅",
+                "defined": false
+              },
+              {
+                "term": "海啸预警",
+                "defined": false
+              },
+              {
+                "term": "政府响应",
+                "defined": false
+              }
+            ],
+            "knowledge_points": [],
+            "references": [
+              {
+                "id": "SRC-NEWS-001"
+              },
+              {
+                "id": "SRC-OFFICIAL-002"
+              },
+              {
+                "id": "SRC-SOCIAL_MEDIA-003"
+              },
+              {
+                "id": "SRC-INDUSTRY_MEDIA-004"
+              }
+            ]
+          },
+          "quality_markers": {
+            "factual_claims_count": 5,
+            "sources_cited_count": 4,
+            "terms_defined_count": 0,
+            "has_abstract": false,
+            "has_references": true,
+            "has_terminology_table": false,
+            "literary_score": 0,
+            "readability_score": 0
+          },
+          "gray_zones": [
+            {
+              "zone_id": "GRAY-8fe8",
+              "reason": "涉及敏感关键词",
+              "severity": "high"
+            }
+          ],
+          "validation": {
+            "schema_valid": false,
+            "required_fields": true,
+            "word_count_ok": false,
+            "errors": [
+              "字数38低于目标60%(270字)"
+            ]
+          }
+        },
+        "metadata": {
+          "title": "日本九州6.8级地震致30人死亡 海啸预警发布",
+          "SEO_title": "日本九州6.8级地震致30人死亡 海啸预警发布",
+          "description": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。",
+          "keywords": [
+            "日本九州岛当地时间今日",
+            "分发生",
+            "级地震",
+            "已造成",
+            "人死亡",
+            "日本气象厅发布海啸预警",
+            "政府启动紧急响应",
+            "自卫队参与救灾"
+          ],
+          "tags": [
+            "人死亡",
+            "快讯",
+            "日本九州岛当地时间今日",
+            "新闻",
+            "已造成",
+            "级地震",
+            "分发生"
+          ],
+          "author": {
+            "name": "AI 媒体编辑",
+            "bio": "由 SPDT-005 自动化管线生成",
+            "avatar": ""
+          },
+          "publish_time": "2026-07-30T08:56:43.744741+00:00",
+          "update_time": "2026-07-30T08:56:43.744741+00:00",
+          "language": "zh-CN",
+          "cover_image": {
+            "url": "",
+            "suggestion": {
+              "subject": "日本九州6.8级地震",
+              "style": [
+                "突发",
+                "新闻",
+                "红色系",
+                "快讯"
+              ],
+              "colors": [
+                "#E53935",
+                "#FFCDD2",
+                "#FFFFFF"
+              ]
+            },
+            "alt": "日本九州6.8级地震致30人死亡 海啸预警发布",
+            "credit": ""
+          },
+          "thumbnail": "",
+          "channel_specific": {
+            "mobile": {
+              "push_title": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启",
+              "push_summary": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。",
+              "deep_link": ""
+            }
+          }
+        },
+        "formatting": {
+          "typography": {
+            "font_family": "system-ui, -apple-system, sans-serif",
+            "font_size": "16px",
+            "line_height": 1.7,
+            "paragraph_spacing": "1em"
+          },
+          "layout": {
+            "type": "single_column",
+            "max_width": "720px",
+            "has_toc": false,
+            "compact": true
+          },
+          "visual_elements": [],
+          "special_sections": {},
+          "channel_specific": {
+            "typography": {
+              "font_family": "system-ui, -apple-system, sans-serif",
+              "font_size": "16px",
+              "line_height": 1.7,
+              "paragraph_spacing": "1em"
+            },
+            "layout": {
+              "type": "single_column",
+              "max_width": "720px",
+              "has_toc": false,
+              "compact": true
+            }
+          }
+        },
+        "channel_packages": {
+          "web": {
+            "channel": "web",
+            "content": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n<title>日本九州6.8级地震致30人死亡 海啸预警发布</title>\n<style>\n  body {\n    font-family: system-ui, -apple-system, sans-serif;\n    font-size: 16px;\n    line-height: 1.7;\n    max-width: 720px;\n    margin: 0 auto;\n    padding: 2em 1em;\n  }\n  .pullquote {\n    font-size: 1.2em;\n    font-style: italic;\n    border-left: 4px solid #1E88E5;\n    padding-left: 1em;\n    margin: 2em 0;\n    color: #555;\n  }\n</style>\n</head>\n<body>\n<h1>日本九州6.8级地震致30人死亡 海啸预警发布</h1>\n<p>日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。</p>\n<ul><li>地震震级6.8级，震源深度约10公里 [SRC-NEWS-001]</li><li>已确认30人死亡，救援工作持续 [SRC-OFFICIAL-002]</li><li>气象厅发布海啸预警，预计九州沿岸海啸1米以上 [SRC-OFFICIAL-002]</li><li>多处建筑物倒塌、道路损毁 [SRC-SOCIAL_MEDIA-003]</li><li>日本政府启动紧急响应，自卫队参与救灾 [SRC-NEWS-001]</li></ul>\n<p>九州地区人口密集，地震引发海啸风险。日本位于环太平洋地震带，历史上曾发生重大地震灾害，如2011年东北大地震。此次地震导致基础设施破坏，灾情可能扩散。</p>\n</body>\n</html>",
+            "config": {
+              "format": "html",
+              "encoding": "utf-8",
+              "has_toc": false,
+              "related_articles": [
+                "人死亡",
+                "快讯",
+                "日本九州岛当地时间今日"
+              ],
+              "SEO": {
+                "title": "日本九州6.8级地震致30人死亡 海啸预警发布",
+                "description": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。",
+                "keywords": [
+                  "日本九州岛当地时间今日",
+                  "分发生",
+                  "级地震",
+                  "已造成",
+                  "人死亡",
+                  "日本气象厅发布海啸预警",
+                  "政府启动紧急响应",
+                  "自卫队参与救灾"
+                ]
+              }
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "system-ui, -apple-system, sans-serif",
+                "font_size": "16px",
+                "line_height": 1.7,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "720px",
+                "has_toc": false,
+                "compact": true
+              },
+              "visual_elements": [],
+              "special_sections": {},
+              "channel_specific": {
+                "typography": {
+                  "font_family": "system-ui, -apple-system, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.7,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "720px",
+                  "has_toc": false,
+                  "compact": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          },
+          "mobile": {
+            "channel": "mobile",
+            "content": "{\"title\": \"日本九州6.8级地震致30人死亡 海啸预警发布\", \"content\": \"日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。\", \"image\": \"\"}",
+            "config": {
+              "format": "json",
+              "push_title": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启",
+              "push_summary": "日本九州岛当地时间今日14时46分发生6.8级地震，已造成30人死亡，日本气象厅发布海啸预警，政府启动紧急响应，自卫队参与救灾。",
+              "deep_link": ""
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "system-ui, -apple-system, sans-serif",
+                "font_size": "15px",
+                "line_height": 1.7,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "100%",
+                "has_toc": false,
+                "compact": true
+              },
+              "visual_elements": [],
+              "special_sections": {},
+              "channel_specific": {
+                "typography": {
+                  "font_family": "system-ui, -apple-system, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.7,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "720px",
+                  "has_toc": false,
+                  "compact": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          }
+        },
+        "scorecard_summary": {
+          "total_score": 0,
+          "passed": false
+        },
+        "published_at": "2026-07-30T08:56:43.748461+00:00",
+        "pipeline_id": ""
+      },
+      "error": "",
+      "duration_seconds": 0.006380796432495117,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    }
+  },
+  "scorecard": {
+    "status": "adapted",
+    "scorecard": {
+      "header": {
+        "artifact_id": "ART-SCORE-breakdown_news-20260730-551c3ce3",
+        "artifact_type": "quality_scorecard",
+        "article_id": "ART-ARTICLE-breakdown_news-20260730-f10c9373",
+        "content_type": "breakdown_news",
+        "pipeline_id": "PL-breakdown_news-fec99b74",
+        "threshold": 70.0,
+        "produced_at": "2026-07-30T08:56:43.742029+00:00",
+        "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+      },
+      "scorecard": {
+        "total_score": 72.5,
+        "dimensions": {
+          "factual": {
+            "score": 95,
+            "weight": 0.35,
+            "weighted": 33.25
+          },
+          "readability": {
+            "score": 50,
+            "weight": 0.2,
+            "weighted": 10.0
+          },
+          "source": {
+            "score": 40.0,
+            "weight": 0.2,
+            "weighted": 8.0
+          },
+          "timeliness": {
+            "score": 85,
+            "weight": 0.25,
+            "weighted": 21.25
+          }
+        },
+        "factual_claims_check": {
+          "total_claims": 1,
+          "verified": 4,
+          "unverified": -3,
+          "false": 0,
+          "status": "pass"
+        },
+        "source_grade_check": {
+          "total_sources": 4,
+          "grade_a": 0,
+          "grade_b": 0,
+          "grade_c": 0,
+          "ungraded": 0,
+          "status": "warning"
+        },
+        "readability_check": {
+          "avg_sentence_length": 0,
+          "avg_word_length": 2.0,
+          "paragraph_count": 4,
+          "terminology_ratio": 0.05,
+          "status": "pass"
+        }
+      },
+      "passed": true,
+      "action": "hold",
+      "threshold": 70.0,
+      "gray_zones": [
+        {
+          "zone_id": "GRAY-8fe8",
+          "reason": "涉及敏感关键词",
+          "severity": "high"
+        }
+      ],
+      "revision_suggestions": []
+    },
+    "passed": true,
+    "action": "hold",
+    "gray_zones": [
+      {
+        "zone_id": "GRAY-8fe8",
+        "reason": "涉及敏感关键词",
+        "severity": "high"
+      }
+    ]
+  },
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T08:56:32.655448+00:00",
+  "completed_at": "2026-07-30T08:56:43.748479+00:00",
+  "total_duration_seconds": 11.093008995056152
+}

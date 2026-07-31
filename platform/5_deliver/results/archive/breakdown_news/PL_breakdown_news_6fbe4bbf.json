@@ -1,0 +1,28 @@
+{
+  "pipeline_id": "PL_breakdown_news_6fbe4bbf",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "Schema 验证测试",
+    "description": "",
+    "target_audience": "",
+    "channels": [],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "No module named 'platform.shared'; 'platform' is not a package",
+      "duration_seconds": 0.002327442169189453,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T07:30:04.691846+00:00",
+  "completed_at": "2026-07-30T07:30:04.694217+00:00",
+  "total_duration_seconds": 0.0023415088653564453
+}

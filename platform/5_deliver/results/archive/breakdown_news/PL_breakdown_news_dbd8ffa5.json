@@ -1,0 +1,343 @@
+{
+  "pipeline_id": "PL_breakdown_news_dbd8ffa5",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "日本九州岛发生6.8级地震 死亡人数升至30人",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web",
+      "feishu"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-bdc89da9",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:27:22.993680+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-d39e9117"
+        },
+        "signals": [
+          {
+            "text": "日本九州岛发生6.8级地震，死亡人数已升至30人，震中附近房屋倒塌严重，救援工作正在进行。",
+            "confidence": 0.85,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "死亡人数升至30人",
+              "房屋倒塌严重",
+              "救援工作进行中"
+            ],
+            "entities": [
+              "日本九州岛",
+              "6.8级地震"
+            ],
+            "topics": [
+              "地震灾害",
+              "人员伤亡",
+              "救援行动"
+            ],
+            "signal_id": "SIG-001",
+            "published_at": "2026-07-30T09:27:22.993556+00:00"
+          },
+          {
+            "text": "日本气象厅发布海啸预警，预计九州岛沿岸可能出现1-2米海啸，呼吁居民立即撤离。",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "海啸预警发布",
+              "预计浪高1-2米",
+              "呼吁撤离"
+            ],
+            "entities": [
+              "日本气象厅",
+              "九州岛沿岸"
+            ],
+            "topics": [
+              "海啸预警",
+              "防灾避险"
+            ],
+            "signal_id": "SIG-002",
+            "published_at": "2026-07-30T09:27:22.993563+00:00"
+          },
+          {
+            "text": "社交媒体上流传视频显示，九州岛部分地区出现地面裂缝和道路损毁，交通中断。",
+            "confidence": 0.7,
+            "type": "breaking_signal",
+            "source_type": "social_media",
+            "key_claims": [
+              "地面裂缝",
+              "道路损毁",
+              "交通中断"
+            ],
+            "entities": [
+              "九州岛"
+            ],
+            "topics": [
+              "基础设施破坏",
+              "交通影响"
+            ],
+            "signal_id": "SIG-003",
+            "published_at": "2026-07-30T09:27:22.993566+00:00"
+          },
+          {
+            "text": "日本政府宣布已派遣自卫队前往灾区参与救援，并开放避难所安置灾民。",
+            "confidence": 0.8,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "自卫队派遣",
+              "开放避难所"
+            ],
+            "entities": [
+              "日本政府",
+              "自卫队"
+            ],
+            "topics": [
+              "政府响应",
+              "灾民安置"
+            ],
+            "signal_id": "SIG-004",
+            "published_at": "2026-07-30T09:27:22.993572+00:00"
+          },
+          {
+            "text": "据行业媒体分析，此次地震可能对九州地区的半导体工厂造成影响，部分生产线已暂停。",
+            "confidence": 0.65,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "半导体工厂受影响",
+              "部分生产线暂停"
+            ],
+            "entities": [
+              "九州地区",
+              "半导体工厂"
+            ],
+            "topics": [
+              "产业影响",
+              "供应链"
+            ],
+            "signal_id": "SIG-005",
+            "published_at": "2026-07-30T09:27:22.993574+00:00"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-NEWS-001",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本九州岛发生6.8级地震，死亡人数已升至30人，震中附近房屋倒塌严重，救援工作正在进行。"
+          },
+          {
+            "source_id": "SRC-OFFICIAL-002",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本气象厅发布海啸预警，预计九州岛沿岸可能出现1-2米海啸，呼吁居民立即撤离。"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上流传视频显示，九州岛部分地区出现地面裂缝和道路损毁，交通中断。"
+          },
+          {
+            "source_id": "SRC-OFFICIAL-004",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本政府宣布已派遣自卫队前往灾区参与救援，并开放避难所安置灾民。"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-005",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "据行业媒体分析，此次地震可能对九州地区的半导体工厂造成影响，部分生产线已暂停。"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 10,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "基础设施破坏",
+          "人员伤亡",
+          "防灾避险",
+          "地震灾害",
+          "交通影响"
+        ],
+        "sla_deadline": "2026-07-30T09:42:22.993819+00:00",
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-7ebc",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 5.629594564437866,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-7c6a5f42",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-bdc89da9",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T09:27:26.917154+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-d39e9117"
+        },
+        "title": "日本九州岛6.8级地震致30死 海啸预警已发布",
+        "subtitle": "政府派遣自卫队救援，部分半导体工厂停产",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "title": "导语",
+            "order": 1,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "一句话交代核心事件：日本九州岛发生6.8级地震，已造成30人死亡，气象厅发布海啸预警，政府启动救援。"
+          },
+          {
+            "section_id": "SEC-002",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "5个要点：1. 地震震级6.8级，死亡30人。2. 海啸预警，预计浪高1-2米。3. 房屋倒塌严重，地面裂缝。4. 自卫队已派遣，避难所开放。5. 部分半导体工厂停产。"
+          },
+          {
+            "section_id": "SEC-003",
+            "title": "时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "3-5个时间节点：地震发生、海啸预警发布、死亡人数更新、自卫队派遣、工厂停产。"
+          },
+          {
+            "section_id": "SEC-004",
+            "title": "背景",
+            "order": 4,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "说明事件重要性：九州是日本半导体产业重镇，地震可能影响全球供应链；海啸威胁沿岸居民安全。"
+          }
+        ],
+        "word_count_target": 450,
+        "word_count_range": {
+          "min": 300,
+          "max": 600
+        },
+        "references_plan": [
+          {
+            "source_id": "SRC-NEWS-001",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "日本九州岛发生6.8级地震，死亡人数已升至30人，震中附近房屋倒塌严重，救援工作正在进行。"
+          },
+          {
+            "source_id": "SRC-OFFICIAL-002",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本气象厅发布海啸预警，预计九州岛沿岸可能出现1-2米海啸，呼吁居民立即撤离。"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-003",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上流传视频显示，九州岛部分地区出现地面裂缝和道路损毁，交通中断。"
+          },
+          {
+            "source_id": "SRC-OFFICIAL-004",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "日本政府宣布已派遣自卫队前往灾区参与救援，并开放避难所安置灾民。"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-005",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "据行业媒体分析，此次地震可能对九州地区的半导体工厂造成影响，部分生产线已暂停。"
+          }
+        ],
+        "terminology_plan": [
+          "九州岛",
+          "日本九州岛",
+          "海啸预警",
+          "救援行动",
+          "日本政府",
+          "供应链",
+          "人员伤亡",
+          "防灾避险",
+          "地震灾害",
+          "产业影响"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ],
+        "knowledge_graph": null,
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-7ebc",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 3.923276424407959,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "fail",
+      "artifact": {},
+      "error": "sequence item 0: expected str instance, dict found",
+      "duration_seconds": 0.007175922393798828,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T09:27:17.364250+00:00",
+  "completed_at": "2026-07-30T09:27:26.924384+00:00",
+  "total_duration_seconds": 9.560104608535767
+}

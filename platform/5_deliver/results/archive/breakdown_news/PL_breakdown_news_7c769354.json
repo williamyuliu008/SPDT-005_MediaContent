@@ -1,0 +1,30 @@
+{
+  "pipeline_id": "PL_breakdown_news_7c769354",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "Test",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "'gbk' codec can't encode character '\\u26a0' in position 13: illegal multibyte sequence",
+      "duration_seconds": 0.019332408905029297,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T07:53:46.610580+00:00",
+  "completed_at": "2026-07-30T07:53:46.629952+00:00",
+  "total_duration_seconds": 0.019347429275512695
+}

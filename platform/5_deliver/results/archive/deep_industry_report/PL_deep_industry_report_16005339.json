@@ -1,0 +1,920 @@
+{
+  "pipeline_id": "PL_deep_industry_report_16005339",
+  "content_spec": {
+    "content_type": "deep_industry_report",
+    "title": "2026年中国新能源汽车行业深度分析",
+    "description": "",
+    "target_audience": "",
+    "channels": [],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "深度行业报告",
+  "status": "complete",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "brief_id": "BRIEF-deep_industry-20260730-54ab6251",
+        "content_type": "deep_industry_report",
+        "topic": "2026年中国新能源汽车行业深度分析",
+        "industry": "目标行业",
+        "scope_years": 3,
+        "signals": [
+          {
+            "signal_id": "sig-3990efcf",
+            "text": "行业规模持续扩大，目标行业头部企业营收增速超过20%，市场集中度进一步提升。",
+            "source_id": "bloomberg-ind",
+            "source_name": "Bloomberg Industry Intelligence",
+            "importance": "high",
+            "key_data": "营收增速>20%，市场集中度CR3>45%"
+          },
+          {
+            "signal_id": "sig-dbde4dfb",
+            "text": "技术迭代加速，2026年中国新能源汽车行业深度分析领域出现新的技术路线之争，龙头企业加速产能扩张。",
+            "source_id": "gov-whitepaper",
+            "source_name": "36氪",
+            "importance": "high",
+            "key_data": "新产能投资>500亿元，在建产能同比+35%"
+          },
+          {
+            "signal_id": "sig-b5109c7e",
+            "text": "政策支持力度加大，国产替代成为重要主线，供应链本土化率持续提升。",
+            "source_id": "36kr",
+            "source_name": "财新",
+            "importance": "medium",
+            "key_data": "国产化率目标>70%，政策补贴规模>100亿元"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "bloomberg-ind",
+            "name": "Bloomberg Industry Intelligence",
+            "source_type": "research_report",
+            "grade": "A",
+            "url": "https://www.bloomberg.com/industry",
+            "key_data": "行业营收、增长率、市场份额数据",
+            "summary": "全球行业情报数据库，提供企业财务和行业趋势数据"
+          },
+          {
+            "source_id": "gov-whitepaper",
+            "name": "政府白皮书/行业规划",
+            "source_type": "policy_doc",
+            "grade": "A",
+            "url": "",
+            "key_data": "政策目标、规划指标、扶持力度",
+            "summary": "政府主管部门发布的行业白皮书和发展规划"
+          },
+          {
+            "source_id": "36kr",
+            "name": "36氪",
+            "source_type": "industry_media",
+            "grade": "B",
+            "url": "https://36kr.com",
+            "key_data": "行业动态、创业公司、融资事件",
+            "summary": "中国科技创业媒体，覆盖TMT、新能源、半导体等领域"
+          }
+        ],
+        "metadata": {
+          "collected_at": "2026-07-30T14:16:43.355845+00:00",
+          "source_count": 3,
+          "signal_count": 3,
+          "producer": "platform/1_ingest/radar/radar_deep_industry.py",
+          "mock_mode": true
+        }
+      },
+      "error": "",
+      "duration_seconds": 0.00584721565246582,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "structure_type": "deep_industry_report",
+        "sections": [
+          {
+            "section_id": "sec_abstract",
+            "heading": "摘要",
+            "type": "abstract",
+            "description": "核心观点（3-5条）+ 关键数据，让读者快速了解报告结论",
+            "knowledge_nodes": [
+              "2026年中国新能源汽车行业深度分析市场正在快速增长",
+              "目标行业呈现结构性机会",
+              "头部企业加速扩张，国产替代为主线"
+            ]
+          },
+          {
+            "section_id": "sec_background",
+            "heading": "行业背景",
+            "type": "background",
+            "description": "行业定义与边界、市场规模（GVM/增速）、政策环境、产业链全景",
+            "knowledge_nodes": [
+              "目标行业的市场规模和增速",
+              "产业链上中下游的核心环节",
+              "当前政策环境和支持力度"
+            ]
+          },
+          {
+            "section_id": "sec_findings",
+            "heading": "核心发现",
+            "type": "findings",
+            "description": "3-5个数据驱动的重要发现，每个发现含数据来源",
+            "knowledge_nodes": [
+              "2026年中国新能源汽车行业深度分析领域的3-5个关键数据",
+              "市场集中度和竞争格局变化",
+              "技术路线和商业模式创新"
+            ]
+          },
+          {
+            "section_id": "sec_analysis",
+            "heading": "深度分析",
+            "type": "analysis",
+            "description": "竞争格局、驱动因素（技术/需求/政策）、主要风险因素",
+            "knowledge_nodes": [
+              "竞争格局：主要玩家及其市场份额",
+              "驱动因素：技术/需求/政策三维度",
+              "主要风险：技术路线不确定性/政策变化/供应链风险"
+            ]
+          },
+          {
+            "section_id": "sec_trends",
+            "heading": "趋势预判",
+            "type": "trends",
+            "description": "未来3-5年行业走向，关键变量与不确定性",
+            "knowledge_nodes": [
+              "未来3-5年的市场走向",
+              "关键变量的情景分析",
+              "可能的颠覆性因素"
+            ]
+          },
+          {
+            "section_id": "sec_conclusion",
+            "heading": "结论与建议",
+            "type": "conclusion",
+            "description": "对不同读者群体（企业/投资者/从业者）的具体行动建议",
+            "knowledge_nodes": [
+              "对企业的战略建议：聚焦/扩张/转型",
+              "对投资者的建议：关注指标和风险点",
+              "对从业者的建议：技能储备和职业路径"
+            ]
+          }
+        ],
+        "references_plan": [
+          {
+            "source_id": "bloomberg-ind",
+            "name": "Bloomberg Industry Intelligence",
+            "source_type": "research_report",
+            "grade": "A",
+            "url": "https://www.bloomberg.com/industry",
+            "key_data": "行业营收、增长率、市场份额数据",
+            "summary": "全球行业情报数据库，提供企业财务和行业趋势数据"
+          },
+          {
+            "source_id": "gov-whitepaper",
+            "name": "政府白皮书/行业规划",
+            "source_type": "policy_doc",
+            "grade": "A",
+            "url": "",
+            "key_data": "政策目标、规划指标、扶持力度",
+            "summary": "政府主管部门发布的行业白皮书和发展规划"
+          },
+          {
+            "source_id": "36kr",
+            "name": "36氪",
+            "source_type": "industry_media",
+            "grade": "B",
+            "url": "https://36kr.com",
+            "key_data": "行业动态、创业公司、融资事件",
+            "summary": "中国科技创业媒体，覆盖TMT、新能源、半导体等领域"
+          }
+        ],
+        "status": "structured",
+        "content_spec": {
+          "content_type": "deep_industry_report",
+          "topic": "2026年中国新能源汽车行业深度分析",
+          "industry": "目标行业"
+        },
+        "knowledge_points": [
+          "2026年中国新能源汽车行业深度分析市场正在快速增长",
+          "目标行业呈现结构性机会",
+          "头部企业加速扩张，国产替代为主线",
+          "目标行业的市场规模和增速",
+          "产业链上中下游的核心环节",
+          "当前政策环境和支持力度",
+          "2026年中国新能源汽车行业深度分析领域的3-5个关键数据",
+          "市场集中度和竞争格局变化",
+          "技术路线和商业模式创新",
+          "竞争格局：主要玩家及其市场份额",
+          "驱动因素：技术/需求/政策三维度",
+          "主要风险：技术路线不确定性/政策变化/供应链风险",
+          "未来3-5年的市场走向",
+          "关键变量的情景分析",
+          "可能的颠覆性因素",
+          "对企业的战略建议：聚焦/扩张/转型",
+          "对投资者的建议：关注指标和风险点",
+          "对从业者的建议：技能储备和职业路径"
+        ]
+      },
+      "error": "",
+      "duration_seconds": 0.002887248992919922,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-ARTICLE-deep_industry-20260730-fc7b3a2f",
+          "artifact_type": "article_v2",
+          "content_type": "deep_industry_report",
+          "produced_at": "2026-07-30T14:16:43.363057+00:00",
+          "producer": "platform/3_render/engines/text/render_deep_industry.py"
+        },
+        "title": "2026年中国新能源汽车行业深度分析",
+        "industry": "目标行业",
+        "blocks": [
+          {
+            "type": "heading1",
+            "content": {
+              "text": "2026年中国新能源汽车行业深度分析"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "摘要"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "本报告对目标行业2026年中国新能源汽车行业深度分析进行了深度分析，主要发现如下：【A级来源】显示，市场规模持续扩大，头部企业增速超过20%；技术迭代加速，新产能投资规模超过500亿元；政策支持力度加大，国产化率目标超过70%。基于以上分析，我们对行业未来3-5年的发展趋势持审慎乐观态度。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "行业背景"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "目标行业是指2026年中国新能源汽车行业深度分析所涉及的核心领域。【A级来源】数据表明，该行业市场规模已超过万亿元量级，近三年复合增长率保持在15%以上。从政策环境看，十四五规划将其列为重点发展方向，各级政府相继出台了配套支持政策。产业链方面，上游核心材料、中游制造设备、下游应用场景均已形成一定规模。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "核心发现"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "本报告通过多源数据分析，得出以下核心发现：\n\n**发现一：市场规模快速增长**。【A级来源】数据显示，2026年中国新能源汽车行业深度分析领域的3-5个关键数据，市场集中度持续提升，CR3超过45%。\n\n**发现二：产能扩张加速**。【A级来源】报道，市场集中度和竞争格局变化，投资规模超过500亿元，显示企业对中长期市场前景的信心。\n\n**发现三：技术迭代驱动格局重塑**。【A级来源】指出，技术路线和商业模式创新，技术领先企业的市场份额有望进一步扩大。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "深度分析"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "从竞争格局看，目标行业呈现'头部集中、中游分化'的格局。【A级来源】数据显示，前三大企业合计市场份额超过50%。\n\n**驱动因素**：技术进步（工艺升级、良率提升）、需求扩张（下游应用场景丰富）、政策支持（国产替代加速）是三大核心驱动力。\n\n**主要风险**：技术路线不确定性（新技术可能颠覆现有格局）、政策变化风险（补贴退坡或贸易摩擦）、供应链瓶颈（关键材料依赖进口）是需要重点关注的风险因素。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "趋势预判"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "展望未来3-5年，目标行业有望呈现以下趋势：\n\n**趋势一：市场规模持续扩大**，【A级来源】预测年复合增长率有望保持在10-15%。\n\n**趋势二：国产化率显著提升**，在政策推动下，核心环节本土化率有望从当前的不足50%提升至70%以上。\n\n**趋势三：竞争格局进一步分化**，技术领先的头部企业与差异化定位的中型企业将形成新的竞争平衡。\n\n**关键不确定性**：全球宏观经济走势、中美科技博弈走向、新技术商业化节奏。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "结论与建议"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "**对企业的建议**：聚焦核心能力建设，在技术迭代窗口期加速产能布局，同时建立供应链多元化策略以应对潜在风险。\n\n**对投资者的建议**：关注具备技术壁垒和产能规模优势的行业龙头，同时重视政策变化和技术路线不确定性带来的风险。\n\n**对从业者的建议**：加强跨学科知识储备，重点关注行业前沿技术动态，提升在新技术场景下的专业能力。"
+            }
+          },
+          {
+            "type": "heading2",
+            "content": {
+              "text": "参考来源"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【A级/research_report】Bloomberg Industry Intelligence"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【A级/policy_doc】政府白皮书/行业规划"
+            }
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "【B级/industry_media】36氪"
+            }
+          }
+        ],
+        "word_count": 1239,
+        "metadata": {
+          "literary": 3,
+          "professional_depth": 5,
+          "has_abstract": true,
+          "has_references": true,
+          "references_count": 3,
+          "data_points_count": 3,
+          "citation_check_passed": true
+        }
+      },
+      "error": "",
+      "duration_seconds": 0.004227876663208008,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "adapt": {
+      "status": "pass",
+      "artifact": {
+        "status": "adapted",
+        "scorecard": {
+          "header": {
+            "artifact_id": "ART-SCORE-deep_industry-20260730-cd1fc769",
+            "artifact_type": "quality_scorecard",
+            "content_type": "deep_industry_report",
+            "scored_at": "2026-07-30T14:16:43.367204+00:00",
+            "producer": "platform/4_adapt/scorecard/scorecard_deep_industry.py",
+            "mock_mode": true
+          },
+          "scorecard": {
+            "total_score": 89.2,
+            "dimensions": {
+              "factual": {
+                "score": 100,
+                "weight": 0.3
+              },
+              "source": {
+                "score": 85,
+                "weight": 0.25
+              },
+              "depth": {
+                "score": 100,
+                "weight": 0.2
+              },
+              "readability": {
+                "score": 70,
+                "weight": 0.15
+              },
+              "timeliness": {
+                "score": 75,
+                "weight": 0.1
+              }
+            },
+            "factual_claims_check": {
+              "absolute_statements": [],
+              "citations_found": true,
+              "data_claims_count": 11
+            },
+            "source_grade_check": {
+              "total_sources": 3,
+              "grade_a_ratio": 0.5
+            },
+            "depth_check": {
+              "has_competitive_analysis": true,
+              "has_risk_factors": true,
+              "has_trend_forecast": true
+            },
+            "weights": {
+              "factual": 0.3,
+              "source": 0.25,
+              "depth": 0.2,
+              "readability": 0.15,
+              "timeliness": 0.1
+            },
+            "threshold": 70.0
+          },
+          "passed": true,
+          "action": "deliver",
+          "gray_zones": [],
+          "revision_suggestions": [
+            "报告质量良好，可直接发布"
+          ]
+        },
+        "passed": true,
+        "action": "deliver",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 0.004178285598754883,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "threshold_85",
+        "threshold": 85,
+        "score": 89.2
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "artifact": {
+        "content_id": "CP_deep_industry_report_74398b55",
+        "article": {
+          "header": {
+            "artifact_id": "ART-ARTICLE-deep_industry-20260730-fc7b3a2f",
+            "artifact_type": "article_v2",
+            "content_type": "deep_industry_report",
+            "produced_at": "2026-07-30T14:16:43.363057+00:00",
+            "producer": "platform/3_render/engines/text/render_deep_industry.py"
+          },
+          "title": "2026年中国新能源汽车行业深度分析",
+          "industry": "目标行业",
+          "blocks": [
+            {
+              "type": "heading1",
+              "content": {
+                "text": "2026年中国新能源汽车行业深度分析"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "摘要"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "本报告对目标行业2026年中国新能源汽车行业深度分析进行了深度分析，主要发现如下：【A级来源】显示，市场规模持续扩大，头部企业增速超过20%；技术迭代加速，新产能投资规模超过500亿元；政策支持力度加大，国产化率目标超过70%。基于以上分析，我们对行业未来3-5年的发展趋势持审慎乐观态度。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "行业背景"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "目标行业是指2026年中国新能源汽车行业深度分析所涉及的核心领域。【A级来源】数据表明，该行业市场规模已超过万亿元量级，近三年复合增长率保持在15%以上。从政策环境看，十四五规划将其列为重点发展方向，各级政府相继出台了配套支持政策。产业链方面，上游核心材料、中游制造设备、下游应用场景均已形成一定规模。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "核心发现"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "本报告通过多源数据分析，得出以下核心发现：\n\n**发现一：市场规模快速增长**。【A级来源】数据显示，2026年中国新能源汽车行业深度分析领域的3-5个关键数据，市场集中度持续提升，CR3超过45%。\n\n**发现二：产能扩张加速**。【A级来源】报道，市场集中度和竞争格局变化，投资规模超过500亿元，显示企业对中长期市场前景的信心。\n\n**发现三：技术迭代驱动格局重塑**。【A级来源】指出，技术路线和商业模式创新，技术领先企业的市场份额有望进一步扩大。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "深度分析"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "从竞争格局看，目标行业呈现'头部集中、中游分化'的格局。【A级来源】数据显示，前三大企业合计市场份额超过50%。\n\n**驱动因素**：技术进步（工艺升级、良率提升）、需求扩张（下游应用场景丰富）、政策支持（国产替代加速）是三大核心驱动力。\n\n**主要风险**：技术路线不确定性（新技术可能颠覆现有格局）、政策变化风险（补贴退坡或贸易摩擦）、供应链瓶颈（关键材料依赖进口）是需要重点关注的风险因素。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "趋势预判"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "展望未来3-5年，目标行业有望呈现以下趋势：\n\n**趋势一：市场规模持续扩大**，【A级来源】预测年复合增长率有望保持在10-15%。\n\n**趋势二：国产化率显著提升**，在政策推动下，核心环节本土化率有望从当前的不足50%提升至70%以上。\n\n**趋势三：竞争格局进一步分化**，技术领先的头部企业与差异化定位的中型企业将形成新的竞争平衡。\n\n**关键不确定性**：全球宏观经济走势、中美科技博弈走向、新技术商业化节奏。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "结论与建议"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "**对企业的建议**：聚焦核心能力建设，在技术迭代窗口期加速产能布局，同时建立供应链多元化策略以应对潜在风险。\n\n**对投资者的建议**：关注具备技术壁垒和产能规模优势的行业龙头，同时重视政策变化和技术路线不确定性带来的风险。\n\n**对从业者的建议**：加强跨学科知识储备，重点关注行业前沿技术动态，提升在新技术场景下的专业能力。"
+              }
+            },
+            {
+              "type": "heading2",
+              "content": {
+                "text": "参考来源"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【A级/research_report】Bloomberg Industry Intelligence"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【A级/policy_doc】政府白皮书/行业规划"
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": {
+                "text": "【B级/industry_media】36氪"
+              }
+            }
+          ],
+          "word_count": 1239,
+          "metadata": {
+            "literary": 3,
+            "professional_depth": 5,
+            "has_abstract": true,
+            "has_references": true,
+            "references_count": 3,
+            "data_points_count": 3,
+            "citation_check_passed": true
+          }
+        },
+        "metadata": {
+          "title": "2026年中国新能源汽车行业深度分析",
+          "SEO_title": "2026年中国新能源汽车行业深度分析 | 专业分析",
+          "description": "本文深入分析了2026年中国新能源汽车行业深度分析。",
+          "keywords": [
+            "级来源",
+            "市场规模持续扩大",
+            "亿元",
+            "以上",
+            "数据显示",
+            "年中国新能源汽车行业深度分析",
+            "摘要",
+            "本报告对目标行业"
+          ],
+          "tags": [
+            "深度报告",
+            "数据显示",
+            "行业分析",
+            "级来源",
+            "以上",
+            "亿元",
+            "市场规模持续扩大"
+          ],
+          "author": {
+            "name": "AI 媒体编辑",
+            "bio": "由 SPDT-005 自动化管线生成",
+            "avatar": ""
+          },
+          "publish_time": "2026-07-30T14:16:43.369558+00:00",
+          "update_time": "2026-07-30T14:16:43.369558+00:00",
+          "language": "zh-CN",
+          "cover_image": {
+            "url": "",
+            "suggestion": {
+              "subject": "2026年中国新能源",
+              "style": [
+                "专业",
+                "深色系",
+                "数据",
+                "商务"
+              ],
+              "colors": [
+                "#37474F",
+                "#ECEFF1",
+                "#263238"
+              ]
+            },
+            "alt": "2026年中国新能源汽车行业深度分析",
+            "credit": ""
+          },
+          "thumbnail": "",
+          "channel_specific": {}
+        },
+        "formatting": {
+          "typography": {
+            "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+            "font_size": "16px",
+            "line_height": 1.9,
+            "paragraph_spacing": "1.5em"
+          },
+          "layout": {
+            "type": "single_column",
+            "max_width": "900px",
+            "has_toc": true,
+            "compact": false,
+            "print_friendly": true
+          },
+          "visual_elements": [],
+          "special_sections": {
+            "abstract": ""
+          },
+          "channel_specific": {
+            "typography": {
+              "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+              "font_size": "16px",
+              "line_height": 1.9,
+              "paragraph_spacing": "1.5em"
+            },
+            "layout": {
+              "type": "single_column",
+              "max_width": "900px",
+              "has_toc": true,
+              "compact": false,
+              "print_friendly": true
+            }
+          }
+        },
+        "channel_packages": {
+          "markdown": {
+            "channel": "markdown",
+            "content": "---\ntitle: \"2026年中国新能源汽车行业深度分析\"\ncontent_type: deep_industry_report\npublish_time: 2026-07-30T14:16:43.369558+00:00\nkeywords: [级来源, 市场规模持续扩大, 亿元, 以上, 数据显示, 年中国新能源汽车行业深度分析, 摘要, 本报告对目标行业]\n---\n\n# 2026年中国新能源汽车行业深度分析\n\n## 摘要\n本报告对目标行业2026年中国新能源汽车行业深度分析进行了深度分析，主要发现如下：【A级来源】显示，市场规模持续扩大，头部企业增速超过20%；技术迭代加速，新产能投资规模超过500亿元；政策支持力度加大，国产化率目标超过70%。基于以上分析，我们对行业未来3-5年的发展趋势持审慎乐观态度。\n## 行业背景\n目标行业是指2026年中国新能源汽车行业深度分析所涉及的核心领域。【A级来源】数据表明，该行业市场规模已超过万亿元量级，近三年复合增长率保持在15%以上。从政策环境看，十四五规划将其列为重点发展方向，各级政府相继出台了配套支持政策。产业链方面，上游核心材料、中游制造设备、下游应用场景均已形成一定规模。\n## 核心发现\n本报告通过多源数据分析，得出以下核心发现：\n\n**发现一：市场规模快速增长**。【A级来源】数据显示，2026年中国新能源汽车行业深度分析领域的3-5个关键数据，市场集中度持续提升，CR3超过45%。\n\n**发现二：产能扩张加速**。【A级来源】报道，市场集中度和竞争格局变化，投资规模超过500亿元，显示企业对中长期市场前景的信心。\n\n**发现三：技术迭代驱动格局重塑**。【A级来源】指出，技术路线和商业模式创新，技术领先企业的市场份额有望进一步扩大。\n## 深度分析\n从竞争格局看，目标行业呈现'头部集中、中游分化'的格局。【A级来源】数据显示，前三大企业合计市场份额超过50%。\n\n**驱动因素**：技术进步（工艺升级、良率提升）、需求扩张（下游应用场景丰富）、政策支持（国产替代加速）是三大核心驱动力。\n\n**主要风险**：技术路线不确定性（新技术可能颠覆现有格局）、政策变化风险（补贴退坡或贸易摩擦）、供应链瓶颈（关键材料依赖进口）是需要重点关注的风险因素。\n## 趋势预判\n展望未来3-5年，目标行业有望呈现以下趋势：\n\n**趋势一：市场规模持续扩大**，【A级来源】预测年复合增长率有望保持在10-15%。\n\n**趋势二：国产化率显著提升**，在政策推动下，核心环节本土化率有望从当前的不足50%提升至70%以上。\n\n**趋势三：竞争格局进一步分化**，技术领先的头部企业与差异化定位的中型企业将形成新的竞争平衡。\n\n**关键不确定性**：全球宏观经济走势、中美科技博弈走向、新技术商业化节奏。\n## 结论与建议\n**对企业的建议**：聚焦核心能力建设，在技术迭代窗口期加速产能布局，同时建立供应链多元化策略以应对潜在风险。\n\n**对投资者的建议**：关注具备技术壁垒和产能规模优势的行业龙头，同时重视政策变化和技术路线不确定性带来的风险。\n\n**对从业者的建议**：加强跨学科知识储备，重点关注行业前沿技术动态，提升在新技术场景下的专业能力。\n## 参考来源\n【A级/research_report】Bloomberg Industry Intelligence\n【A级/policy_doc】政府白皮书/行业规划\n【B级/industry_media】36氪\n\n\n## 质量评分卡\n\n**总分**: 89.2/100 ✅  (通过)\n\n| 维度 | 得分 | 评价 |\n|------|------|------|\n| factual | 100 | 优秀 |\n| source | 85 | 优秀 |\n| depth | 100 | 优秀 |\n| readability | 70 | 良好 |\n| timeliness | 75 | 良好 |\n\n**标签**: 深度报告 · 数据显示 · 行业分析 · 级来源 · 以上 · 亿元 · 市场规模持续扩大\n",
+            "config": {
+              "format": "markdown",
+              "encoding": "utf-8"
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                "font_size": "16px",
+                "line_height": 1.9,
+                "paragraph_spacing": "1.5em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "900px",
+                "has_toc": true,
+                "compact": false,
+                "print_friendly": true
+              },
+              "visual_elements": [],
+              "special_sections": {
+                "abstract": ""
+              },
+              "channel_specific": {
+                "typography": {
+                  "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.9,
+                  "paragraph_spacing": "1.5em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "900px",
+                  "has_toc": true,
+                  "compact": false,
+                  "print_friendly": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          },
+          "web": {
+            "channel": "web",
+            "content": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n<title>2026年中国新能源汽车行业深度分析</title>\n<style>\n  body {\n    font-family: PingFang SC, Microsoft YaHei, sans-serif;\n    font-size: 16px;\n    line-height: 1.9;\n    max-width: 900px;\n    margin: 0 auto;\n    padding: 2em 1em;\n  }\n  .pullquote {\n    font-size: 1.2em;\n    font-style: italic;\n    border-left: 4px solid #1E88E5;\n    padding-left: 1em;\n    margin: 2em 0;\n    color: #555;\n  }\n</style>\n</head>\n<body>\n<h1>2026年中国新能源汽车行业深度分析</h1>\n<h1>2026年中国新能源汽车行业深度分析</h1>\n<h2>摘要</h2>\n<p>本报告对目标行业2026年中国新能源汽车行业深度分析进行了深度分析，主要发现如下：【A级来源】显示，市场规模持续扩大，头部企业增速超过20%；技术迭代加速，新产能投资规模超过500亿元；政策支持力度加大，国产化率目标超过70%。基于以上分析，我们对行业未来3-5年的发展趋势持审慎乐观态度。</p>\n<h2>行业背景</h2>\n<p>目标行业是指2026年中国新能源汽车行业深度分析所涉及的核心领域。【A级来源】数据表明，该行业市场规模已超过万亿元量级，近三年复合增长率保持在15%以上。从政策环境看，十四五规划将其列为重点发展方向，各级政府相继出台了配套支持政策。产业链方面，上游核心材料、中游制造设备、下游应用场景均已形成一定规模。</p>\n<h2>核心发现</h2>\n<p>本报告通过多源数据分析，得出以下核心发现：\n\n**发现一：市场规模快速增长**。【A级来源】数据显示，2026年中国新能源汽车行业深度分析领域的3-5个关键数据，市场集中度持续提升，CR3超过45%。\n\n**发现二：产能扩张加速**。【A级来源】报道，市场集中度和竞争格局变化，投资规模超过500亿元，显示企业对中长期市场前景的信心。\n\n**发现三：技术迭代驱动格局重塑**。【A级来源】指出，技术路线和商业模式创新，技术领先企业的市场份额有望进一步扩大。</p>\n<h2>深度分析</h2>\n<p>从竞争格局看，目标行业呈现'头部集中、中游分化'的格局。【A级来源】数据显示，前三大企业合计市场份额超过50%。\n\n**驱动因素**：技术进步（工艺升级、良率提升）、需求扩张（下游应用场景丰富）、政策支持（国产替代加速）是三大核心驱动力。\n\n**主要风险**：技术路线不确定性（新技术可能颠覆现有格局）、政策变化风险（补贴退坡或贸易摩擦）、供应链瓶颈（关键材料依赖进口）是需要重点关注的风险因素。</p>\n<h2>趋势预判</h2>\n<p>展望未来3-5年，目标行业有望呈现以下趋势：\n\n**趋势一：市场规模持续扩大**，【A级来源】预测年复合增长率有望保持在10-15%。\n\n**趋势二：国产化率显著提升**，在政策推动下，核心环节本土化率有望从当前的不足50%提升至70%以上。\n\n**趋势三：竞争格局进一步分化**，技术领先的头部企业与差异化定位的中型企业将形成新的竞争平衡。\n\n**关键不确定性**：全球宏观经济走势、中美科技博弈走向、新技术商业化节奏。</p>\n<h2>结论与建议</h2>\n<p>**对企业的建议**：聚焦核心能力建设，在技术迭代窗口期加速产能布局，同时建立供应链多元化策略以应对潜在风险。\n\n**对投资者的建议**：关注具备技术壁垒和产能规模优势的行业龙头，同时重视政策变化和技术路线不确定性带来的风险。\n\n**对从业者的建议**：加强跨学科知识储备，重点关注行业前沿技术动态，提升在新技术场景下的专业能力。</p>\n<h2>参考来源</h2>\n<p>【A级/research_report】Bloomberg Industry Intelligence</p>\n<p>【A级/policy_doc】政府白皮书/行业规划</p>\n<p>【B级/industry_media】36氪</p>\n</body>\n</html>",
+            "config": {
+              "format": "html",
+              "encoding": "utf-8",
+              "has_toc": true,
+              "related_articles": [
+                "深度报告",
+                "数据显示",
+                "行业分析"
+              ],
+              "SEO": {
+                "title": "2026年中国新能源汽车行业深度分析 | 专业分析",
+                "description": "本文深入分析了2026年中国新能源汽车行业深度分析。",
+                "keywords": [
+                  "级来源",
+                  "市场规模持续扩大",
+                  "亿元",
+                  "以上",
+                  "数据显示",
+                  "年中国新能源汽车行业深度分析",
+                  "摘要",
+                  "本报告对目标行业"
+                ]
+              }
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                "font_size": "16px",
+                "line_height": 1.9,
+                "paragraph_spacing": "1.5em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "900px",
+                "has_toc": true,
+                "compact": false,
+                "print_friendly": true
+              },
+              "visual_elements": [],
+              "special_sections": {
+                "abstract": ""
+              },
+              "channel_specific": {
+                "typography": {
+                  "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.9,
+                  "paragraph_spacing": "1.5em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "900px",
+                  "has_toc": true,
+                  "compact": false,
+                  "print_friendly": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          },
+          "feishu": {
+            "channel": "feishu",
+            "content": "{\"title\": \"2026年中国新能源汽车行业深度分析\", \"blocks\": [{\"type\": \"heading1\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"heading2\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"\"}], \"author\": \"AI 媒体编辑\"}",
+            "config": {
+              "format": "lark_docx",
+              "share_permission": "editor",
+              "comment_enabled": true
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "Lark Emoji",
+                "font_size": "16px",
+                "line_height": 1.9,
+                "paragraph_spacing": "1.5em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "900px",
+                "has_toc": true,
+                "compact": false,
+                "print_friendly": true
+              },
+              "visual_elements": [],
+              "special_sections": {
+                "abstract": ""
+              },
+              "channel_specific": {
+                "typography": {
+                  "font_family": "PingFang SC, Microsoft YaHei, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.9,
+                  "paragraph_spacing": "1.5em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "900px",
+                  "has_toc": true,
+                  "compact": false,
+                  "print_friendly": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          }
+        },
+        "scorecard_summary": {
+          "total_score": 89.2,
+          "passed": true
+        },
+        "published_at": "2026-07-30T14:16:43.372405+00:00",
+        "pipeline_id": ""
+      },
+      "error": "",
+      "duration_seconds": 0.0049707889556884766,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    }
+  },
+  "scorecard": {
+    "status": "adapted",
+    "scorecard": {
+      "header": {
+        "artifact_id": "ART-SCORE-deep_industry-20260730-cd1fc769",
+        "artifact_type": "quality_scorecard",
+        "content_type": "deep_industry_report",
+        "scored_at": "2026-07-30T14:16:43.367204+00:00",
+        "producer": "platform/4_adapt/scorecard/scorecard_deep_industry.py",
+        "mock_mode": true
+      },
+      "scorecard": {
+        "total_score": 89.2,
+        "dimensions": {
+          "factual": {
+            "score": 100,
+            "weight": 0.3
+          },
+          "source": {
+            "score": 85,
+            "weight": 0.25
+          },
+          "depth": {
+            "score": 100,
+            "weight": 0.2
+          },
+          "readability": {
+            "score": 70,
+            "weight": 0.15
+          },
+          "timeliness": {
+            "score": 75,
+            "weight": 0.1
+          }
+        },
+        "factual_claims_check": {
+          "absolute_statements": [],
+          "citations_found": true,
+          "data_claims_count": 11
+        },
+        "source_grade_check": {
+          "total_sources": 3,
+          "grade_a_ratio": 0.5
+        },
+        "depth_check": {
+          "has_competitive_analysis": true,
+          "has_risk_factors": true,
+          "has_trend_forecast": true
+        },
+        "weights": {
+          "factual": 0.3,
+          "source": 0.25,
+          "depth": 0.2,
+          "readability": 0.15,
+          "timeliness": 0.1
+        },
+        "threshold": 70.0
+      },
+      "passed": true,
+      "action": "deliver",
+      "gray_zones": [],
+      "revision_suggestions": [
+        "报告质量良好，可直接发布"
+      ]
+    },
+    "passed": true,
+    "action": "deliver",
+    "gray_zones": []
+  },
+  "gray_zone_tickets": [],
+  "policy_audit": {
+    "total_events": 6,
+    "gap_events": 0,
+    "gap_event_types": [],
+    "severity_breakdown": {
+      "info": 6
+    },
+    "audit_log_path": "D:\\2_products\\media\\SPDT-005_MediaContent\\platform\\5_deliver\\checkpoint\\policy_audit.jsonl"
+  },
+  "started_at": "2026-07-30T14:16:43.350275+00:00",
+  "completed_at": "2026-07-30T14:16:43.372705+00:00",
+  "total_duration_seconds": 0.02240896224975586
+}

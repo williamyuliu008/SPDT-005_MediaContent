@@ -1,0 +1,387 @@
+{
+  "pipeline_id": "PL_breakdown_news_83f31fa4",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "Test",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-675b7f16",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:12:10.418657+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-MOCK001"
+        },
+        "signals": [
+          {
+            "signal_id": "SIG-001",
+            "type": "breaking_signal",
+            "text": "[MOCK] Test 相关突发事件",
+            "confidence": 0.95,
+            "source_id": "SRC-OPENAI-001",
+            "key_claims": [
+              "GPT-5o发布",
+              "推理能力3倍",
+              "多模态增强"
+            ],
+            "entities": [
+              "OpenAI",
+              "GPT-5o"
+            ],
+            "topics": [
+              "AI",
+              "大模型",
+              "发布"
+            ],
+            "published_at": "2026-07-30T10:30:00Z",
+            "url": "https://openai.com/blog/gpt-5o"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-OPENAI-001",
+            "grade": "A",
+            "name": "OpenAI Official",
+            "type": "company_report",
+            "url": "https://openai.com/blog/gpt-5o",
+            "accessed": "2026-07-30"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 9,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "技术突破",
+          "行业影响",
+          "竞争格局"
+        ],
+        "sla_deadline": "",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 0.018763065338134766,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-79bb4ef0",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-675b7f16",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:12:10.420172+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-MOCK001"
+        },
+        "title": "突发：[MOCK] Test 相关突发事件",
+        "subtitle": "多模态能力大幅增强，AI 竞争格局再度生变",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "type": "paragraph",
+            "title": "导语",
+            "order": 1,
+            "target_words": 80,
+            "keywords": [
+              "GPT-5o",
+              "发布",
+              "突破"
+            ],
+            "style": "客观快速"
+          },
+          {
+            "section_id": "SEC-002",
+            "type": "list",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "keywords": [
+              "推理3倍",
+              "多模态",
+              "发布"
+            ],
+            "key_claims": [
+              "GPT-5o发布",
+              "推理能力3倍"
+            ],
+            "style": "事实密集"
+          },
+          {
+            "section_id": "SEC-003",
+            "type": "timeline",
+            "title": "事件时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "时间线"
+          },
+          {
+            "section_id": "SEC-004",
+            "type": "paragraph",
+            "title": "背景",
+            "order": 4,
+            "target_words": 120,
+            "style": "简洁背景"
+          }
+        ],
+        "word_count_target": 450,
+        "references_plan": [
+          "SRC-OPENAI-001"
+        ],
+        "terminology_plan": [
+          "GPT-5o",
+          "多模态",
+          "推理能力"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ]
+      },
+      "error": "",
+      "duration_seconds": 0.001497507095336914,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-ARTICLE-breakdown_news-20260730-b06139fe",
+          "artifact_type": "article_v2",
+          "version": "2.0.0",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:12:10.421303+00:00",
+          "producer": "platform/3_render/engines/text/render_breaking.py",
+          "pipeline_id": "PL-breakdown_news-MOCK001",
+          "outline_id": "ART-OUTLINE-breakdown_news-20260730-79bb4ef0",
+          "source_brief_id": "ART-INTEL-breakdown_news-20260730-675b7f16"
+        },
+        "title": "突发：[MOCK] Test 相关突发事件",
+        "subtitle": "多模态能力大幅增强，AI 竞争格局再度生变",
+        "abstract": "",
+        "word_count": 450,
+        "reading_time_minutes": 1.5,
+        "blocks": [
+          {
+            "block_id": "B001",
+            "type": "paragraph",
+            "content": {
+              "text": "OpenAI 于今日凌晨正式发布 GPT-5o，这是该公司迄今为止最强大的推理模型。"
+            },
+            "depth": "surface",
+            "terms": [],
+            "citations": []
+          }
+        ],
+        "metadata": {
+          "terms": [],
+          "knowledge_points": [],
+          "references": []
+        },
+        "quality_markers": {
+          "factual_claims_count": 3,
+          "sources_cited_count": 1,
+          "terms_defined_count": 0,
+          "has_abstract": false,
+          "has_references": true,
+          "has_terminology_table": false,
+          "literary_score": 0,
+          "readability_score": 0
+        },
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 0.0011186599731445312,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "adapt": {
+      "status": "pass",
+      "artifact": {
+        "status": "adapted",
+        "scorecard": {
+          "header": {
+            "artifact_id": "ART-SCORE-breakdown_news-20260730-c7f63ad0",
+            "artifact_type": "quality_scorecard",
+            "article_id": "ART-ARTICLE-breakdown_news-20260730-b06139fe",
+            "content_type": "breakdown_news",
+            "pipeline_id": "PL-breakdown_news-MOCK001",
+            "threshold": 70.0,
+            "produced_at": "2026-07-30T08:12:10.435923+00:00",
+            "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+          },
+          "scorecard": {
+            "total_score": 77.8,
+            "dimensions": {
+              "factual": {
+                "score": 85,
+                "weight": 0.35,
+                "weighted": 29.75
+              },
+              "readability": {
+                "score": 75,
+                "weight": 0.2,
+                "weighted": 15.0
+              },
+              "source": {
+                "score": 40,
+                "weight": 0.2,
+                "weighted": 8.0
+              },
+              "timeliness": {
+                "score": 100,
+                "weight": 0.25,
+                "weighted": 25.0
+              }
+            },
+            "factual_claims_check": {
+              "total_claims": 2,
+              "verified": 0,
+              "unverified": 2,
+              "false": 0,
+              "status": "warning"
+            },
+            "source_grade_check": {
+              "total_sources": 0,
+              "grade_a": 0,
+              "grade_b": 0,
+              "grade_c": 0,
+              "ungraded": 0,
+              "status": "pass"
+            },
+            "readability_check": {
+              "avg_sentence_length": 41.0,
+              "avg_word_length": 2.0,
+              "paragraph_count": 1,
+              "terminology_ratio": 0.05,
+              "status": "pass"
+            }
+          },
+          "passed": true,
+          "action": "deliver",
+          "threshold": 70.0,
+          "gray_zones": [],
+          "revision_suggestions": []
+        },
+        "passed": true,
+        "action": "deliver",
+        "gray_zones": []
+      },
+      "error": "",
+      "duration_seconds": 0.014635086059570312,
+      "checkpoint_result": {
+        "status": "fail",
+        "action": "threshold_70",
+        "threshold": 70,
+        "score": 0,
+        "message": "质量评分 0 低于阈值 70，需修改后重新提交"
+      }
+    }
+  },
+  "scorecard": {
+    "header": {
+      "artifact_id": "ART-SCORE-breakdown_news-20260730-c7f63ad0",
+      "artifact_type": "quality_scorecard",
+      "article_id": "ART-ARTICLE-breakdown_news-20260730-b06139fe",
+      "content_type": "breakdown_news",
+      "pipeline_id": "PL-breakdown_news-MOCK001",
+      "threshold": 70.0,
+      "produced_at": "2026-07-30T08:12:10.435923+00:00",
+      "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+    },
+    "scorecard": {
+      "total_score": 77.8,
+      "dimensions": {
+        "factual": {
+          "score": 85,
+          "weight": 0.35,
+          "weighted": 29.75
+        },
+        "readability": {
+          "score": 75,
+          "weight": 0.2,
+          "weighted": 15.0
+        },
+        "source": {
+          "score": 40,
+          "weight": 0.2,
+          "weighted": 8.0
+        },
+        "timeliness": {
+          "score": 100,
+          "weight": 0.25,
+          "weighted": 25.0
+        }
+      },
+      "factual_claims_check": {
+        "total_claims": 2,
+        "verified": 0,
+        "unverified": 2,
+        "false": 0,
+        "status": "warning"
+      },
+      "source_grade_check": {
+        "total_sources": 0,
+        "grade_a": 0,
+        "grade_b": 0,
+        "grade_c": 0,
+        "ungraded": 0,
+        "status": "pass"
+      },
+      "readability_check": {
+        "avg_sentence_length": 41.0,
+        "avg_word_length": 2.0,
+        "paragraph_count": 1,
+        "terminology_ratio": 0.05,
+        "status": "pass"
+      }
+    },
+    "passed": true,
+    "action": "deliver",
+    "threshold": 70.0,
+    "gray_zones": [],
+    "revision_suggestions": []
+  },
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T08:12:10.399883+00:00",
+  "completed_at": "2026-07-30T08:12:10.435961+00:00",
+  "total_duration_seconds": 0.03605508804321289
+}

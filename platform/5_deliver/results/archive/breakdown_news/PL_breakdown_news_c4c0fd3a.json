@@ -1,0 +1,28 @@
+{
+  "pipeline_id": "PL_breakdown_news_c4c0fd3a",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "Schema 验证测试",
+    "description": "",
+    "target_audience": "",
+    "channels": [],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "'gbk' codec can't encode character '\\u26a0' in position 13: illegal multibyte sequence",
+      "duration_seconds": 0.014267683029174805,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T07:53:03.354193+00:00",
+  "completed_at": "2026-07-30T07:53:03.368502+00:00",
+  "total_duration_seconds": 0.01428079605102539
+}

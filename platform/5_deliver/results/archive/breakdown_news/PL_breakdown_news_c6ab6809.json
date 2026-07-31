@@ -1,0 +1,31 @@
+{
+  "pipeline_id": "PL_breakdown_news_c6ab6809",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "测试突发新闻：某地发生5.0级地震",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web",
+      "feishu"
+    ],
+    "priority": 10,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "fail",
+  "stages": {
+    "ingest": {
+      "status": "fail",
+      "artifact": {},
+      "error": "module '_spdt_llm_gateway' has no attribute 'LLMGateway'",
+      "duration_seconds": 0.001556396484375,
+      "checkpoint_result": {}
+    }
+  },
+  "scorecard": {},
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T07:33:28.432677+00:00",
+  "completed_at": "2026-07-30T07:33:28.434250+00:00",
+  "total_duration_seconds": 0.0015628337860107422
+}

@@ -1,0 +1,1022 @@
+{
+  "pipeline_id": "PL_breakdown_news_690e1d55",
+  "content_spec": {
+    "content_type": "breakdown_news",
+    "title": "伊朗率先袭击约旦美军基地 中东局势骤然升级",
+    "description": "",
+    "target_audience": "",
+    "channels": [
+      "web",
+      "feishu"
+    ],
+    "priority": 5,
+    "metadata": {}
+  },
+  "content_type_label": "突发快讯",
+  "status": "complete",
+  "stages": {
+    "ingest": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-INTEL-breakdown_news-20260730-60585f56",
+          "artifact_type": "intelligence_brief",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:56:14.656919+00:00",
+          "producer": "platform/1_ingest/radar/radar_breaking.py",
+          "pipeline_id": "PL-breakdown_news-e8d3e6d5"
+        },
+        "signals": [
+          {
+            "text": "伊朗伊斯兰革命卫队使用无人机和导弹袭击了约旦境内的美军基地，造成至少3名美军士兵死亡，数十人受伤。",
+            "confidence": 0.75,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "袭击由伊朗革命卫队直接实施",
+              "使用了无人机和弹道导弹",
+              "造成美军人员伤亡"
+            ],
+            "entities": [
+              "伊朗伊斯兰革命卫队",
+              "美军",
+              "约旦"
+            ],
+            "topics": [
+              "中东冲突",
+              "美伊对抗",
+              "军事袭击"
+            ],
+            "signal_id": "SIG-001",
+            "published_at": "2026-07-30T08:56:14.656785+00:00"
+          },
+          {
+            "text": "美国中央司令部确认美军基地遭袭，称袭击来自伊朗方向，并宣布将采取报复行动。",
+            "confidence": 0.8,
+            "type": "breaking_signal",
+            "source_type": "official",
+            "key_claims": [
+              "袭击来源为伊朗",
+              "美军将进行报复",
+              "基地防御系统未能完全拦截"
+            ],
+            "entities": [
+              "美国中央司令部",
+              "伊朗",
+              "美军基地"
+            ],
+            "topics": [
+              "军事回应",
+              "美伊关系",
+              "中东安全"
+            ],
+            "signal_id": "SIG-002",
+            "published_at": "2026-07-30T08:56:14.656792+00:00"
+          },
+          {
+            "text": "伊朗官方媒体称此次袭击是对以色列近期在叙利亚空袭伊朗目标的报复，并警告美国不要介入。",
+            "confidence": 0.7,
+            "type": "breaking_signal",
+            "source_type": "industry_media",
+            "key_claims": [
+              "袭击是对以色列行动的报复",
+              "警告美国不要介入",
+              "伊朗将继续支持代理人武装"
+            ],
+            "entities": [
+              "伊朗",
+              "以色列",
+              "叙利亚",
+              "美国"
+            ],
+            "topics": [
+              "报复行动",
+              "地区代理人战争",
+              "美以伊三角"
+            ],
+            "signal_id": "SIG-003",
+            "published_at": "2026-07-30T08:56:14.656795+00:00"
+          },
+          {
+            "text": "社交媒体上流传视频显示约旦基地上空出现多枚导弹和无人机，爆炸声持续数分钟。",
+            "confidence": 0.65,
+            "type": "breaking_signal",
+            "source_type": "social_media",
+            "key_claims": [
+              "基地上空出现大量导弹和无人机",
+              "爆炸声持续数分钟",
+              "基地防空系统开火"
+            ],
+            "entities": [
+              "约旦美军基地",
+              "无人机",
+              "导弹"
+            ],
+            "topics": [
+              "袭击现场",
+              "社交媒体情报",
+              "军事冲突"
+            ],
+            "signal_id": "SIG-004",
+            "published_at": "2026-07-30T08:56:14.656798+00:00"
+          },
+          {
+            "text": "以色列军方进入高度戒备状态，并关闭与约旦和叙利亚边境的部分空域。",
+            "confidence": 0.7,
+            "type": "breaking_signal",
+            "source_type": "news",
+            "key_claims": [
+              "以色列军方提高警戒级别",
+              "关闭部分边境空域",
+              "担心冲突扩大"
+            ],
+            "entities": [
+              "以色列军方",
+              "约旦",
+              "叙利亚"
+            ],
+            "topics": [
+              "地区紧张升级",
+              "以色列安全",
+              "边境管控"
+            ],
+            "signal_id": "SIG-005",
+            "published_at": "2026-07-30T08:56:14.656800+00:00"
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-NEWS-001",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "伊朗伊斯兰革命卫队使用无人机和导弹袭击了约旦境内的美军基地，造成至少3名美军士兵死亡，数十人受伤。"
+          },
+          {
+            "source_id": "SRC-OFFICIAL-002",
+            "grade": "A",
+            "name": "official 来源",
+            "type": "official",
+            "claim": "美国中央司令部确认美军基地遭袭，称袭击来自伊朗方向，并宣布将采取报复行动。"
+          },
+          {
+            "source_id": "SRC-INDUSTRY_MEDIA-003",
+            "grade": "B",
+            "name": "industry_media 来源",
+            "type": "industry_media",
+            "claim": "伊朗官方媒体称此次袭击是对以色列近期在叙利亚空袭伊朗目标的报复，并警告美国不要介入。"
+          },
+          {
+            "source_id": "SRC-SOCIAL_MEDIA-004",
+            "grade": "C",
+            "name": "social_media 来源",
+            "type": "social_media",
+            "claim": "社交媒体上流传视频显示约旦基地上空出现多枚导弹和无人机，爆炸声持续数分钟。"
+          },
+          {
+            "source_id": "SRC-NEWS-005",
+            "grade": "B",
+            "name": "news 来源",
+            "type": "news",
+            "claim": "以色列军方进入高度戒备状态，并关闭与约旦和叙利亚边境的部分空域。"
+          }
+        ],
+        "content_type": "breakdown_news",
+        "priority": 10,
+        "knowledge_gaps": [],
+        "recommended_angles": [
+          "美伊对抗",
+          "军事回应",
+          "地区代理人战争",
+          "美伊关系",
+          "中东冲突"
+        ],
+        "sla_deadline": "2026-07-30T09:11:14.657056+00:00",
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-9423",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 6.534097909927368,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "structure": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-OUTLINE-breakdown_news-20260730-88ae4d37",
+          "artifact_type": "article_outline",
+          "brief_id": "ART-INTEL-breakdown_news-20260730-60585f56",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "produced_at": "2026-07-30T08:56:18.768123+00:00",
+          "producer": "platform/2_structure/article/article_breaking.py",
+          "pipeline_id": "PL-breakdown_news-e8d3e6d5"
+        },
+        "title": "伊朗袭击约旦美军基地致3死数十伤",
+        "subtitle": "美国中央司令部确认袭击来自伊朗，宣布将报复",
+        "sections": [
+          {
+            "section_id": "SEC-001",
+            "title": "导语",
+            "order": 1,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "一句话交代核心事件：伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡，数十人受伤，美方称将报复。"
+          },
+          {
+            "section_id": "SEC-002",
+            "title": "核心事实",
+            "order": 2,
+            "target_words": 150,
+            "style": "客观快速",
+            "structure_hints": "5个要点：1. 袭击造成3名美军死亡，数十人受伤。2. 美国中央司令部确认袭击来自伊朗方向。3. 伊朗官方称袭击是对以色列空袭的报复。4. 社交媒体视频显示基地上空出现导弹和无人机。5. 以色列进入高度戒备，关闭部分空域。"
+          },
+          {
+            "section_id": "SEC-003",
+            "title": "时间线",
+            "order": 3,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "3-5个时间节点：1. 以色列近期在叙利亚空袭伊朗目标。2. 伊朗伊斯兰革命卫队发动袭击。3. 美国中央司令部确认并宣布报复。4. 以色列进入高度戒备。"
+          },
+          {
+            "section_id": "SEC-004",
+            "title": "背景",
+            "order": 4,
+            "target_words": 100,
+            "style": "客观快速",
+            "structure_hints": "说明事件重要性：此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击，可能引发美伊直接对抗，加剧中东紧张局势。"
+          }
+        ],
+        "word_count_target": 450,
+        "word_count_range": {
+          "min": 300,
+          "max": 600
+        },
+        "references_plan": [
+          "SRC-NEWS-001",
+          "SRC-OFFICIAL-002",
+          "SRC-INDUSTRY_MEDIA-003",
+          "SRC-SOCIAL_MEDIA-004",
+          "SRC-NEWS-005"
+        ],
+        "terminology_plan": [
+          "美军基地",
+          "军事袭击",
+          "社交媒体情报",
+          "无人机",
+          "以色列安全",
+          "军事回应",
+          "美伊关系",
+          "叙利亚",
+          "军事冲突",
+          "美以伊三角"
+        ],
+        "visual_elements_plan": [
+          "timeline"
+        ],
+        "knowledge_graph": null,
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-9423",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 4.111034393310547,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "render": {
+      "status": "pass",
+      "artifact": {
+        "header": {
+          "artifact_id": "ART-ARTICLE-breakdown_news-20260730-19841f49",
+          "artifact_type": "article_v2",
+          "version": "2.0.0",
+          "content_type": "breakdown_news",
+          "pipeline_dimensions": {
+            "accuracy": 4,
+            "literary": 2,
+            "professional_depth": 3
+          },
+          "outline_id": "ART-OUTLINE-breakdown_news-20260730-88ae4d37",
+          "source_brief_id": "ART-INTEL-breakdown_news-20260730-60585f56",
+          "produced_at": "2026-07-30T08:56:21.521563+00:00",
+          "producer": "platform/3_render/engines/text/render_breaking.py",
+          "pipeline_id": "PL-breakdown_news-e8d3e6d5"
+        },
+        "title": "伊朗袭击约旦美军基地致3死数十伤",
+        "subtitle": "美国中央司令部确认袭击来自伊朗，宣布将报复",
+        "abstract": "",
+        "word_count": 25,
+        "reading_time_minutes": 0.1,
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡、数十人受伤，美国中央司令部确认袭击来自伊朗方向，并宣布将采取报复行动。",
+            "block_id": "B001"
+          },
+          {
+            "type": "list",
+            "items": [
+              "袭击造成3名美军死亡，数十人受伤 [SRC-OFFICIAL-002]",
+              "美国中央司令部确认袭击来自伊朗方向 [SRC-OFFICIAL-002]",
+              "伊朗官方称袭击是对以色列空袭的报复 [SRC-NEWS-001]",
+              "社交媒体视频显示基地上空出现导弹和无人机 [SRC-SOCIAL_MEDIA-004]",
+              "以色列进入高度戒备，关闭部分空域 [SRC-NEWS-005]"
+            ],
+            "block_id": "B002"
+          },
+          {
+            "type": "timeline",
+            "events": [
+              {
+                "time": "近期",
+                "event": "以色列在叙利亚空袭伊朗目标 [SRC-NEWS-001]"
+              },
+              {
+                "time": "袭击发生时",
+                "event": "伊朗伊斯兰革命卫队发动袭击 [SRC-OFFICIAL-002]"
+              },
+              {
+                "time": "袭击后",
+                "event": "美国中央司令部确认并宣布报复 [SRC-OFFICIAL-002]"
+              },
+              {
+                "time": "随后",
+                "event": "以色列进入高度戒备 [SRC-NEWS-005]"
+              }
+            ],
+            "block_id": "B003"
+          },
+          {
+            "type": "paragraph",
+            "text": "此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击，可能引发美伊直接对抗，加剧中东紧张局势 [SRC-NEWS-001]。",
+            "block_id": "B004"
+          }
+        ],
+        "metadata": {
+          "terms": [
+            {
+              "term": "美军基地",
+              "defined": false
+            },
+            {
+              "term": "军事袭击",
+              "defined": false
+            },
+            {
+              "term": "社交媒体情报",
+              "defined": false
+            },
+            {
+              "term": "无人机",
+              "defined": false
+            },
+            {
+              "term": "以色列安全",
+              "defined": false
+            },
+            {
+              "term": "军事回应",
+              "defined": false
+            },
+            {
+              "term": "美伊关系",
+              "defined": false
+            },
+            {
+              "term": "叙利亚",
+              "defined": false
+            },
+            {
+              "term": "军事冲突",
+              "defined": false
+            },
+            {
+              "term": "美以伊三角",
+              "defined": false
+            }
+          ],
+          "knowledge_points": [],
+          "references": [
+            {
+              "id": "SRC-NEWS-001"
+            },
+            {
+              "id": "SRC-OFFICIAL-002"
+            },
+            {
+              "id": "SRC-INDUSTRY_MEDIA-003"
+            },
+            {
+              "id": "SRC-SOCIAL_MEDIA-004"
+            },
+            {
+              "id": "SRC-NEWS-005"
+            }
+          ]
+        },
+        "quality_markers": {
+          "factual_claims_count": 5,
+          "sources_cited_count": 5,
+          "terms_defined_count": 0,
+          "has_abstract": false,
+          "has_references": true,
+          "has_terminology_table": false,
+          "literary_score": 0,
+          "readability_score": 0
+        },
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-9423",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ],
+        "validation": {
+          "schema_valid": false,
+          "required_fields": true,
+          "word_count_ok": false,
+          "errors": [
+            "字数25低于目标60%(270字)"
+          ]
+        }
+      },
+      "error": "",
+      "duration_seconds": 2.754183292388916,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    },
+    "adapt": {
+      "status": "pass",
+      "artifact": {
+        "status": "adapted",
+        "scorecard": {
+          "header": {
+            "artifact_id": "ART-SCORE-breakdown_news-20260730-6935ff31",
+            "artifact_type": "quality_scorecard",
+            "article_id": "ART-ARTICLE-breakdown_news-20260730-19841f49",
+            "content_type": "breakdown_news",
+            "pipeline_id": "PL-breakdown_news-e8d3e6d5",
+            "threshold": 70.0,
+            "produced_at": "2026-07-30T08:56:21.548854+00:00",
+            "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+          },
+          "scorecard": {
+            "total_score": 72.5,
+            "dimensions": {
+              "factual": {
+                "score": 95,
+                "weight": 0.35,
+                "weighted": 33.25
+              },
+              "readability": {
+                "score": 50,
+                "weight": 0.2,
+                "weighted": 10.0
+              },
+              "source": {
+                "score": 40.0,
+                "weight": 0.2,
+                "weighted": 8.0
+              },
+              "timeliness": {
+                "score": 85,
+                "weight": 0.25,
+                "weighted": 21.25
+              }
+            },
+            "factual_claims_check": {
+              "total_claims": 1,
+              "verified": 5,
+              "unverified": -4,
+              "false": 0,
+              "status": "pass"
+            },
+            "source_grade_check": {
+              "total_sources": 5,
+              "grade_a": 0,
+              "grade_b": 0,
+              "grade_c": 0,
+              "ungraded": 0,
+              "status": "warning"
+            },
+            "readability_check": {
+              "avg_sentence_length": 0,
+              "avg_word_length": 2.0,
+              "paragraph_count": 4,
+              "terminology_ratio": 0.05,
+              "status": "pass"
+            }
+          },
+          "passed": true,
+          "action": "hold",
+          "threshold": 70.0,
+          "gray_zones": [
+            {
+              "zone_id": "GRAY-9423",
+              "reason": "涉及敏感关键词",
+              "severity": "high"
+            }
+          ],
+          "revision_suggestions": []
+        },
+        "passed": true,
+        "action": "hold",
+        "gray_zones": [
+          {
+            "zone_id": "GRAY-9423",
+            "reason": "涉及敏感关键词",
+            "severity": "high"
+          }
+        ]
+      },
+      "error": "",
+      "duration_seconds": 0.026530742645263672,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "threshold_70",
+        "threshold": 70,
+        "score": 72.5
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "artifact": {
+        "content_id": "CP_breakdown_news_94a5a3fc",
+        "article": {
+          "header": {
+            "artifact_id": "ART-ARTICLE-breakdown_news-20260730-19841f49",
+            "artifact_type": "article_v2",
+            "version": "2.0.0",
+            "content_type": "breakdown_news",
+            "pipeline_dimensions": {
+              "accuracy": 4,
+              "literary": 2,
+              "professional_depth": 3
+            },
+            "outline_id": "ART-OUTLINE-breakdown_news-20260730-88ae4d37",
+            "source_brief_id": "ART-INTEL-breakdown_news-20260730-60585f56",
+            "produced_at": "2026-07-30T08:56:21.521563+00:00",
+            "producer": "platform/3_render/engines/text/render_breaking.py",
+            "pipeline_id": "PL-breakdown_news-e8d3e6d5"
+          },
+          "title": "伊朗袭击约旦美军基地致3死数十伤",
+          "subtitle": "美国中央司令部确认袭击来自伊朗，宣布将报复",
+          "abstract": "",
+          "word_count": 25,
+          "reading_time_minutes": 0.1,
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡、数十人受伤，美国中央司令部确认袭击来自伊朗方向，并宣布将采取报复行动。",
+              "block_id": "B001"
+            },
+            {
+              "type": "list",
+              "items": [
+                "袭击造成3名美军死亡，数十人受伤 [SRC-OFFICIAL-002]",
+                "美国中央司令部确认袭击来自伊朗方向 [SRC-OFFICIAL-002]",
+                "伊朗官方称袭击是对以色列空袭的报复 [SRC-NEWS-001]",
+                "社交媒体视频显示基地上空出现导弹和无人机 [SRC-SOCIAL_MEDIA-004]",
+                "以色列进入高度戒备，关闭部分空域 [SRC-NEWS-005]"
+              ],
+              "block_id": "B002"
+            },
+            {
+              "type": "timeline",
+              "events": [
+                {
+                  "time": "近期",
+                  "event": "以色列在叙利亚空袭伊朗目标 [SRC-NEWS-001]"
+                },
+                {
+                  "time": "袭击发生时",
+                  "event": "伊朗伊斯兰革命卫队发动袭击 [SRC-OFFICIAL-002]"
+                },
+                {
+                  "time": "袭击后",
+                  "event": "美国中央司令部确认并宣布报复 [SRC-OFFICIAL-002]"
+                },
+                {
+                  "time": "随后",
+                  "event": "以色列进入高度戒备 [SRC-NEWS-005]"
+                }
+              ],
+              "block_id": "B003"
+            },
+            {
+              "type": "paragraph",
+              "text": "此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击，可能引发美伊直接对抗，加剧中东紧张局势 [SRC-NEWS-001]。",
+              "block_id": "B004"
+            }
+          ],
+          "metadata": {
+            "terms": [
+              {
+                "term": "美军基地",
+                "defined": false
+              },
+              {
+                "term": "军事袭击",
+                "defined": false
+              },
+              {
+                "term": "社交媒体情报",
+                "defined": false
+              },
+              {
+                "term": "无人机",
+                "defined": false
+              },
+              {
+                "term": "以色列安全",
+                "defined": false
+              },
+              {
+                "term": "军事回应",
+                "defined": false
+              },
+              {
+                "term": "美伊关系",
+                "defined": false
+              },
+              {
+                "term": "叙利亚",
+                "defined": false
+              },
+              {
+                "term": "军事冲突",
+                "defined": false
+              },
+              {
+                "term": "美以伊三角",
+                "defined": false
+              }
+            ],
+            "knowledge_points": [],
+            "references": [
+              {
+                "id": "SRC-NEWS-001"
+              },
+              {
+                "id": "SRC-OFFICIAL-002"
+              },
+              {
+                "id": "SRC-INDUSTRY_MEDIA-003"
+              },
+              {
+                "id": "SRC-SOCIAL_MEDIA-004"
+              },
+              {
+                "id": "SRC-NEWS-005"
+              }
+            ]
+          },
+          "quality_markers": {
+            "factual_claims_count": 5,
+            "sources_cited_count": 5,
+            "terms_defined_count": 0,
+            "has_abstract": false,
+            "has_references": true,
+            "has_terminology_table": false,
+            "literary_score": 0,
+            "readability_score": 0
+          },
+          "gray_zones": [
+            {
+              "zone_id": "GRAY-9423",
+              "reason": "涉及敏感关键词",
+              "severity": "high"
+            }
+          ],
+          "validation": {
+            "schema_valid": false,
+            "required_fields": true,
+            "word_count_ok": false,
+            "errors": [
+              "字数25低于目标60%(270字)"
+            ]
+          }
+        },
+        "metadata": {
+          "title": "伊朗袭击约旦美军基地致3死数十伤",
+          "SEO_title": "伊朗袭击约旦美军基地致3死数十伤",
+          "description": "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡、数十人受伤，美国中央司令部确认袭击来自伊朗方向，并宣布将采取报复行动。",
+          "keywords": [
+            "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地",
+            "造成",
+            "名美军死亡",
+            "数十人受伤",
+            "美国中央司令部确认袭击来自伊朗方向",
+            "并宣布将采取报复行动",
+            "此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击",
+            "可能引发美伊直接对抗"
+          ],
+          "tags": [
+            "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地",
+            "快讯",
+            "造成",
+            "新闻",
+            "数十人受伤",
+            "名美军死亡",
+            "美国中央司令部确认袭击来自伊朗方向"
+          ],
+          "author": {
+            "name": "AI 媒体编辑",
+            "bio": "由 SPDT-005 自动化管线生成",
+            "avatar": ""
+          },
+          "publish_time": "2026-07-30T08:56:21.551846+00:00",
+          "update_time": "2026-07-30T08:56:21.551846+00:00",
+          "language": "zh-CN",
+          "cover_image": {
+            "url": "",
+            "suggestion": {
+              "subject": "伊朗袭击约旦美军基地",
+              "style": [
+                "突发",
+                "新闻",
+                "红色系",
+                "快讯"
+              ],
+              "colors": [
+                "#E53935",
+                "#FFCDD2",
+                "#FFFFFF"
+              ]
+            },
+            "alt": "伊朗袭击约旦美军基地致3死数十伤",
+            "credit": ""
+          },
+          "thumbnail": "",
+          "channel_specific": {}
+        },
+        "formatting": {
+          "typography": {
+            "font_family": "system-ui, -apple-system, sans-serif",
+            "font_size": "16px",
+            "line_height": 1.7,
+            "paragraph_spacing": "1em"
+          },
+          "layout": {
+            "type": "single_column",
+            "max_width": "720px",
+            "has_toc": false,
+            "compact": true
+          },
+          "visual_elements": [],
+          "special_sections": {},
+          "channel_specific": {
+            "typography": {
+              "font_family": "system-ui, -apple-system, sans-serif",
+              "font_size": "16px",
+              "line_height": 1.7,
+              "paragraph_spacing": "1em"
+            },
+            "layout": {
+              "type": "single_column",
+              "max_width": "720px",
+              "has_toc": false,
+              "compact": true
+            }
+          }
+        },
+        "channel_packages": {
+          "web": {
+            "channel": "web",
+            "content": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"UTF-8\">\n<title>伊朗袭击约旦美军基地致3死数十伤</title>\n<style>\n  body {\n    font-family: system-ui, -apple-system, sans-serif;\n    font-size: 16px;\n    line-height: 1.7;\n    max-width: 720px;\n    margin: 0 auto;\n    padding: 2em 1em;\n  }\n  .pullquote {\n    font-size: 1.2em;\n    font-style: italic;\n    border-left: 4px solid #1E88E5;\n    padding-left: 1em;\n    margin: 2em 0;\n    color: #555;\n  }\n</style>\n</head>\n<body>\n<h1>伊朗袭击约旦美军基地致3死数十伤</h1>\n<p>伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡、数十人受伤，美国中央司令部确认袭击来自伊朗方向，并宣布将采取报复行动。</p>\n<ul><li>袭击造成3名美军死亡，数十人受伤 [SRC-OFFICIAL-002]</li><li>美国中央司令部确认袭击来自伊朗方向 [SRC-OFFICIAL-002]</li><li>伊朗官方称袭击是对以色列空袭的报复 [SRC-NEWS-001]</li><li>社交媒体视频显示基地上空出现导弹和无人机 [SRC-SOCIAL_MEDIA-004]</li><li>以色列进入高度戒备，关闭部分空域 [SRC-NEWS-005]</li></ul>\n<p>此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击，可能引发美伊直接对抗，加剧中东紧张局势 [SRC-NEWS-001]。</p>\n</body>\n</html>",
+            "config": {
+              "format": "html",
+              "encoding": "utf-8",
+              "has_toc": false,
+              "related_articles": [
+                "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地",
+                "快讯",
+                "造成"
+              ],
+              "SEO": {
+                "title": "伊朗袭击约旦美军基地致3死数十伤",
+                "description": "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡、数十人受伤，美国中央司令部确认袭击来自伊朗方向，并宣布将采取报复行动。",
+                "keywords": [
+                  "伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地",
+                  "造成",
+                  "名美军死亡",
+                  "数十人受伤",
+                  "美国中央司令部确认袭击来自伊朗方向",
+                  "并宣布将采取报复行动",
+                  "此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击",
+                  "可能引发美伊直接对抗"
+                ]
+              }
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "system-ui, -apple-system, sans-serif",
+                "font_size": "16px",
+                "line_height": 1.7,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "720px",
+                "has_toc": false,
+                "compact": true
+              },
+              "visual_elements": [],
+              "special_sections": {},
+              "channel_specific": {
+                "typography": {
+                  "font_family": "system-ui, -apple-system, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.7,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "720px",
+                  "has_toc": false,
+                  "compact": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          },
+          "feishu": {
+            "channel": "feishu",
+            "content": "{\"title\": \"伊朗袭击约旦美军基地致3死数十伤\", \"blocks\": [{\"type\": \"paragraph\", \"text\": \"伊朗伊斯兰革命卫队使用无人机和导弹袭击约旦美军基地，造成3名美军死亡、数十人受伤，美国中央司令部确认袭击来自伊朗方向，并宣布将采取报复行动。\"}, {\"type\": \"list\", \"text\": \"\"}, {\"type\": \"timeline\", \"text\": \"\"}, {\"type\": \"paragraph\", \"text\": \"此次袭击是新一轮巴以冲突以来首次导致美军死亡的袭击，可能引发美伊直接对抗，加剧中东紧张局势 [SRC-NEWS-001]。\"}], \"author\": \"AI 媒体编辑\"}",
+            "config": {
+              "format": "lark_docx",
+              "share_permission": "editor",
+              "comment_enabled": true
+            },
+            "formatting": {
+              "typography": {
+                "font_family": "Lark Emoji",
+                "font_size": "16px",
+                "line_height": 1.7,
+                "paragraph_spacing": "1em"
+              },
+              "layout": {
+                "type": "single_column",
+                "max_width": "720px",
+                "has_toc": false,
+                "compact": true
+              },
+              "visual_elements": [],
+              "special_sections": {},
+              "channel_specific": {
+                "typography": {
+                  "font_family": "system-ui, -apple-system, sans-serif",
+                  "font_size": "16px",
+                  "line_height": 1.7,
+                  "paragraph_spacing": "1em"
+                },
+                "layout": {
+                  "type": "single_column",
+                  "max_width": "720px",
+                  "has_toc": false,
+                  "compact": true
+                }
+              }
+            },
+            "validation": {
+              "compliant": true,
+              "notes": []
+            }
+          }
+        },
+        "scorecard_summary": {
+          "total_score": 0,
+          "passed": false
+        },
+        "published_at": "2026-07-30T08:56:21.555553+00:00",
+        "pipeline_id": ""
+      },
+      "error": "",
+      "duration_seconds": 0.006644248962402344,
+      "checkpoint_result": {
+        "status": "pass",
+        "action": "skip",
+        "reviewer": "auto"
+      }
+    }
+  },
+  "scorecard": {
+    "status": "adapted",
+    "scorecard": {
+      "header": {
+        "artifact_id": "ART-SCORE-breakdown_news-20260730-6935ff31",
+        "artifact_type": "quality_scorecard",
+        "article_id": "ART-ARTICLE-breakdown_news-20260730-19841f49",
+        "content_type": "breakdown_news",
+        "pipeline_id": "PL-breakdown_news-e8d3e6d5",
+        "threshold": 70.0,
+        "produced_at": "2026-07-30T08:56:21.548854+00:00",
+        "producer": "platform/4_adapt/scorecard/scorecard_breaking.py"
+      },
+      "scorecard": {
+        "total_score": 72.5,
+        "dimensions": {
+          "factual": {
+            "score": 95,
+            "weight": 0.35,
+            "weighted": 33.25
+          },
+          "readability": {
+            "score": 50,
+            "weight": 0.2,
+            "weighted": 10.0
+          },
+          "source": {
+            "score": 40.0,
+            "weight": 0.2,
+            "weighted": 8.0
+          },
+          "timeliness": {
+            "score": 85,
+            "weight": 0.25,
+            "weighted": 21.25
+          }
+        },
+        "factual_claims_check": {
+          "total_claims": 1,
+          "verified": 5,
+          "unverified": -4,
+          "false": 0,
+          "status": "pass"
+        },
+        "source_grade_check": {
+          "total_sources": 5,
+          "grade_a": 0,
+          "grade_b": 0,
+          "grade_c": 0,
+          "ungraded": 0,
+          "status": "warning"
+        },
+        "readability_check": {
+          "avg_sentence_length": 0,
+          "avg_word_length": 2.0,
+          "paragraph_count": 4,
+          "terminology_ratio": 0.05,
+          "status": "pass"
+        }
+      },
+      "passed": true,
+      "action": "hold",
+      "threshold": 70.0,
+      "gray_zones": [
+        {
+          "zone_id": "GRAY-9423",
+          "reason": "涉及敏感关键词",
+          "severity": "high"
+        }
+      ],
+      "revision_suggestions": []
+    },
+    "passed": true,
+    "action": "hold",
+    "gray_zones": [
+      {
+        "zone_id": "GRAY-9423",
+        "reason": "涉及敏感关键词",
+        "severity": "high"
+      }
+    ]
+  },
+  "gray_zone_tickets": [],
+  "started_at": "2026-07-30T08:56:08.122972+00:00",
+  "completed_at": "2026-07-30T08:56:21.555573+00:00",
+  "total_duration_seconds": 13.43257737159729
+}
