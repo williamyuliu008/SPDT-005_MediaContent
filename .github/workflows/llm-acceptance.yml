@@ -64,8 +64,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: llm-acceptance-${{ github.run_number }}-${{ github.run_id }}
-          path: platform/5_deliver/results/delivered/**/*.md
-          platform/5_deliver/checkpoint/policy_audit.jsonl
+          path: |
+            platform/5_deliver/results/delivered/**/*.md
+            platform/5_deliver/checkpoint/policy_audit.jsonl
           retention-days: 14
           compression-level: 9
 
