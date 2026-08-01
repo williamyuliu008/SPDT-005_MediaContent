@@ -276,16 +276,40 @@ class MagazineBlueprintLoader:
 
 
 # ─────────────────────────────────────────────────────────────────
-# MagazineBlueprintGenerator（LLM 增强模式，v1.1 预留接口）
+# MagazineBlueprintGenerator（LLM 增强模式，v1.1）
 # ─────────────────────────────────────────────────────────────────
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]  # → SPDT-005_MediaContent
+
+
+def _load_llm_gateway():
+    """延迟加载 LLM Gateway（避免循环导入）"""
+    import importlib.util, sys
+    cache_key = "_spdt_blueprint_llm"
+    if cache_key in sys.modules:
+        return sys.modules[cache_key]
+    spec = importlib.util.spec_from_file_location(
+        cache_key,
+        str(_REPO_ROOT / "platform" / "shared" / "llm_gateway.py"),
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Cannot load llm_gateway")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[cache_key] = module
+    spec.loader.exec_module(module)
+    return module
+
 
 class MagazineBlueprintGenerator:
     """
-    LLM 增强的杂志蓝图生成器。
-    v1.0 提供接口骨架，LLM 增强在 v1.1 实现。
+    LLM 增强的杂志蓝图生成器（v1.1）。
+
+    LLM 根据领域主题，深度分析后推荐每篇文章的精确 topic，
+    体现领域内细分方向、近期热点和叙事逻辑。
 
     使用方式：
-      gen = MagazineBlueprintGenerator(llm=LLMGateway())
+      gen = MagazineBlueprintGenerator()
+      gen.init_llm()  # 自动加载 LLM Gateway
       bp = gen.generate(
           domain_topic="人工智能与科学研究的交叉突破",
           title="科学前沿",
@@ -293,9 +317,119 @@ class MagazineBlueprintGenerator:
       )
     """
 
+    # 角色定义（含约束模板）
+    ROLES = [
+        {
+            "role": "cover_story",
+            "pipeline": "science_research",
+            "depth": "deep",
+            "description": "封面专题：选取领域内最重大、最具冲击力的突破",
+            "word_range": "3000-4000字",
+        },
+        {
+            "role": "explain",
+            "pipeline": "science_research",
+            "depth": "medium",
+            "description": "科学解释：核心概念入门，面向普通读者说清楚'是什么'",
+            "word_range": "2000-2500字",
+        },
+        {
+            "role": "industry",
+            "pipeline": "deep_industry_report",
+            "depth": "deep",
+            "description": "产业分析：市场格局、技术路线、竞争态势",
+            "word_range": "3000-5000字",
+        },
+        {
+            "role": "news_brief",
+            "pipeline": "science_research",
+            "depth": "short",
+            "description": "科技动态：5-8条近期重要进展，快速扫描",
+            "word_range": "每条≤300字",
+        },
+        {
+            "role": "oped",
+            "pipeline": "oped_argument",
+            "depth": "medium",
+            "description": "观点交锋：有立场、有数据、有反驳",
+            "word_range": "1200-1800字",
+        },
+    ]
+
+    SYSTEM_PROMPT = """你是一位资深科技杂志编辑，擅长策划有深度、有张力的科技杂志内容。
+
+你的任务是根据用户提供的领域主题，策划一期杂志的5篇文章选题。
+每篇文章需要体现：
+1. 独特的切入角度（不是泛泛而谈）
+2. 与领域主题的紧密关联
+3. 叙事上的递进或互补关系
+
+请以 JSON 格式输出选题方案。"""
+
+    USER_PROMPT_TEMPLATE = """## 杂志主题
+**领域主题**: {domain_topic}
+**杂志名称**: {title}
+**目标读者**: {audience}
+
+## 你的任务
+请为这期杂志策划5篇文章选题，并说明各篇之间的叙事逻辑。
+
+## 输出要求（JSON）
+```json
+{{
+  "editor_note": "编辑手记：2-3句话说明本期杂志的核心理念和叙事主线",
+  "articles": [
+    {{
+      "role": "cover_story",
+      "topic": "精确的文章标题（15-30字，有冲击力）",
+      "angle": "切入角度说明（1-2句话）",
+      "key_points": ["要点1", "要点2", "要点3"],
+      "keywords": ["关键词1", "关键词2"]
+    }},
+    {{
+      "role": "explain",
+      "topic": "精确的文章标题（15-25字）",
+      "angle": "切入角度说明",
+      "key_points": ["要点1", "要点2", "要点3"],
+      "keywords": ["关键词1", "关键词2"]
+    }},
+    {{
+      "role": "industry",
+      "topic": "精确的文章标题（含产业/市场视角）",
+      "angle": "切入角度说明",
+      "key_points": ["要点1", "要点2", "要点3"],
+      "keywords": ["关键词1", "关键词2"]
+    }},
+    {{
+      "role": "news_brief",
+      "topic": "精确的文章标题（含动态/速递视角）",
+      "angle": "切入角度说明",
+      "key_points": ["要点1", "要点2"],
+      "keywords": ["关键词1", "关键词2"]
+    }},
+    {{
+      "role": "oped",
+      "topic": "精确的文章标题（含观点/争议性）",
+      "angle": "切入角度说明",
+      "key_points": ["要点1", "要点2", "要点3"],
+      "keywords": ["关键词1", "关键词2"]
+    }}
+  ]
+}}
+```
+
+请直接输出 JSON，不要有其他文字。"""
+
     def __init__(self, llm=None):
         self._llm = llm
         self._loader = MagazineBlueprintLoader()
+
+    def init_llm(self):
+        """初始化 LLM（从 LLM Gateway 加载）"""
+        if self._llm is None:
+            gateway = _load_llm_gateway()
+            self._llm = gateway.LLMGateway()
+        return self
 
     def generate(
         self,
@@ -307,12 +441,8 @@ class MagazineBlueprintGenerator:
     ) -> MagazineBlueprint:
         """
         生成杂志蓝图。优先使用 LLM 增强，fallback 到预置模板。
-
-        LLM 增强时：分析领域主题，推荐每篇文章的精确 topic，
-        体现领域内细分方向和编辑意图。
         """
         if self._llm is None:
-            # Fallback：使用预置模板
             return self._loader.load(
                 domain_topic=domain_topic,
                 title=title,
@@ -321,10 +451,22 @@ class MagazineBlueprintGenerator:
                 description=description,
             )
 
-        # v1.1: LLM 增强
-        return self._llm_enhanced_generate(
-            domain_topic, title, issue, audience, description
-        )
+        try:
+            return self._llm_enhanced_generate(
+                domain_topic, title, issue, audience, description
+            )
+        except Exception as exc:
+            # LLM 增强失败时降级到预置模板
+            import sys as _sys
+            _sys.stderr.write(f"[DEBUG] LLM Blueprint failed: {type(exc).__name__}: {exc}\n")
+            _sys.stderr.flush()
+            return self._loader.load(
+                domain_topic=domain_topic,
+                title=title,
+                issue=issue,
+                audience=audience,
+                description=description,
+            )
 
     def _llm_enhanced_generate(
         self,
@@ -337,13 +479,157 @@ class MagazineBlueprintGenerator:
         """
         LLM 增强生成（v1.1 实现）。
 
-        LLM 根据领域主题，推荐：
-        1. 每篇文章的精确 topic（考虑领域内细分方向）
-        2. 各篇文章之间的叙事逻辑（如何形成合力）
-        3. 编辑意图和受众定位建议
+        调用 LLM 分析领域主题，生成：
+        1. 每篇文章的精确 topic（含切入角度）
+        2. 编辑手记（杂志整体叙事主线）
+        3. 各篇文章的 constraints（keywords、max_signals 等）
         """
-        # TODO(v1.1): 实现 LLM 增强逻辑
-        return self._loader.load(
+        # 构造 prompt
+        user_prompt = self.USER_PROMPT_TEMPLATE.format(
+            domain_topic=domain_topic,
+            title=title,
+            audience=audience or "科技爱好者、研究生及以上",
+        )
+
+        # 调用 LLM
+        response = self._llm.chat(
+            prompt=user_prompt,
+            system=self.SYSTEM_PROMPT,
+            model="deepseek-v4-flash",
+            temperature=0.7,
+        )
+
+        # 解析 JSON
+        import json, re
+        content = (response.content if hasattr(response, "content") else str(response)).strip()
+
+        # 提取 JSON 块
+        json_match = re.search(
+            r"```(?:json)?\s*(\{.*?\})\s*```",
+            content,
+            re.DOTALL,
+        )
+        if json_match:
+            json_str = json_match.group(1)
+        else:
+            # 尝试直接解析
+            json_str = content
+
+        plan = json.loads(json_str)
+
+        # 生成期号和日期
+        now = datetime.now(timezone.utc)
+        if not issue:
+            quarter = (now.month - 1) // 3 + 1
+            issue = f"{now.year}-Q{quarter}"
+        if not audience:
+            audience = "科技爱好者、研究生及以上"
+
+        # 构建 MagazineSpec（融合 LLM 编辑手记）
+        editor_note = plan.get("editor_note", description or "")
+        spec = MagazineSpec(
+            title=title,
+            domain_topic=domain_topic,
+            issue=issue,
+            audience=audience,
+            publication_date=now.strftime("%Y-%m-%d"),
+            description=description or editor_note,
+        )
+
+        # 构建 ArticleSpec 列表
+        role_plan_map = {a["role"]: a for a in plan.get("articles", [])}
+        articles = []
+
+        for role_def in self.ROLES:
+            role = role_def["role"]
+            plan_article = role_plan_map.get(role, {})
+
+            topic = plan_article.get("topic") or (
+                f"{role_def['description']}：{domain_topic}"
+            )
+            angle = plan_article.get("angle", "")
+            keywords = plan_article.get("keywords", [])
+            key_points = plan_article.get("key_points", [])
+
+            # 构建 constraints
+            constraints = {
+                "depth_level": role_def["depth"],
+                "target_audience": audience,
+                "min_score": self._role_min_score(role),
+                "angle": angle,
+            }
+            if keywords:
+                constraints["keywords"] = keywords[:5]
+            if key_points:
+                constraints["key_points"] = key_points[:3]
+
+            if role_def["pipeline"] == "science_research":
+                constraints["max_signals"] = 5 if role_def["depth"] == "deep" else 3
+            elif role_def["pipeline"] == "deep_industry_report":
+                constraints["max_signals"] = 6
+                constraints["industry"] = domain_topic
+            elif role_def["pipeline"] == "oped_argument":
+                constraints["perspective"] = "支持"
+                constraints["max_signals"] = 4
+
+            articles.append(ArticleSpec(
+                article_role=role,
+                pipeline_type=role_def["pipeline"],
+                topic=topic,
+                constraints=constraints,
+            ))
+
+        blueprint = MagazineBlueprint(spec=spec, articles=articles)
+
+        # 记录 LLM 分析结果到 blueprint 扩展字段
+        blueprint._llm_editor_note = editor_note
+        blueprint._llm_articles_plan = role_plan_map
+
+        return blueprint
+
+    def _role_min_score(self, role: str) -> int:
+        return {
+            "cover_story": 80,
+            "explain":      75,
+            "industry":     80,
+            "news_brief":   70,
+            "oped":         80,
+        }.get(role, 75)
+
+
+def load_blueprint(
+    domain_topic: str,
+    title: str = "科学前沿",
+    issue: str = "",
+    audience: str = "",
+    description: str = "",
+    use_llm: bool = False,
+) -> MagazineBlueprint:
+    """
+    快捷函数：加载杂志蓝图。
+
+    参数：
+      use_llm: 是否使用 LLM 增强模式（v1.1）。默认 False（预置模板）。
+
+    等价于：
+      # 预置模板
+      MagazineBlueprintLoader().load(...)
+
+      # LLM 增强（v1.1）
+      gen = MagazineBlueprintGenerator().init_llm()
+      gen.generate(...)
+    """
+    if use_llm:
+        gen = MagazineBlueprintGenerator().init_llm()
+        return gen.generate(
+            domain_topic=domain_topic,
+            title=title,
+            issue=issue,
+            audience=audience,
+            description=description,
+        )
+    else:
+        return MagazineBlueprintLoader().load(
             domain_topic=domain_topic,
             title=title,
             issue=issue,

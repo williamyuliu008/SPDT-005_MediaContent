@@ -1,8 +1,8 @@
 # SPDT-005 科学杂志生成器设计说明书
 
-**版本**: v1.0
+**版本**: v1.1
 **日期**: 2026-08-01
-**状态**: 草稿
+**状态**: 已实现
 **负责人**: SPDT-005_MediaContent
 
 ---
@@ -363,19 +363,30 @@ platform/
 
 | 版本 | 里程碑 | 状态 |
 |---|---|---|
-| **v1.0** | 基础框架：Blueprint + Orchestrator + Assembler，跑通 5 文章 Demo | 实施中 |
-| **v1.1** | LLM 增强 Blueprint（自动推荐文章 topic + 约束） | 规划中 |
+| **v1.0** | 基础框架：Blueprint（预置模板）+ Orchestrator + Assembler，跑通 5 文章 Demo | ✅ 已完成 |
+| **v1.1** | LLM 增强 Blueprint（自动推荐文章 topic + 编辑手记 + constraints） | ✅ 已完成 |
 | **v1.2** | 质量总审层（杂志整体评分，不只是单篇） | 规划中 |
 | **v1.3** | 多格式输出（DOCX/PDF/HTML，保留排版） | 规划中 |
 | **v2.0** | 杂志系列化（多期、历史版本追踪） | 规划中 |
+
+### v1.1 新增功能
+
+**LLM 增强 BlueprintGenerator**：
+- 调用 LLM 分析领域主题，生成精准文章选题
+- 每篇文章附带 `angle`（切入角度）、`keywords`、`key_points`
+- 生成 `editor_note`（编辑手记），阐述杂志叙事主线
+- LLM 增强结果存入 blueprint `_llm_editor_note` 和 `_llm_articles_plan` 扩展字段
+- 支持 `use_llm=True/False` 切换模式
+- 失败时自动降级到预置模板
 
 ---
 
 ## 九、实现优先级
 
-1. **P0**（核心回路）: Blueprint（预置模板）+ Orchestrator（并行执行）+ Assembler（Markdown 输出）
-2. **P1**（质量增强）: 各管线 Request 新增产品级字段，Blueprint 支持 LLM 增强
-3. **P2**（格式扩展）: DOCX / PDF 输出，多格式支持
+1. **P0**（核心回路）: ✅ Blueprint + Orchestrator + Assembler
+2. **P1**（智能增强）: ✅ LLM 增强 Blueprint
+3. **P2**（质量总审）: 杂志整体评分层
+4. **P3**（格式扩展）: DOCX / PDF 输出
 
 ---
 

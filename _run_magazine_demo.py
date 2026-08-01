@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-_run_magazine_demo.py - SPDT-005 科学杂志生成器 Demo
-=====================================================
+_run_magazine_demo.py - SPDT-005 科学杂志生成器 Demo (v1.1)
+================================================================
 
-演示：生成一册《科学前沿》2026-Q3 刊
-主题：人工智能与科学研究的交叉突破
+v1.0: 预置模板生成 Blueprint
+v1.1: LLM 增强 Blueprint（自动推荐文章 topic + 编辑手记）
 
 运行：
   python _run_magazine_demo.py
+  python _run_magazine_demo.py --no-llm   # 预置模板模式
 """
 
 import os
 import sys
 import time
+import argparse
 from pathlib import Path
 
-# 强制 UTF-8 输出（避免 GBK 编码问题）
+# 强制 UTF-8 输出
 import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
@@ -43,31 +45,51 @@ def load_magazine_module(name: str):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-llm", action="store_true", help="Use template mode instead of LLM")
+    args = parser.parse_args()
+
+    use_llm = not args.no_llm
+    mode = "LLM-enhanced (v1.1)" if use_llm else "Template-based (v1.0)"
+
     print("=" * 70)
-    print("SPDT-005 Magazine Generator - Demo")
+    print(f"SPDT-005 Magazine Generator - {mode}")
     print("Topic: AI for Science Breakthroughs")
     print("=" * 70)
 
-    # Step 1: 加载蓝图模块
+    # Step 1: Blueprint
     print("\n[Step 1] Loading MagazineBlueprint...")
     bp_mod = load_magazine_module("magazine_blueprint")
 
-    # 生成杂志蓝图
-    blueprint = bp_mod.load_blueprint(
-        domain_topic="人工智能与科学研究的交叉突破",
-        title="科学前沿",
-        issue="2026-Q3",
-        audience="理工科研究生及以上",
-        description="聚焦 AI for Science 领域的最新突破与思考",
-    )
+    if use_llm:
+        gen = bp_mod.MagazineBlueprintGenerator().init_llm()
+        blueprint = gen.generate(
+            domain_topic="人工智能与科学研究的交叉突破",
+            title="科学前沿",
+            issue="2026-Q3",
+            audience="理工科研究生及以上",
+            description="聚焦 AI for Science 领域的最新突破与思考",
+        )
+        if hasattr(blueprint, "_llm_editor_note"):
+            print(f"  LLM Editor note: {blueprint._llm_editor_note[:80]}...")
+    else:
+        blueprint = bp_mod.load_blueprint(
+            domain_topic="人工智能与科学研究的交叉突破",
+            title="科学前沿",
+            issue="2026-Q3",
+            audience="理工科研究生及以上",
+            description="聚焦 AI for Science 领域",
+        )
 
     print(f"  Blueprint ID: {blueprint.blueprint_id}")
-    print(f"  Domain: {blueprint.spec.domain_topic}")
     print(f"  Articles: {len(blueprint.articles)}")
     for art in blueprint.articles:
-        print(f"    [{art.article_role}] {art.topic[:50]} ({art.pipeline_type})")
+        angle = art.constraints.get("angle", "")[:50]
+        print(f"    [{art.article_role:12s}] {art.topic[:50]}")
+        if angle:
+            print(f"                     angle: {angle}")
 
-    # Step 2: 管线编排
+    # Step 2: Orchestration
     print("\n[Step 2] Orchestrating pipelines (parallel)...")
     orch_mod = load_magazine_module("magazine_orchestrator")
     orchestrator = orch_mod.MagazineOrchestrator()
@@ -84,7 +106,7 @@ def main():
             status = f"ERR:{art.error[:50]}"
         print(f"    {status} [{role:15s}] score={art.total_score:5.1f}")
 
-    # Step 3: 产品组装
+    # Step 3: Assembly
     print("\n[Step 3] Assembling magazine...")
     asm_mod = load_magazine_module("magazine_assembler")
     assembler = asm_mod.MagazineAssembler()
@@ -92,9 +114,8 @@ def main():
     artifact = assembler.assemble(run_result, fmt="markdown")
     print(f"  Output: {artifact.output_dir}")
     print(f"  File: magazine_{artifact.issue}.md")
-    print(f"  Articles dir: {artifact.articles_dir}")
 
-    # 质量汇总
+    # Quality summary
     print("\n" + "=" * 70)
     print("Quality Summary")
     print("=" * 70)
@@ -107,7 +128,7 @@ def main():
         if dims_str:
             print(f"        {dims_str}")
 
-    # 保存元数据
+    # Metadata
     import json
     meta_path = artifact.output_dir / "run_summary.json"
     meta_path.write_text(json.dumps(run_result.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8")
