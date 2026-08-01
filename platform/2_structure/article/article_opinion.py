@@ -69,15 +69,27 @@ class OpinionBriefInput:
 
     @classmethod
     def from_brief(cls, brief) -> "OpinionBriefInput":
-        return cls(
-            topic=brief.get("topic", brief.topic) if isinstance(brief, dict) else brief.topic,
-            perspective=brief.get("perspective", "中立") if isinstance(brief, dict) else brief.perspective,
-            event_context=brief.get("event_context", "") if isinstance(brief, dict) else brief.event_context,
-            supporting_signals=brief.get("supporting_signals", []) if isinstance(brief, dict) else brief.supporting_signals,
-            opposing_signals=brief.get("opposing_signals", []) if isinstance(brief, dict) else brief.opposing_signals,
-            rebuttal_points=brief.get("rebuttal_points", []) if isinstance(brief, dict) else brief.rebuttal_points,
-            key_facts=brief.get("key_facts", []) if isinstance(brief, dict) else brief.key_facts,
-        )
+        # Use dict.get() with or-fallback to avoid AttributeError on dict.topic
+        if isinstance(brief, dict):
+            return cls(
+                topic=brief.get("topic") or "",
+                perspective=brief.get("perspective") or "中立",
+                event_context=brief.get("event_context") or "",
+                supporting_signals=brief.get("supporting_signals") or [],
+                opposing_signals=brief.get("opposing_signals") or [],
+                rebuttal_points=brief.get("rebuttal_points") or [],
+                key_facts=brief.get("key_facts") or [],
+            )
+        else:
+            return cls(
+                topic=brief.topic,
+                perspective=brief.perspective,
+                event_context=brief.event_context,
+                supporting_signals=brief.supporting_signals,
+                opposing_signals=brief.opposing_signals,
+                rebuttal_points=brief.rebuttal_points,
+                key_facts=brief.key_facts,
+            )
 
 
 @dataclass
