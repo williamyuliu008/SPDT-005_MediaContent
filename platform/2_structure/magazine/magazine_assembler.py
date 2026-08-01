@@ -4,19 +4,18 @@ magazine_assembler.py — 科学杂志产品组装器
 ============================================
 
 功能：
-  1. 将 MagazineRunResult 组装为完整杂志 Markdown
-  2. 输出 Markdown / DOCX / HTML 格式
-  3. 生成封面、目录、封底
+  1. 将 MagazineRunResult 组装为完整杂志 Markdown / HTML
+  2. 生成封面、目录、正文、封底
 
 使用方式：
-  artifact = MagazineAssembler().assemble(run_result, fmt="docx")
-  artifact.save(output_dir)
+  artifact = MagazineAssembler().assemble(run_result, fmt="html")
+  artifact.save()
 """
 
 from __future__ import annotations
 
 import json
-import uuid
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,16 +25,58 @@ from typing import Optional
 # 数据结构
 # ─────────────────────────────────────────────────────────────────
 
+ROLE_DISPLAY_NAMES = {
+    "cover_story": "封面专题",
+    "explain":      "科学解释",
+    "industry":     "产业透视",
+    "news_brief":   "科技动态",
+    "oped":         "观点交锋",
+}
+
+ROLE_COLORS = {
+    "cover_story": "#f4a261",
+    "explain":      "#2a9d8f",
+    "industry":     "#264653",
+    "news_brief":   "#457b9d",
+    "oped":         "#9b2335",
+}
+
+ROLE_TEXT_COLORS = {
+    "cover_story": "#fff5eb",
+    "explain":      "#e8f5f3",
+    "industry":     "#e8eff1",
+    "news_brief":   "#edf4f8",
+    "oped":         "#fce8ea",
+}
+
+SOURCE_COLORS = {
+    "A": "#198754",
+    "B": "#0d6efd",
+    "C": "#6c757d",
+}
+
+ROLE_ORDER = ["cover_story", "explain", "industry", "news_brief", "oped"]
+
+
+# ─────────────────────────────────────────────────────────────────
+# MagazineArtifact
+# ─────────────────────────────────────────────────────────────────
+
+def REPO_ROOT() -> Path:
+    return Path(__file__).resolve().parents[3]
+
+
 @dataclass
 class MagazineArtifact:
     """杂志交付物"""
     title: str
     issue: str
     full_markdown: str
-    format: str           # markdown / docx / html
+    format: str           # markdown / html
     output_dir: Path
     articles_dir: Path
     metadata: dict
+    full_html: str = ""   # v1.3+ HTML 内容
 
     def save(self, base_dir: Optional[Path] = None) -> Path:
         """保存杂志到指定目录"""
@@ -48,107 +89,46 @@ class MagazineArtifact:
         if self.format == "markdown":
             path = base_dir / f"magazine_{self.issue}.md"
             path.write_text(self.full_markdown, encoding="utf-8")
-            return path
         elif self.format == "html":
-            path = base_dir / f"magazine_{self.issue}.html"
-            path.write_text(self._to_html(), encoding="utf-8")
-            return path
-        elif self.format == "docx":
-            # DOCX 生成依赖 python-docx，fallback 到 Markdown
-            path = base_dir / f"magazine_{self.issue}.md"
-            path.write_text(self.full_markdown, encoding="utf-8")
-            return path
+            # 保存 HTML 杂志
+            html_path = base_dir / f"magazine_{self.issue}.html"
+            html_path.write_text(self.full_html, encoding="utf-8")
+            # 同时保存 Markdown 版本
+            md_path = base_dir / f"magazine_{self.issue}.md"
+            md_path.write_text(self.full_markdown, encoding="utf-8")
+            return html_path
         else:
             raise ValueError(f"Unknown format: {self.format}")
+        return path
 
     def _to_html(self) -> str:
-        """将 Markdown 转换为简单 HTML"""
-        import re
-        md = self.full_markdown
-
-        # 简单的 Markdown → HTML 转换
-        # 标题
-        md = re.sub(r'^# (.+)$', r'<h1>\1</h1>', md, flags=re.MULTILINE)
-        md = re.sub(r'^## (.+)$', r'<h2>\1</h2>', md, flags=re.MULTILINE)
-        md = re.sub(r'^### (.+)$', r'<h3>\1</h3>', md, flags=re.MULTILINE)
-
-        # 段落：连续非空行合成 <p>
-        lines = md.split('\n')
-        result = []
-        in_p = False
-        for line in lines:
-            stripped = line.strip()
-            if stripped.startswith('<h') or stripped.startswith('---'):
-                if in_p:
-                    result.append('</p>')
-                    in_p = False
-                result.append(stripped)
-            elif stripped:
-                if not in_p:
-                    result.append('<p>')
-                    in_p = True
-                result.append(stripped)
-            else:
-                if in_p:
-                    result.append('</p>')
-                    in_p = False
-        if in_p:
-            result.append('</p>')
-
-        body = '\n'.join(result)
-        return f"""<!DOCTYPE html>
-<html lang="zh">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{self.title} {self.issue}</title>
-<style>
-body {{ font-family: "Noto Serif CJK SC", "Source Han Serif CN", serif; max-width: 800px; margin: 2em auto; padding: 0 1em; line-height: 1.8; color: #333; }}
-h1 {{ font-size: 1.8em; border-bottom: 2px solid #333; padding-bottom: 0.3em; }}
-h2 {{ font-size: 1.4em; margin-top: 1.5em; color: #444; }}
-h3 {{ font-size: 1.1em; color: #555; }}
-blockquote {{ border-left: 4px solid #ccc; margin: 1em 0; padding: 0.5em 1em; background: #f9f9f9; }}
-hr {{ border: none; border-top: 1px solid #ccc; margin: 2em 0; }}
-</style>
-</head>
-<body>
-{body}
-</body>
-</html>"""
+        """将 Markdown 转换为简单 HTML（已废弃，使用 MagazineAssemblerV2）"""
+        return self.full_html
 
 
 # ─────────────────────────────────────────────────────────────────
 # MagazineAssembler
 # ─────────────────────────────────────────────────────────────────
 
-ROLE_DISPLAY_NAMES = {
-    "cover_story": "封面专题",
-    "explain":      "科学解释",
-    "industry":     "产业透视",
-    "news_brief":   "科技动态",
-    "oped":         "观点交锋",
-}
-
-
 class MagazineAssembler:
     """
     杂志产品组装器。
 
     将 MagazineRunResult 中的各篇文章组装为完整杂志，
-    支持 Markdown / HTML / DOCX 输出。
+    支持 Markdown / HTML 输出。
     """
 
     def assemble(
         self,
         run_result: "MagazineRunResult",
-        fmt: str = "markdown",
+        fmt: str = "html",
     ) -> MagazineArtifact:
         """
         组装杂志。
 
         参数：
           run_result：MagazineRunResult（Orchestrator 输出）
-          fmt：输出格式，markdown / html / docx
+          fmt：输出格式，markdown / html
 
         返回：
           MagazineArtifact
@@ -156,24 +136,24 @@ class MagazineAssembler:
         spec = run_result.spec
         articles = run_result.articles
         issue = spec.get("issue", "unknown")
-
-        # 生成杂志 slug
         title_slug = spec.get("title", "科学前沿").replace("/", "_")
 
-        # 渲染各部分
+        # ── Markdown 部分 ──────────────────────────────────────
         cover_md = self._render_cover(spec, run_result)
         toc_md = self._render_toc(articles)
         articles_md = []
-        for role, article_result in articles.items():
-            md = self._render_article(role, article_result)
-            articles_md.append(md)
+        for role in ROLE_ORDER:
+            if role in articles:
+                md = self._render_article(role, articles[role])
+                articles_md.append(md)
         backcover_md = self._render_backcover(spec, run_result)
-
-        # 合并
         parts = [cover_md, toc_md] + articles_md + [backcover_md]
         full_md = "\n\n---\n\n".join(parts)
 
-        # 元数据
+        # ── HTML 部分 ────────────────────────────────────────────
+        full_html = self._render_full_html(run_result)
+
+        # ── 元数据 ────────────────────────────────────────────
         metadata = {
             "run_id": run_result.run_id,
             "blueprint_id": run_result.blueprint_id,
@@ -183,6 +163,7 @@ class MagazineAssembler:
             "issue": issue,
             "audience": spec.get("audience", ""),
             "publication_date": spec.get("publication_date", ""),
+            "description": spec.get("description", ""),
             "all_passed": run_result.all_passed,
             "articles": {
                 role: {
@@ -206,19 +187,20 @@ class MagazineAssembler:
             output_dir=output_dir,
             articles_dir=output_dir / "articles",
             metadata=metadata,
+            full_html=full_html,
         )
 
-        # 保存杂志主文件
+        # 保存杂志
         artifact.save()
 
-        # 保存各篇文章独立文件
+        # 保存各篇文章 Markdown
         artifact.articles_dir.mkdir(parents=True, exist_ok=True)
-        role_order = ["cover_story", "explain", "industry", "news_brief", "oped"]
-        for i, role in enumerate(role_order):
+        for i, role in enumerate(ROLE_ORDER):
             if role in articles:
                 art = articles[role]
                 md = art.article.get("markdown", "") if isinstance(art.article, dict) else str(art.article.get("markdown", ""))
-                art_path = artifact.articles_dir / f"{i+1:02d}_{role}_{art.topic[:20].replace('/', '_')}.md"
+                safe_name = re.sub(r'[\\/:*?"<>|]', '_', art.topic)[:30]
+                art_path = artifact.articles_dir / f"{i+1:02d}_{role}_{safe_name}.md"
                 art_path.write_text(md, encoding="utf-8")
 
         # 保存元数据
@@ -227,18 +209,17 @@ class MagazineAssembler:
 
         return artifact
 
+    # ── Markdown 渲染（保持向后兼容）────────────────────────────
+
     def _render_cover(self, spec: dict, run_result: "MagazineRunResult") -> str:
-        """渲染杂志封面"""
         title = spec.get("title", "科学前沿")
         issue = spec.get("issue", "")
         domain_topic = spec.get("domain_topic", "")
         audience = spec.get("audience", "")
         publication_date = spec.get("publication_date", datetime.now(timezone.utc).strftime("%Y-%m-%d"))
-        all_passed = run_result.all_passed
-
         passed = run_result.get_passed_count()
         total = len(run_result.articles)
-        status = "全部通过" if all_passed else f"{passed}/{total} 通过"
+        status = "全部通过" if run_result.all_passed else f"{passed}/{total} 通过"
 
         return f"""# {title}
 
@@ -260,26 +241,21 @@ class MagazineAssembler:
 """
 
     def _render_toc(self, articles: dict) -> str:
-        """渲染杂志目录"""
         lines = ["## 目录\n"]
-        role_order = ["cover_story", "explain", "industry", "news_brief", "oped"]
-
-        for i, role in enumerate(role_order):
+        for i, role in enumerate(ROLE_ORDER):
             if role not in articles:
                 continue
             art = articles[role]
             role_name = ROLE_DISPLAY_NAMES.get(role, role)
             score = art.total_score
-            status_icon = "✅" if art.passed else "⚠️"
+            status_icon = "[OK]" if art.passed else "[REVISE]"
             lines.append(
                 f"{i+1}. **{role_name}** — {art.topic[:40]}"
                 f" {status_icon} [{score:.0f}分]"
             )
-
         return "\n".join(lines)
 
     def _render_article(self, role: str, article_result: "ArticleRunResult") -> str:
-        """渲染单篇文章（含 scorecard 摘要头）"""
         role_name = ROLE_DISPLAY_NAMES.get(role, role)
         topic = article_result.topic
         total_score = article_result.total_score
@@ -287,13 +263,11 @@ class MagazineAssembler:
         dims = article_result.scorecard.get("dimensions", {}) if isinstance(article_result.scorecard, dict) else {}
         gray_zones = article_result.gray_zones or []
 
-        # 提取 markdown
         if isinstance(article_result.article, dict):
             md = article_result.article.get("markdown", "")
         else:
             md = str(article_result.article)
 
-        # 生成评分头
         dims_str = " | ".join([
             f"{k}: {v.get('score', v) if isinstance(v, dict) else v}"
             for k, v in list(dims.items())[:5]
@@ -306,21 +280,18 @@ class MagazineAssembler:
         ]
         if gray_zones:
             header.append(f"**注意**：{'；'.join(str(g) for g in gray_zones[:3])}")
-
         header.append("\n---")
         return "\n".join(header) + "\n\n" + md
 
     def _render_backcover(self, spec: dict, run_result: "MagazineRunResult") -> str:
-        """渲染杂志封底"""
         title = spec.get("title", "科学前沿")
-        issue = spec.get("issue", "")
-        audience = spec.get("audience", "")
-
-        # 文章评分汇总
         article_lines = []
-        for role, art in sorted(run_result.articles.items()):
+        for role in ROLE_ORDER:
+            if role not in run_result.articles:
+                continue
+            art = run_result.articles[role]
             role_name = ROLE_DISPLAY_NAMES.get(role, role)
-            status = "✅" if art.passed else "⚠️"
+            status = "[OK]" if art.passed else "[REVISE]"
             article_lines.append(f"- {role_name} [{art.total_score:.0f}分] {status}")
 
         return f"""---
@@ -328,14 +299,11 @@ class MagazineAssembler:
 ## 杂志信息
 
 **杂志**：{title}
-**期号**：{issue}
-**目标读者**：{audience}
+**质量**：{'全部通过，可发布' if run_result.all_passed else '部分文章需修订'}
 
 ### 质量报告
 
 {chr(10).join(article_lines)}
-
-**总体状态**：{'✅ 全部通过，可发布' if run_result.all_passed else '⚠️ 部分文章需修订'}
 
 ---
 
@@ -343,12 +311,886 @@ class MagazineAssembler:
 *编辑手记：本杂志由 AI 自动生成，内容仅供参考，不构成投资或政策建议。*
 """
 
+    # ── HTML 渲染 ─────────────────────────────────────────────
+
+    def _render_full_html(self, run_result: "MagazineRunResult") -> str:
+        """渲染完整 HTML 杂志"""
+        spec = run_result.spec
+        articles = run_result.articles
+
+        cover_html = self._render_html_cover(spec, run_result)
+        toc_html = self._render_html_toc(articles)
+        article_parts = []
+        for role in ROLE_ORDER:
+            if role in articles:
+                article_parts.append(self._render_html_article(role, articles[role]))
+        backcover_html = self._render_html_backcover(spec, run_result)
+
+        articles_html = "\n".join(article_parts)
+
+        return HTML_TEMPLATE.format(
+            title=spec.get("title", "科学前沿"),
+            issue=spec.get("issue", ""),
+            domain_topic=spec.get("domain_topic", ""),
+            publication_date=spec.get("publication_date", datetime.now(timezone.utc).strftime("%Y-%m-%d")),
+            audience=spec.get("audience", ""),
+            description=spec.get("description", ""),
+            cover_html=cover_html,
+            toc_html=toc_html,
+            articles_html=articles_html,
+            backcover_html=backcover_html,
+        )
+
+    def _render_html_cover(self, spec: dict, run_result: "MagazineRunResult") -> str:
+        """渲染 HTML 封面"""
+        title = spec.get("title", "科学前沿")
+        issue = spec.get("issue", "")
+        domain_topic = spec.get("domain_topic", "")
+        audience = spec.get("audience", "")
+        publication_date = spec.get("publication_date", "")
+        description = spec.get("description", "")
+        passed = run_result.get_passed_count()
+        total = len(run_result.articles)
+
+        # 从 blueprint 获取 editor_note（如果存在）
+        editor_note = description or "本期聚焦科技前沿，呈现领域的最新突破与深度思考。"
+        status_text = "全部通过" if run_result.all_passed else f"{passed}/{total} 通过"
+
+        return f"""
+    <div class="cover">
+        <div class="cover-inner">
+            <div class="cover-issue">{issue}</div>
+            <h1 class="cover-title">{title}</h1>
+            <div class="cover-divider"></div>
+            <p class="cover-topic">{domain_topic}</p>
+            <div class="cover-editor-note">
+                <span class="cover-editor-label">编辑手记</span>
+                <p>{editor_note}</p>
+            </div>
+            <div class="cover-divider"></div>
+            <div class="cover-meta">
+                <div class="cover-meta-item">
+                    <span class="meta-label">目标读者</span>
+                    <span class="meta-value">{audience or '科技爱好者'}</span>
+                </div>
+                <div class="cover-meta-item">
+                    <span class="meta-label">发布日期</span>
+                    <span class="meta-value">{publication_date}</span>
+                </div>
+                <div class="cover-meta-item">
+                    <span class="meta-label">质量状态</span>
+                    <span class="meta-value meta-status">{status_text}</span>
+                </div>
+            </div>
+            <div class="cover-system">
+                SPDT-005 AI Magazine System · {publication_date}
+            </div>
+        </div>
+    </div>"""
+
+    def _render_html_toc(self, articles: dict) -> str:
+        """渲染 HTML 目录"""
+        items = []
+        for i, role in enumerate(ROLE_ORDER):
+            if role not in articles:
+                continue
+            art = articles[role]
+            role_name = ROLE_DISPLAY_NAMES.get(role, role)
+            role_color = ROLE_COLORS.get(role, "#666")
+            role_text_color = ROLE_TEXT_COLORS.get(role, "#fff")
+            score = art.total_score
+            score_class = "score-high" if score >= 90 else "score-mid" if score >= 80 else "score-low"
+            score_color = "#198754" if score >= 90 else "#0d6efd" if score >= 80 else "#dc3545"
+            passed_icon = "OK" if art.passed else "REV"
+
+            items.append(f"""
+            <div class="toc-item">
+                <div class="toc-item-num">{i+1}</div>
+                <div class="toc-item-badge" style="background:{role_color};color:{role_text_color}">{role_name}</div>
+                <div class="toc-item-content">
+                    <span class="toc-item-title">{art.topic}</span>
+                </div>
+                <div class="toc-item-score">
+                    <span class="{score_class}" style="color:{score_color}">{score:.0f}</span>
+                    <span class="toc-item-status">{passed_icon}</span>
+                </div>
+            </div>""")
+
+        return f"""
+    <div class="toc">
+        <div class="toc-header">
+            <h2>目录</h2>
+            <div class="toc-issue">Contents</div>
+        </div>
+        <div class="toc-list">
+            {''.join(items)}
+        </div>
+    </div>"""
+
+    def _render_html_article(self, role: str, article_result: "ArticleRunResult") -> str:
+        """渲染单篇 HTML 文章"""
+        role_name = ROLE_DISPLAY_NAMES.get(role, role)
+        role_color = ROLE_COLORS.get(role, "#666")
+        role_text_color = ROLE_TEXT_COLORS.get(role, "#fff")
+        topic = article_result.topic
+        total_score = article_result.total_score
+        dims = article_result.scorecard.get("dimensions", {}) if isinstance(article_result.scorecard, dict) else {}
+        gray_zones = article_result.gray_zones or []
+
+        # 提取 Markdown
+        if isinstance(article_result.article, dict):
+            md = article_result.article.get("markdown", "")
+        else:
+            md = str(article_result.article)
+
+        # 解析 Markdown 为 HTML
+        body_html = self._parse_markdown_to_html(md, role_color)
+
+        # 维度字符串
+        dims_parts = []
+        for k, v in list(dims.items())[:5]:
+            val = v.get("score", v) if isinstance(v, dict) else v
+            dims_parts.append(f'<span class="dim-chip">{k}={val}</span>')
+
+        dims_html = "".join(dims_parts)
+
+        # 注意
+        notice_html = ""
+        if gray_zones:
+            notices = [str(g)[:80] for g in gray_zones[:2]]
+            notice_html = f'<div class="article-notice">{" ".join(["<span>"+n+"</span>" for n in notices])}</div>'
+
+        return f"""
+    <article class="article role-{role}">
+        <header class="article-header" style="--role-color:{role_color}">
+            <div class="article-role-badge" style="background:{role_color};color:{role_text_color}">{role_name}</div>
+            <h1 class="article-title">{topic}</h1>
+            <div class="article-meta">
+                <span class="article-score">{total_score:.1f}<small>/100</small></span>
+                <div class="article-dims">{dims_html}</div>
+            </div>
+            {notice_html}
+        </header>
+        <div class="article-body">
+            {body_html}
+        </div>
+        <div class="article-footer">
+            <span class="article-word-count">约 {self._count_words(md)} 字</span>
+        </div>
+    </article>"""
+
+    def _render_html_backcover(self, spec: dict, run_result: "MagazineRunResult") -> str:
+        """渲染 HTML 封底"""
+        title = spec.get("title", "科学前沿")
+        issue = spec.get("issue", "")
+
+        # 下期期号
+        try:
+            year, q = issue.split("-Q")
+            next_q = int(q) % 4 + 1
+            next_year = year if int(q) < 4 else str(int(year) + 1)
+            next_issue = f"{next_year}-Q{next_q}"
+        except Exception:
+            next_issue = "下期"
+
+        article_summary = []
+        for role in ROLE_ORDER:
+            if role not in run_result.articles:
+                continue
+            art = run_result.articles[role]
+            role_name = ROLE_DISPLAY_NAMES.get(role, role)
+            role_color = ROLE_COLORS.get(role, "#666")
+            score = art.total_score
+            article_summary.append(
+                f'<div class="summary-item"><span class="summary-badge" style="background:{role_color}">{role_name}</span>'
+                f'<span>{art.topic[:30]}</span><span class="summary-score">{score:.0f}</span></div>'
+            )
+
+        return f"""
+    <div class="backcover">
+        <div class="backcover-divider">◆ ◆ ◆</div>
+        <h2 class="backcover-heading">本期总结</h2>
+        <div class="backcover-summary">
+            {''.join(article_summary)}
+        </div>
+        <div class="backcover-divider">◆ ◆ ◆</div>
+        <h2 class="backcover-heading">下期预告</h2>
+        <div class="backcover-next">
+            <span class="next-badge">敬请期待</span>
+            <p>《{title}》{next_issue}：更多前沿科技话题，即将呈现。</p>
+        </div>
+        <div class="backcover-footer">
+            <div class="backcover-copyright">
+                © {datetime.now(timezone.utc).year} {title} · SPDT-005 AI Magazine System<br>
+                本杂志内容由 AI 自动生成，仅供参考，不构成任何机构立场。
+            </div>
+        </div>
+    </div>"""
+
+    # ── Markdown → HTML 解析 ─────────────────────────────────
+
+    def _parse_markdown_to_html(self, md: str, role_color: str = "#666") -> str:
+        """将文章 Markdown 解析为带角色的 HTML"""
+        lines = md.split("\n")
+        html_parts = []
+        i = 0
+        in_paragraph = False
+        paragraph_buffer = []
+
+        def flush_paragraph():
+            nonlocal paragraph_buffer, in_paragraph
+            if paragraph_buffer:
+                text = " ".join(paragraph_buffer)
+                text = self._parse_inline(text)
+                html_parts.append(f"<p>{text}</p>")
+                paragraph_buffer = []
+            in_paragraph = False
+
+        while i < len(lines):
+            line = lines[i]
+            stripped = line.strip()
+
+            # 标题
+            if stripped.startswith("# ") and not stripped.startswith("## "):
+                flush_paragraph()
+                title_text = stripped[2:].strip()
+                html_parts.append(f'<h2 class="section-heading" style="--role-color:{role_color}">{self._parse_inline(title_text)}</h2>')
+                i += 1
+                continue
+
+            # 二级标题
+            if stripped.startswith("## "):
+                flush_paragraph()
+                title_text = stripped[3:].strip()
+                html_parts.append(f'<h3 class="subsection-heading" style="--role-color:{role_color}">{self._parse_inline(title_text)}</h3>')
+                i += 1
+                continue
+
+            # 引用块（关键术语等）
+            if stripped.startswith(">"):
+                flush_paragraph()
+                block_lines = []
+                while i < len(lines) and lines[i].strip().startswith(">"):
+                    block_lines.append(lines[i].strip()[1:].strip())
+                    i += 1
+                block_text = " | ".join(block_lines)
+                html_parts.append(f'<div class="key-terms" style="--role-color:{role_color}">{self._parse_inline(block_text)}</div>')
+                continue
+
+            # 分隔线
+            if stripped.startswith("---") or stripped.startswith("***"):
+                flush_paragraph()
+                html_parts.append('<div class="article-divider"></div>')
+                i += 1
+                continue
+
+            # 空行
+            if not stripped:
+                flush_paragraph()
+                i += 1
+                continue
+
+            # 普通段落
+            if stripped:
+                # 处理列表
+                if stripped.startswith("- ") or re.match(r"^\d+\. ", stripped):
+                    flush_paragraph()
+                    html_parts.append(f'<div class="list-item">{self._parse_inline(stripped)}</div>')
+                    i += 1
+                    continue
+                paragraph_buffer.append(stripped)
+                in_paragraph = True
+
+            i += 1
+
+        flush_paragraph()
+        return "\n".join(html_parts)
+
+    def _parse_inline(self, text: str) -> str:
+        """解析行内格式：加粗、斜体、来源标注"""
+        if not text:
+            return ""
+
+        # 来源标注 [A] [A/同行评审] → 上标样式
+        def source_replace(m):
+            letter = m.group(1)
+            color = SOURCE_COLORS.get(letter, "#666")
+            label_map = {"A": "同行评审", "B": "arXiv预印本", "C": "科普媒体"}
+            label = label_map.get(letter, letter)
+            return f'<sup class="source-ref" style="color:{color}" title="{label}">[{letter}]</sup>'
+
+        text = re.sub(r'\[([ABC])\]', source_replace, text)
+        text = re.sub(r'\[([ABC])/[^]]+\]', source_replace, text)
+
+        # 加粗 **text**
+        text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+
+        # 斜体 *text*
+        text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
+
+        return text
+
+    def _count_words(self, md: str) -> int:
+        """估算中文字数"""
+        import re
+        # 移除 Markdown 语法符号
+        cleaned = re.sub(r'[#*>\-\[\]()`]', '', md)
+        # 统计汉字和英文单词
+        chinese = re.findall(r'[\u4e00-\u9fff]', cleaned)
+        english = re.findall(r'[a-zA-Z]+', cleaned)
+        return len(chinese) + sum(len(w) for w in english)
+
 
 # ─────────────────────────────────────────────────────────────────
-# 路径引用（延迟求值，避免模块加载顺序问题）
+# HTML 杂志模板
 # ─────────────────────────────────────────────────────────────────
 
-def REPO_ROOT() -> Path:
-    # magazine_assembler.py 位于 platform/2_structure/magazine/，
-    # 需要 parents[3] 回到 SPDT-005_MediaContent
-    return Path(__file__).resolve().parents[3]
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title} {issue}</title>
+<style>
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+:root {{
+    --font-serif: "Noto Serif SC", "Source Han Serif CN", "SimSun", serif;
+    --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", monospace;
+    --line-height: 1.85;
+    --max-width: 780px;
+    --color-bg: #fefefe;
+    --color-text: #2c2c2c;
+    --color-text-muted: #6c757d;
+    --color-border: #dee2e6;
+    --color-border-light: #f0f0f0;
+    --color-quote-bg: #f8f9fa;
+    --color-cover-bg: #1a1a2e;
+    --color-cover-text: #e8e8f0;
+    --color-cover-accent: #e94560;
+}}
+html {{
+    font-size: 16px;
+    scroll-behavior: smooth;
+}}
+body {{
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: var(--line-height);
+    -webkit-font-smoothing: antialiased;
+}}
+::selection {{
+    background: rgba(233, 69, 96, 0.15);
+    color: inherit;
+}}
+
+/* ── Layout ──────────────────────────────────────────── */
+.magazine-container {{
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}}
+
+/* ── 封面 ────────────────────────────────────────────── */
+.cover {{
+    background: var(--color-cover-bg);
+    color: var(--color-cover-text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}}
+.cover::before {{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(233,69,96,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(42,157,143,0.10) 0%, transparent 50%);
+    pointer-events: none;
+}}
+.cover-inner {{
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}}
+.cover-issue {{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(232,232,240,0.5);
+    margin-bottom: 1.5rem;
+}}
+.cover-title {{
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 8vw, 4.5rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}}
+.cover-divider {{
+    width: 80px;
+    height: 2px;
+    background: var(--color-cover-accent);
+    margin: 2rem auto;
+}}
+.cover-topic {{
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--color-cover-accent);
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}}
+.cover-editor-note {{
+    background: rgba(255,255,255,0.06);
+    border-left: 3px solid var(--color-cover-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    margin: 1.5rem 0;
+}}
+.cover-editor-label {{
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(232,232,240,0.4);
+    margin-bottom: 0.5rem;
+}}
+.cover-editor-note p {{
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(232,232,240,0.85);
+}}
+.cover-meta {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+    text-align: left;
+}}
+.cover-meta-item {{
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}}
+.meta-label {{
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(232,232,240,0.4);
+    margin-bottom: 0.25rem;
+}}
+.meta-value {{
+    font-size: 0.85rem;
+    color: rgba(232,232,240,0.9);
+}}
+.meta-status {{
+    color: #4ade80;
+}}
+.cover-system {{
+    font-size: 0.7rem;
+    color: rgba(232,232,240,0.3);
+    letter-spacing: 0.1em;
+    margin-top: 2rem;
+}}
+
+/* ── 目录 ────────────────────────────────────────────── */
+.toc {{
+    max-width: var(--max-width);
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+}}
+.toc-header {{
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-border);
+}}
+.toc-header h2 {{
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text);
+}}
+.toc-issue {{
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+}}
+.toc-list {{
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}}
+.toc-item {{
+    display: grid;
+    grid-template-columns: 2rem auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: box-shadow 0.2s;
+}}
+.toc-item:hover {{
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}}
+.toc-item-num {{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    font-weight: 600;
+}}
+.toc-item-badge {{
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+}}
+.toc-item-title {{
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.4;
+}}
+.toc-item-score {{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}}
+.toc-item-score .score-high,
+.toc-item-score .score-mid,
+.toc-item-score .score-low {{
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+}}
+.toc-item-status {{
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+}}
+
+/* ── 文章 ────────────────────────────────────────────── */
+.article {{
+    max-width: var(--max-width);
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+}}
+.article-header {{
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-border);
+    position: relative;
+}}
+.article-header::before {{
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--role-color, #666);
+    border-radius: 2px;
+}}
+.article-role-badge {{
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+}}
+.article-title {{
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+}}
+.article-meta {{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}}
+.article-score {{
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-text);
+}}
+.article-score small {{
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-left: 0.1rem;
+}}
+.article-dims {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}}
+.dim-chip {{
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-quote-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+}}
+.article-notice {{
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}}
+.article-notice span {{
+    font-size: 0.72rem;
+    color: #b55400;
+    background: #fff3e0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ffcc80;
+}}
+
+/* ── 正文 ────────────────────────────────────────────── */
+.article-body {{
+    font-size: 1rem;
+    line-height: var(--line-height);
+    color: var(--color-text);
+}}
+.section-heading {{
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 2.5rem 0 1rem;
+    padding-left: 0.75rem;
+    border-left: 4px solid var(--role-color, #666);
+    line-height: 1.4;
+}}
+.subsection-heading {{
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a4a4a;
+    margin: 2rem 0 0.75rem;
+    border-bottom: 1px solid var(--color-border-light);
+    padding-bottom: 0.4rem;
+}}
+.article-body p {{
+    margin-bottom: 1.2em;
+    text-align: justify;
+    /* 控制每行字符数，增强可读性 */
+    overflow-wrap: break-word;
+    /* 首行缩进 */
+    text-indent: 2em;
+}}
+.article-body p:first-of-type {{
+    text-indent: 0;
+}}
+.key-terms {{
+    background: var(--color-quote-bg);
+    border-left: 4px solid var(--role-color, #666);
+    padding: 0.75rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.88rem;
+    color: #4a4a4a;
+    line-height: 1.7;
+}}
+.article-divider {{
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 2.5rem 0;
+}}
+.list-item {{
+    margin: 0.5rem 0;
+    padding-left: 1.5em;
+    position: relative;
+    font-size: 0.95rem;
+}}
+.list-item::before {{
+    content: '·';
+    position: absolute;
+    left: 0.5em;
+    color: var(--role-color, #666);
+    font-weight: 700;
+}}
+.article-footer {{
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border-light);
+    text-align: right;
+}}
+.article-word-count {{
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+}}
+
+/* ── 来源标注 ──────────────────────────────────────── */
+.source-ref {{
+    font-family: var(--font-mono);
+    font-size: 0.7em;
+    font-weight: 700;
+    vertical-align: super;
+    cursor: help;
+    text-decoration: none;
+    padding: 0 0.1em;
+}}
+
+/* ── 封底 ────────────────────────────────────────────── */
+.backcover {{
+    max-width: var(--max-width);
+    margin: 0 auto 3rem;
+    padding: 3rem 1.5rem;
+    background: var(--color-cover-bg);
+    color: var(--color-cover-text);
+    text-align: center;
+}}
+.backcover-divider {{
+    color: rgba(232,232,240,0.3);
+    letter-spacing: 0.5em;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+}}
+.backcover-heading {{
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: rgba(232,232,240,0.8);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+}}
+.backcover-summary {{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}}
+.summary-item {{
+    display: grid;
+    grid-template-columns: 5rem 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: rgba(232,232,240,0.7);
+}}
+.summary-badge {{
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+}}
+.summary-score {{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #4ade80;
+    white-space: nowrap;
+}}
+.backcover-next {{
+    margin: 1.5rem 0;
+}}
+.next-badge {{
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--color-cover-accent);
+    color: #fff;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+}}
+.backcover-next p {{
+    font-size: 0.9rem;
+    color: rgba(232,232,240,0.7);
+    line-height: 1.6;
+}}
+.backcover-footer {{
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(232,232,240,0.1);
+}}
+.backcover-copyright {{
+    font-size: 0.72rem;
+    color: rgba(232,232,240,0.3);
+    line-height: 1.7;
+}}
+
+/* ── 响应式 ──────────────────────────────────────────── */
+@media (max-width: 600px) {{
+    .cover {{ min-height: auto; padding: 2.5rem 1.5rem; }}
+    .cover-title {{ font-size: 2.5rem; }}
+    .cover-meta {{ grid-template-columns: 1fr; }}
+    .toc-item {{ grid-template-columns: 2rem 1fr; }}
+    .toc-item-badge, .toc-item-score {{ display: none; }}
+    .summary-item {{ grid-template-columns: 1fr; gap: 0.25rem; }}
+}}
+
+/* ── 打印优化 ────────────────────────────────────────── */
+@media print {{
+    body {{ background: #fff; color: #000; }}
+    .cover {{ background: #1a1a2e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+    .article-role-badge, .toc-item-badge, .dim-chip, .backcover {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+    .article, .toc, .backcover {{ page-break-inside: avoid; }}
+    .cover {{ page-break-after: always; }}
+}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- 封面 -->
+{cover_html}
+
+<!-- 目录 -->
+{toc_html}
+
+<!-- 文章列表 -->
+{articles_html}
+
+<!-- 封底 -->
+{backcover_html}
+
+</body>
+</html>"""

@@ -111,7 +111,7 @@ def main():
     asm_mod = load_magazine_module("magazine_assembler")
     assembler = asm_mod.MagazineAssembler()
 
-    artifact = assembler.assemble(run_result, fmt="markdown")
+    artifact = assembler.assemble(run_result, fmt="html")
     print(f"  Output: {artifact.output_dir}")
     print(f"  File: magazine_{artifact.issue}.md")
 
