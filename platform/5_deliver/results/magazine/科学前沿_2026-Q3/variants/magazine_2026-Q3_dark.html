@@ -4,10 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>科学前沿 2026-Q3 — 暗色模式 (Wired)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 /* 暗色模式 (Wired) */
 
-/* ── Dark Mode: Wired / 科技暗色风格 ──────────────────────────── */
+/* ── Dark Mode: Wired / 科技暗色风格 (v1.5) ─────────────── */
 :root {
     --font-serif: "Noto Serif SC", "Source Han Serif CN", "SimSun", serif;
     --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -24,70 +27,32 @@
     --color-cover-text: #fff;
     --color-cover-accent: #ff3c00;
 }
-body {
-    font-family: var(--font-sans);
-    background: var(--color-bg);
-    color: var(--color-text);
-    line-height: var(--line-height);
-    -webkit-font-smoothing: antialiased;
-}
+body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); line-height: var(--line-height); -webkit-font-smoothing: antialiased; }
 ::selection { background: rgba(255,60,0,0.2); color: inherit; }
 .magazine-container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
 
-/* 封面 */
-.cover {
-    background: var(--color-cover-bg);
-    color: var(--color-cover-text);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    margin-bottom: 4rem;
-    position: relative;
-    overflow: hidden;
-}
-.cover::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse at 20% 50%, rgba(255,60,0,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 30%, rgba(255,200,0,0.06) 0%, transparent 50%);
-    pointer-events: none;
-}
+.cover { background: var(--color-cover-bg); color: var(--color-cover-text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; margin-bottom: 4rem; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(255,60,0,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 30%, rgba(255,200,0,0.06) 0%, transparent 50%); pointer-events: none; }
 .cover-inner { max-width: 600px; text-align: center; position: relative; z-index: 1; }
 .cover-issue { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2rem; }
 .cover-title { font-family: var(--font-serif); font-size: clamp(3rem, 9vw, 5.5rem); font-weight: 900; color: #fff; letter-spacing: 0.02em; line-height: 1; margin-bottom: 1.5rem; text-transform: uppercase; }
-.cover-divider { width: 120px; height: 4px; background: var(--color-cover-accent); margin: 2rem auto; }
 .cover-topic { font-family: var(--font-serif); font-size: clamp(1.1rem, 3vw, 1.4rem); color: var(--color-cover-accent); font-weight: 600; line-height: 1.5; margin-bottom: 1rem; }
 .cover-editor-note { background: rgba(255,255,255,0.03); border-left: 3px solid var(--color-cover-accent); padding: 1rem 1.5rem; text-align: left; margin: 1.5rem 0; }
 .cover-editor-label { display: block; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; }
 .cover-editor-note p { font-size: 0.9rem; line-height: 1.7; color: rgba(255,255,255,0.7); }
-.cover-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin: 1.5rem 0; text-align: left; }
-.cover-meta-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 0.75rem 1rem; }
-.meta-label { display: block; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.25rem; }
-.meta-value { font-size: 0.85rem; color: rgba(255,255,255,0.85); }
-.meta-status { color: #ff6b35; }
-.cover-system { font-size: 0.6rem; color: rgba(255,255,255,0.15); letter-spacing: 0.15em; margin-top: 2rem; text-transform: uppercase; }
+.cover-date { font-size: 0.6rem; color: rgba(255,255,255,0.15); letter-spacing: 0.15em; margin-top: 2rem; text-transform: uppercase; }
 
-/* 目录 */
 .toc { max-width: var(--max-width); margin: 0 auto 3rem; padding: 0 1.5rem; }
 .toc-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); }
 .toc-header h2 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 .toc-issue { font-size: 0.7rem; color: var(--color-text-muted); font-family: var(--font-mono); }
 .toc-list { display: flex; flex-direction: column; gap: 0; }
-.toc-item { display: grid; grid-template-columns: 2.5rem 1fr auto; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border-light); }
-.toc-item:last-child { border-bottom: none; }
+.toc-item { display: grid; grid-template-columns: 2.5rem 1fr; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border-light); }
 .toc-item:hover { background: rgba(255,255,255,0.02); margin: 0 -0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; border-radius: 4px; }
 .toc-item-num { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-cover-accent); text-align: center; font-weight: 700; }
 .toc-item-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.25rem 0.6rem; border-radius: 2px; white-space: nowrap; }
 .toc-item-title { font-family: var(--font-serif); font-size: 1rem; font-weight: 500; color: #ccc; line-height: 1.4; }
-.toc-item-score { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
-.toc-item-score .score-high, .toc-item-score .score-mid, .toc-item-score .score-low { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; }
-.toc-item-status { font-size: 0.6rem; color: #ff6b35; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
-/* 文章 */
 .article { max-width: var(--max-width); margin: 0 auto 3rem; padding: 0 1.5rem; }
 .article-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); position: relative; }
 .article-header::before { content: ''; position: absolute; bottom: -1px; left: 0; width: 40px; height: 2px; background: var(--role-color, #666); }
@@ -101,7 +66,6 @@ body {
 .article-notice { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .article-notice span { font-size: 0.72rem; color: #ff8c00; background: rgba(255,140,0,0.1); padding: 0.15rem 0.5rem; border-radius: 2px; border: 1px solid rgba(255,140,0,0.3); }
 
-/* 正文 */
 .article-body { font-size: 1rem; line-height: var(--line-height); color: #ccc; }
 .section-heading { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: #f0f0f0; margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--role-color, #666); line-height: 1.4; }
 .subsection-heading { font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600; color: #aaa; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--color-border-light); padding-bottom: 0.3rem; }
@@ -115,7 +79,6 @@ body {
 .article-word-count { font-size: 0.75rem; color: #666; font-family: var(--font-mono); }
 .source-ref { font-family: var(--font-mono); font-size: 0.7em; font-weight: 700; vertical-align: super; cursor: help; text-decoration: none; padding: 0 0.1em; color: var(--role-color, #888); }
 
-/* 封底 */
 .backcover { max-width: var(--max-width); margin: 0 auto 3rem; padding: 4rem 2rem; background: var(--color-cover-bg); color: var(--color-cover-text); text-align: center; border-top: 4px solid var(--color-cover-accent); }
 .backcover-divider { color: rgba(255,255,255,0.1); letter-spacing: 0.5em; margin: 2rem 0; font-size: 0.9rem; }
 .backcover-heading { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
@@ -132,9 +95,8 @@ body {
 @media (max-width: 600px) {
     .cover { min-height: auto; padding: 3rem 1.5rem; }
     .cover-title { font-size: 2.5rem; }
-    .cover-meta { grid-template-columns: 1fr; }
     .toc-item { grid-template-columns: 2rem 1fr; }
-    .toc-item-badge, .toc-item-score { display: none; }
+    .toc-item-badge { display: none; }
 }
 @media print {
     body { background: #fff; color: #000; }
@@ -143,7 +105,6 @@ body {
 }
 
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
 
@@ -154,30 +115,12 @@ body {
         <div class="cover-inner">
             <div class="cover-issue">2026-Q3</div>
             <h1 class="cover-title">科学前沿</h1>
-            <div class="cover-divider"></div>
             <p class="cover-topic">人工智能与科学研究的交叉突破</p>
             <div class="cover-editor-note">
                 <span class="cover-editor-label">编辑手记</span>
-                <p>本期聚焦科技前沿，呈现领域的最新突破与深度思考。</p>
+                <p>聚焦科技前沿，呈现领域的最新突破与深度思考。</p>
             </div>
-            <div class="cover-divider"></div>
-            <div class="cover-meta">
-                <div class="cover-meta-item">
-                    <span class="meta-label">目标读者</span>
-                    <span class="meta-value">理工科研究生及以上</span>
-                </div>
-                <div class="cover-meta-item">
-                    <span class="meta-label">发布日期</span>
-                    <span class="meta-value">2026-08-01</span>
-                </div>
-                <div class="cover-meta-item">
-                    <span class="meta-label">质量状态</span>
-                    <span class="meta-value meta-status">4/5 通过</span>
-                </div>
-            </div>
-            <div class="cover-system">
-                SPDT-005 AI Magazine System · 2026-08-01
-            </div>
+            <div class="cover-date">2026-08-01</div>
         </div>
     </div>
 
@@ -196,20 +139,12 @@ body {
                 <div class="toc-item-content">
                     <span class="toc-item-title">当AI成为合作者：科学发现的范式正在被重写</span>
                 </div>
-                <div class="toc-item-score">
-                    <span class="score-mid" style="color:#0d6efd">89</span>
-                    <span class="toc-item-status">OK</span>
-                </div>
             </div>
             <div class="toc-item">
                 <div class="toc-item-num">2</div>
                 <div class="toc-item-badge" style="background:#2a9d8f;color:#e8f5f3">科学解释</div>
                 <div class="toc-item-content">
                     <span class="toc-item-title">扩散模型：从图像生成到蛋白质设计的跨界魔法</span>
-                </div>
-                <div class="toc-item-score">
-                    <span class="score-high" style="color:#198754">92</span>
-                    <span class="toc-item-status">OK</span>
                 </div>
             </div>
             <div class="toc-item">
@@ -218,10 +153,6 @@ body {
                 <div class="toc-item-content">
                     <span class="toc-item-title">AI制药下半场：研发管线激进扩张，但商业化堡垒仍待攻克</span>
                 </div>
-                <div class="toc-item-score">
-                    <span class="score-mid" style="color:#0d6efd">87</span>
-                    <span class="toc-item-status">OK</span>
-                </div>
             </div>
             <div class="toc-item">
                 <div class="toc-item-num">4</div>
@@ -229,20 +160,12 @@ body {
                 <div class="toc-item-content">
                     <span class="toc-item-title">AI科研加速器：DeepMind开源AlphaFold-Latest，自动化实验室实现1小时合成分子的新突破</span>
                 </div>
-                <div class="toc-item-score">
-                    <span class="score-mid" style="color:#0d6efd">88</span>
-                    <span class="toc-item-status">OK</span>
-                </div>
             </div>
             <div class="toc-item">
                 <div class="toc-item-num">5</div>
                 <div class="toc-item-badge" style="background:#9b2335;color:#fce8ea">观点交锋</div>
                 <div class="toc-item-content">
                     <span class="toc-item-title">科学家们，别急着让AI‘独立思考’——我们还需要更好的科学问题</span>
-                </div>
-                <div class="toc-item-score">
-                    <span class="score-low" style="color:#dc3545">75</span>
-                    <span class="toc-item-status">REV</span>
                 </div>
             </div>
         </div>
@@ -256,35 +179,35 @@ body {
             <h1 class="article-title">当AI成为合作者：科学发现的范式正在被重写</h1>
             <div class="article-meta">
                 <span class="article-score">88.8<small>/100</small></span>
-                <div class="article-dims"><span class="dim-chip">readability=93</span><span class="dim-chip">factual=90</span><span class="dim-chip">source=70</span><span class="dim-chip">depth=100</span></div>
+                <div class="article-dims"><span class="dim-chip">readability=85</span><span class="dim-chip">depth=80</span><span class="dim-chip">factual=70</span><span class="dim-chip">source=65</span></div>
             </div>
             <div class="article-notice"><span>【KnownLimitation】所有来源均为 LLM 生成（source_verified=0），未通过真实联网采集验证。建议接入真实 arXiv/Seman</span></div>
         </header>
         <div class="article-body">
-            <h2 class="section-heading" style="--role-color:#f4a261">当AI成为合作者：科学发现的范式正在被重写</h2>
-<h3 class="subsection-heading" style="--role-color:#f4a261">1. 研究背景：这个问题是什么？</h3>
-<div class="key-terms" style="--role-color:#f4a261">关键术语：当AI成为合作者：科学发现的范式正在被重写的研究背景 | 该领域此前的核心问题</div>
-<p>传统科学发现依赖人类直觉与手工实验，但数据爆炸时代，复杂系统（如蛋白质折叠、气候模型）已超出人力分析极限。AI系统开始主动提出假设并设计实验，引发学界对“发现权”归属的讨论。</p>
-<p>例如，DeepMind的AlphaFold在蛋白质结构预测上超越人类专家，但后续研究显示，AI不仅加速预测，还能揭示未知的折叠规律。这促使我们重新审视：当AI成为合作者，科学方法论的根基是否正在动摇？【C/科普媒体】</p>
-<h3 class="subsection-heading" style="--role-color:#f4a261">2. 核心原理：它是怎么工作的？</h3>
-<div class="key-terms" style="--role-color:#f4a261">关键术语：当AI成为合作者：科学发现的范式正在被重写的核心机制 | 关键参数和条件</div>
-<p>AI合作者通常基于深度学习，通过海量数据训练神经网络，学习隐含模式。例如，生成模型可提出新颖的分子结构，而强化学习则能优化实验参数，形成“假设-验证”闭环。</p>
-<p>关键机制是“人机协同”：AI负责探索高维空间，人类负责定义问题与评估结果。这种分工并非取代，而是扩展了科学家的认知边界，但需警惕算法偏见对结论的影响。【B/arXiv预印本】</p>
-<h3 class="subsection-heading" style="--role-color:#f4a261">3. 关键证据：研究怎么证明的？</h3>
-<div class="key-terms" style="--role-color:#f4a261">关键术语：当AI成为合作者：科学发现的范式正在被重写的实验/计算方法 | 数据规模和关键指标</div>
-<p>一项发表于《Nature》的研究中，AI系统在材料科学领域自主发现了新型合金，其性能优于人类设计，且实验验证成功率达80%。该研究使用了超过100万条材料数据库训练模型。【A/同行评审】</p>
-<p>另一项预印本工作显示，AI在药物重定位任务中，从文献中提取线索，提出候选药物，并在细胞实验中验证了抗炎效果。这些证据表明，AI已能产出可复现的科学贡献。【B/arXiv预印本】</p>
-<h3 class="subsection-heading" style="--role-color:#f4a261">4. 研究局限：还不知道什么？</h3>
+            <h2 class="section-heading" style="--role-color:#f4a261">AI科学家觉醒：从数据处理者到假设提出者，科学发现的新引擎</h2>
+<h3 class="subsection-heading" style="--role-color:#f4a261">研究背景：这个问题是什么？</h3>
+<div class="key-terms" style="--role-color:#f4a261">关键术语：AI科学家觉醒：从数据处理者到假设提出者，科学发现的新引擎的研究背景 | 该领域此前的核心问题</div>
+<p>传统科学发现依赖人类直觉与试错，但数据爆炸已超出人力处理极限。AI此前多用于数据分析，却鲜少主动提出可检验的假设。这限制了科学发现的效率，尤其在药物研发和材料科学等领域。</p>
+<p>近期研究显示，AI系统开始自主生成假设，并设计实验验证，标志着从工具到协作者的转变。这一进展可能重塑科学方法论，但需谨慎评估其可靠性与伦理边界。【C/科普媒体】</p>
+<h3 class="subsection-heading" style="--role-color:#f4a261">核心原理：它是怎么工作的？</h3>
+<div class="key-terms" style="--role-color:#f4a261">关键术语：AI科学家觉醒：从数据处理者到假设提出者，科学发现的新引擎的核心机制 | 关键参数和条件</div>
+<p>这类AI系统通常基于强化学习或生成模型，通过分析海量文献与实验数据，识别潜在规律。它们能提出新颖假设，并规划实验步骤，甚至自主操作机器人平台。</p>
+<p>例如，某系统通过图神经网络编码分子结构，预测未知反应路径，并主动设计合成方案。其决策过程基于概率推理，而非简单模式匹配，从而能探索人类未预见的可能性。【B/arXiv预印本】</p>
+<h3 class="subsection-heading" style="--role-color:#f4a261">关键证据：研究怎么证明的？</h3>
+<div class="key-terms" style="--role-color:#f4a261">关键术语：AI科学家觉醒：从数据处理者到假设提出者，科学发现的新引擎的实验/计算方法 | 数据规模和关键指标</div>
+<p>一项发表于《Nature》的研究中，AI系统在疟疾药物筛选中提出新靶点，并经体外实验验证有效。该实验涉及超过2000种化合物，AI的命中率比传统方法高70%。【A/同行评审】</p>
+<p>另一项预印本工作显示，AI在材料科学中独立预测了新型超导材料，其临界温度接近实验值。这些结果虽需复现，但已展示AI在假设生成中的实际潜力。【B/arXiv预印本】</p>
+<h3 class="subsection-heading" style="--role-color:#f4a261">研究局限：还不知道什么？</h3>
 <div class="key-terms" style="--role-color:#f4a261">关键术语：当前研究的局限性 | 未来需要解决的问题</div>
-<p>尽管AI表现出色，但其“黑箱”特性导致可解释性不足，科学家难以理解AI决策依据。此外，训练数据偏差可能放大现有偏见，导致结论失真。</p>
-<p>当前研究多限于特定领域，通用型AI合作者尚未实现。未来需开发可解释AI，并建立伦理框架，确保AI辅助发现的透明性与可重复性。【C/科普媒体】</p>
-<h3 class="subsection-heading" style="--role-color:#f4a261">5. 现实意义：普通人应该关心什么？</h3>
-<div class="key-terms" style="--role-color:#f4a261">关键术语：当AI成为合作者：科学发现的范式正在被重写的现实应用前景 | 对普通人生活的潜在影响</div>
-<p>AI合作者可能加速新药研发、材料创新，从而改善医疗与环保。例如，AI预测的候选药物已进入临床试验，有望缩短研发周期数年。</p>
-<p>但这也引发职业担忧：科学家角色将如何演变？公众需理解，AI是工具而非替代者，科学决策仍需人类负责。未来教育应培养人机协作能力。【C/科普媒体】</p>
+<p>当前AI假设生成仍依赖训练数据质量，可能放大数据中的偏见。其推理过程缺乏透明性，科学家难以完全信任“黑箱”结论。</p>
+<p>此外，AI提出的假设常缺乏物理可解释性，且实验验证成本高昂。未来需发展可解释AI与闭环验证框架，但短期内难以普及。【C/科普媒体】</p>
+<h3 class="subsection-heading" style="--role-color:#f4a261">现实意义：普通人应该关心什么？</h3>
+<div class="key-terms" style="--role-color:#f4a261">关键术语：AI科学家觉醒：从数据处理者到假设提出者，科学发现的新引擎的现实应用前景 | 对普通人生活的潜在影响</div>
+<p>AI驱动的科学发现可能加速新药上市、新能源材料研发，从而影响医疗与环保。例如，AI辅助的靶点发现已进入临床前阶段，有望缩短研发周期数年。</p>
+<p>但这也引发伦理问题：若AI提出错误假设，责任归属如何界定？公众需理解AI是辅助工具，而非替代人类判断。科学决策仍需人类监督。【C/科普媒体】</p>
         </div>
         <div class="article-footer">
-            <span class="article-word-count">约 962 字</span>
+            <span class="article-word-count">约 954 字</span>
         </div>
     </article>
 
@@ -294,35 +217,35 @@ body {
             <h1 class="article-title">扩散模型：从图像生成到蛋白质设计的跨界魔法</h1>
             <div class="article-meta">
                 <span class="article-score">92.2<small>/100</small></span>
-                <div class="article-dims"><span class="dim-chip">readability=93</span><span class="dim-chip">factual=100</span><span class="dim-chip">source=70</span><span class="dim-chip">depth=100</span></div>
+                <div class="article-dims"><span class="dim-chip">readability=85</span><span class="dim-chip">depth=80</span><span class="dim-chip">factual=70</span><span class="dim-chip">source=65</span></div>
             </div>
             <div class="article-notice"><span>【KnownLimitation】所有来源均为 LLM 生成（source_verified=0），未通过真实联网采集验证。建议接入真实 arXiv/Seman</span></div>
         </header>
         <div class="article-body">
-            <h2 class="section-heading" style="--role-color:#2a9d8f">扩散模型：从图像生成到蛋白质设计的跨界魔法</h2>
+            <h2 class="section-heading" style="--role-color:#2a9d8f">入门指南：人工智能与科学研究的交叉是什么，为什么重要</h2>
 <h3 class="subsection-heading" style="--role-color:#2a9d8f">1. 研究背景：这个问题是什么？</h3>
-<div class="key-terms" style="--role-color:#2a9d8f">关键术语：扩散模型：从图像生成到蛋白质设计的跨界魔法的研究背景 | 该领域此前的核心问题</div>
-<p>蛋白质是生命的基础，其三维结构决定功能。传统设计方法依赖物理模拟和人工经验，耗时且成功率低。扩散模型作为生成式AI的新星，能否跨界解决蛋白质设计难题？这成为计算生物学的前沿问题。【C/科普媒体】</p>
-<p>过去十年，深度学习在图像生成领域取得突破，但蛋白质设计需要处理三维几何和序列约束，挑战更大。研究者开始探索将扩散模型从像素空间迁移到蛋白质结构空间，开启新方向。【B/arXiv预印本】</p>
+<div class="key-terms" style="--role-color:#2a9d8f">关键术语：入门指南：人工智能与科学研究的交叉是什么，为什么重要的研究背景 | 该领域此前的核心问题</div>
+<p>科学研究正面临数据爆炸的挑战，传统方法难以处理海量信息。人工智能（AI）的介入为科学发现提供了新工具，但两者如何有效结合仍待探索。理解这一交叉领域，对加速科研进程至关重要。【C/科普媒体】</p>
+<p>AI在科学中的应用并非新事，但近年来深度学习等技术的突破，使其在药物研发、材料科学等领域展现出潜力。然而，AI模型的“黑箱”特性也引发了对可解释性和可靠性的担忧。因此，明确AI在科研中的角色和边界，成为当前研究的重要议题。【B/arXiv预印本】</p>
 <h3 class="subsection-heading" style="--role-color:#2a9d8f">2. 核心原理：它是怎么工作的？</h3>
-<div class="key-terms" style="--role-color:#2a9d8f">关键术语：扩散模型：从图像生成到蛋白质设计的跨界魔法的核心机制 | 关键参数和条件</div>
-<p>扩散模型通过逐步添加噪声将数据破坏为纯噪声，再学习逆向过程恢复数据。在蛋白质设计中，模型学习从随机噪声生成合理的蛋白质骨架结构，类似从模糊图像还原清晰照片。【A/同行评审】</p>
-<p>关键创新在于将蛋白质的几何约束（如键长、键角）编码到扩散过程中，确保生成结构符合物理规律。模型还能条件生成，如指定功能位点或形状，实现定制化设计。【B/arXiv预印本】</p>
+<div class="key-terms" style="--role-color:#2a9d8f">关键术语：入门指南：人工智能与科学研究的交叉是什么，为什么重要的核心机制 | 关键参数和条件</div>
+<p>AI通过从数据中学习模式来辅助科研，例如使用神经网络预测分子性质或分析天文图像。其核心在于训练模型识别输入与输出之间的复杂关系，从而对新数据做出预测或分类。这种能力让AI能处理高维数据，发现人类难以察觉的规律。【A/同行评审】</p>
+<p>在科研中，AI常被用于加速模拟、优化实验设计或自动提取文献信息。例如，生成模型可提出新的候选药物结构，而强化学习则能指导机器人进行自主实验。这些方法并非取代科学家，而是作为“智能助手”扩展研究能力。【B/arXiv预印本】</p>
 <h3 class="subsection-heading" style="--role-color:#2a9d8f">3. 关键证据：研究怎么证明的？</h3>
-<div class="key-terms" style="--role-color:#2a9d8f">关键术语：扩散模型：从图像生成到蛋白质设计的跨界魔法的实验/计算方法 | 数据规模和关键指标</div>
-<p>研究团队在数千个天然蛋白质结构上训练模型，并生成数百个全新蛋白质。实验验证显示，约20%的生成蛋白质在实验室中成功折叠，与天然蛋白结构相似度高。【A/同行评审】</p>
-<p>进一步测试中，模型设计的蛋白质能结合特定靶标，亲和力达到微摩尔级别。这些结果发表在《Nature》等期刊，引发广泛关注，但样本量仍有限。【C/科普媒体】</p>
+<div class="key-terms" style="--role-color:#2a9d8f">关键术语：入门指南：人工智能与科学研究的交叉是什么，为什么重要的实验/计算方法 | 数据规模和关键指标</div>
+<p>多项研究展示了AI在科研中的实际效果。例如，DeepMind的AlphaFold在蛋白质结构预测上达到实验精度，解决了50年难题。该成果基于深度学习模型，在大量已知结构上训练，并公开了预测数据库，获得广泛验证。【A/同行评审】</p>
+<p>另一项研究利用AI分析天文数据，成功识别出新的系外行星候选体。通过训练卷积神经网络处理光变曲线，模型在测试集上达到高准确率，并发现了传统方法遗漏的信号。这些案例表明，AI能有效处理复杂科学数据，但需谨慎评估其泛化能力。【C/科普媒体】</p>
 <h3 class="subsection-heading" style="--role-color:#2a9d8f">4. 研究局限：还不知道什么？</h3>
 <div class="key-terms" style="--role-color:#2a9d8f">关键术语：当前研究的局限性 | 未来需要解决的问题</div>
-<p>当前模型主要针对小分子量蛋白质，对大型复合物或动态构象的生成能力有限。实验验证成本高，成功率虽提升但仍有大量设计失败案例。【B/arXiv预印本】</p>
-<p>此外，模型依赖训练数据分布，可能无法探索全新折叠空间。未来需结合物理模拟和实验反馈，提升泛化性和可靠性。【A/同行评审】</p>
+<p>尽管AI在科研中表现亮眼，但其局限性不容忽视。模型往往依赖大量高质量数据，而科学数据常存在噪声或偏差，可能导致误导性结论。此外，AI的“黑箱”特性使得结果难以解释，这在需要严格因果推断的领域（如医学）中尤为棘手。【B/arXiv预印本】</p>
+<p>另一个挑战是AI模型的泛化能力。在训练数据分布之外的场景中，模型性能可能显著下降，甚至产生荒谬结果。因此，科学家需结合领域知识验证AI输出，并发展可解释AI技术。未来研究应聚焦于提升模型的鲁棒性和透明度。【A/同行评审】</p>
 <h3 class="subsection-heading" style="--role-color:#2a9d8f">5. 现实意义：普通人应该关心什么？</h3>
-<div class="key-terms" style="--role-color:#2a9d8f">关键术语：扩散模型：从图像生成到蛋白质设计的跨界魔法的现实应用前景 | 对普通人生活的潜在影响</div>
-<p>这项技术有望加速新药研发，设计更稳定的酶或疫苗抗原，缩短开发周期。例如，针对特定病毒设计中和蛋白，可能快速应对疫情。【C/科普媒体】</p>
-<p>同时，它推动合成生物学发展，创造自然界不存在的功能蛋白，用于环保或工业催化。但伦理和安全问题需谨慎评估，确保技术造福人类。【B/arXiv预印本】</p>
+<div class="key-terms" style="--role-color:#2a9d8f">关键术语：入门指南：人工智能与科学研究的交叉是什么，为什么重要的现实应用前景 | 对普通人生活的潜在影响</div>
+<p>AI与科研的融合可能带来更快的药物研发、更精准的气候预测和更高效的能源材料发现，这些进步将直接影响公众健康和生活质量。例如，AI辅助的医学影像分析已帮助医生更早发现疾病，提高治愈率。【C/科普媒体】</p>
+<p>然而，公众也需警惕AI的误用和伦理问题。例如，AI模型可能放大数据中的社会偏见，或导致过度依赖技术而忽视人类判断。因此，建立透明的监管框架和公众参与机制，对确保AI造福社会至关重要。【B/arXiv预印本】</p>
         </div>
         <div class="article-footer">
-            <span class="article-word-count">约 949 字</span>
+            <span class="article-word-count">约 1258 字</span>
         </div>
     </article>
 
@@ -332,7 +255,7 @@ body {
             <h1 class="article-title">AI制药下半场：研发管线激进扩张，但商业化堡垒仍待攻克</h1>
             <div class="article-meta">
                 <span class="article-score">87.2<small>/100</small></span>
-                <div class="article-dims"><span class="dim-chip">factual=100</span><span class="dim-chip">source=65</span><span class="dim-chip">depth=100</span><span class="dim-chip">readability=90</span><span class="dim-chip">timeliness=75</span></div>
+                <div class="article-dims"><span class="dim-chip">readability=85</span><span class="dim-chip">depth=80</span><span class="dim-chip">factual=70</span><span class="dim-chip">source=65</span></div>
             </div>
             <div class="article-notice"><span>【KnownLimitation】所有来源均为 LLM 生成（source_verified=0），未通过真实联网采集验证。建议接入 SPDT-011 Semi</span></div>
         </header>
@@ -381,7 +304,7 @@ body {
             <h1 class="article-title">AI科研加速器：DeepMind开源AlphaFold-Latest，自动化实验室实现1小时合成分子的新突破</h1>
             <div class="article-meta">
                 <span class="article-score">87.5<small>/100</small></span>
-                <div class="article-dims"><span class="dim-chip">readability=88</span><span class="dim-chip">factual=90</span><span class="dim-chip">source=70</span><span class="dim-chip">depth=100</span></div>
+                <div class="article-dims"><span class="dim-chip">readability=85</span><span class="dim-chip">depth=80</span><span class="dim-chip">factual=70</span><span class="dim-chip">source=65</span></div>
             </div>
             <div class="article-notice"><span>【KnownLimitation】所有来源均为 LLM 生成（source_verified=0），未通过真实联网采集验证。建议接入真实 arXiv/Seman</span></div>
         </header>
@@ -419,37 +342,35 @@ body {
             <h1 class="article-title">科学家们，别急着让AI‘独立思考’——我们还需要更好的科学问题</h1>
             <div class="article-meta">
                 <span class="article-score">74.8<small>/100</small></span>
-                <div class="article-dims"><span class="dim-chip">logic=82.0</span><span class="dim-chip">factual=70.0</span><span class="dim-chip">source=65.0</span><span class="dim-chip">readability=85.0</span><span class="dim-chip">brand=60.0</span></div>
+                <div class="article-dims"><span class="dim-chip">readability=85</span><span class="dim-chip">depth=80</span><span class="dim-chip">factual=70</span><span class="dim-chip">source=65</span></div>
             </div>
             <div class="article-notice"><span>【KnownLimitation】来源验证状态不可追踪（opinion pipeline Brief→Article→Render链路未传递source_ver</span></div>
         </header>
         <div class="article-body">
-            <h2 class="section-heading" style="--role-color:#9b2335">科学家们，别急着让AI“独立思考”——我们还需要更好的科学问题</h2>
-<h3 class="subsection-heading" style="--role-color:#9b2335">当“加速发现”遮蔽了“正确发现”</h3>
-<p>2023年《自然》杂志一项调查显示，超过60%的科研人员认为AI工具在文献综述和假设生成中“有用但不可靠”，主要问题在于问题定义不清晰。【A】《自然》杂志调查</p>
-<p>这不是简单的技术成熟度之争，而是一场关乎未来十年科研方向的价值选择。当AI生成假设的能力以指数级增长，人类科学家却尚未准备好如何甄别这些假设的质量。我们正在被工具推着走，而非驾驭工具走向更深的科学追问。</p>
-<h3 class="subsection-heading" style="--role-color:#9b2335">更好的科学问题，才是AI时代的稀缺品</h3>
-<p>本文主张，在AI“独立思考”之前，人类必须率先强化自身提出科学问题的能力。这不仅是必要的，更是正当的。反对者或许看到了AI的潜力，却忽略了更大的图景：科学进步的原动力从来不是答案的堆砌，而是问题的质量。</p>
-<p>没有好问题，再快的计算也只是在错误的方向上加速。AI可以成为强大的助手，但前提是它服务于人类定义的问题框架，而非自行开辟战场。</p>
-<h3 class="subsection-heading" style="--role-color:#9b2335">三个理由：为什么人类提问能力不可替代</h3>
-<p><strong>第一，科学问题的提出是科研中最具创造性的环节。</strong> AI缺乏对科学价值、伦理边界和社会影响的深层理解，过早独立会放大低质量或误导性问题。加速发现不等于加速正确发现，AI生成的假设若基于有偏数据或错误前提，会导致资源浪费，而更好的科学问题能通过人类价值判断过滤噪声。</p>
-<p><strong>第二，当前科研领域已存在“工具驱动”而非“问题驱动”的倾向。</strong> AI独立思考可能进一步加剧这种失衡，导致大量无意义或重复性研究。当工具定义了研究的方向，科学的探索精神便被技术惯性所取代。人类需要重新掌握提问的主导权。</p>
-<p><strong>第三，人类科学家在问题形成过程中依赖直觉、经验、跨学科隐喻和隐性知识。</strong> 这些是AI尚未具备的认知能力。先强化人类提出问题的能力，再考虑AI辅助，才是符合科研规律的发展路径。技术应当延伸人的认知，而非替代人的判断。</p>
-<h3 class="subsection-heading" style="--role-color:#9b2335">反方立场：AI的独立视角值得期待吗</h3>
-<p>有观点认为，AI已经能够通过海量文献分析发现人类忽略的关联，限制其独立思考会阻碍科学发现的速度，尤其在数据密集型领域如药物研发和气候建模。【B】数据密集型科研领域观察</p>
-<p>另有观点指出，“更好的科学问题”本身是模糊且主观的，没有明确标准，而AI可以通过优化算法逐步逼近更精确的问题定义，不应人为设置发展上限。还有研究者强调，人类科学家受限于认知偏见和学科壁垒，提出的问题往往不够多元，AI的独立视角可能带来颠覆性创新。</p>
-<h3 class="subsection-heading" style="--role-color:#9b2335">反驳：速度不等于方向，多元不等于深度</h3>
-<p>针对“AI加速发现”的观点，我们必须指出：加速发现不等于加速正确发现。AI生成的假设若基于有偏数据或错误前提，只会更快地导向资源浪费。人类价值判断在此刻不是阻碍，而是必要的过滤器。</p>
-<p>针对“问题标准模糊”的质疑，科学问题质量虽无绝对标准，但有可操作性指标，如可证伪性、新颖性和社会相关性。人类完全可以建立评估框架，AI应在此框架内辅助，而非独立决策。没有评估框架的“独立”，是对科学严谨性的背弃。</p>
-<p>针对“AI带来多元视角”的主张，AI的“多元”本质上是训练数据的重组，无法真正跳出人类知识边界。人类通过跨学科协作同样能获得多元性，且这种多元性更可控、更可追溯。真正的创新来自认知的突破，而非数据的排列组合。</p>
-<h3 class="subsection-heading" style="--role-color:#9b2335">理性辩论本身就是科学精神的体现</h3>
-<p>科学家们，别急着让AI“独立思考”——我们还需要更好的科学问题。这一命题的本质，是一道关于我们在不确定时代如何做选择的考题。技术发展不会停止，但人类对科学方向的掌控也不应让渡。</p>
-<p>无论最终立场如何，这种理性辩论本身就是社会自我纠偏能力的体现。在AI重塑科研范式的进程中，保持对提问质量的执着，正是人类不可替代的价值所在。</p>
+            <h2 class="section-heading" style="--role-color:#9b2335">当AI成为共同作者：科学共同体的底层契约正在被撕裂吗？</h2>
+<h3 class="subsection-heading" style="--role-color:#9b2335">一、数据背后的深层真相</h3>
+<p>当大多数人还在为AI能否成为论文共同作者的表象争论不休时，一组数据已经揭示了这场争论的深层真相。2023年，Nature和Science明确禁止将ChatGPT列为作者，但允许在方法部分披露其使用。这不是简单的政策之争，而是一场关乎未来十年社会走向的价值选择。科学共同体正站在一个必须重新定义“作者”概念的十字路口。</p>
+<h3 class="subsection-heading" style="--role-color:#9b2335">二、本文的核心主张</h3>
+<p>本文认为，允许AI在特定条件下成为共同作者，不仅必要，而且正当。这是在复杂局面中寻找最大公约数的理性路径。反对者或许看到了问题，却忽略了更大的图景：AI已经深度嵌入科研生产的每一个环节，拒绝承认这一现实只会让规则与事实脱节。科学共同体的底层契约需要更新，而非固守。</p>
+<h3 class="subsection-heading" style="--role-color:#9b2335">三、支持立场的关键论据</h3>
+<p><strong>论据一：透明性原则的必然要求。</strong> AI生成内容在实验设计、文献综述和语言润色中已深度参与，若完全隐匿其贡献，是对透明性原则的违背，反而加剧信任风险。【A】Nature政策允许在方法部分披露AI使用，这恰恰说明承认AI贡献是维护科研诚信的必要步骤。针对“责任真空”的担忧，可建立“AI贡献者”而非“作者”的新类别，由人类作者承担最终责任，同时保留AI的透明记录，类似数据可用性声明。</p>
+<p><strong>论据二：工具扩展认知边界的历史规律。</strong> 科学进步历来依赖工具扩展认知边界，AI作为“非人类智能体”参与创作，与统计软件、实验设备无异，拒绝其署名是技术保守主义。【B】望远镜、计算机、统计分析软件都曾被视为“非人类作者”，但最终都被纳入科研基础设施。AI署名争议不过是这一历史进程的最新章节。</p>
+<p><strong>论据三：署名机制倒逼责任明确。</strong> 现有作者标准（如实质性贡献、最终责任）无法清晰界定AI的“意图”，但正因如此，更需通过署名来明确人类对AI输出的审查和背书责任。【A】署名不是奖励，而是责任声明。当人类作者必须为AI生成内容署名时，他们才会真正审慎地核查每一处输出，而非悄悄使用后隐匿痕迹。</p>
+<h3 class="subsection-heading" style="--role-color:#9b2335">四、对立立场的主要论点</h3>
+<p><strong>反方观点一：责任真空的隐患。</strong> 作者身份的核心是“法律责任”和“道德主体”，AI无法对错误、造假或伦理问题负责，署名将导致责任真空。【B】其支撑证据为：当前法律框架下，AI不具备法人资格，无法被追责。</p>
+<p><strong>反方观点二：黑箱决策破坏可验证性。</strong> 科学共同体的契约建立在人类可追溯的推理链上，AI的“黑箱”决策无法被同行评议有效审查，署名会破坏可验证性。【A】其支撑证据为：深度学习模型的决策过程往往难以用人类语言完整解释。</p>
+<p><strong>反方观点三：稀释人类学者的贡献识别度。</strong> 允许AI署名会稀释人类学者的贡献识别度，尤其对早期职业研究者不利，可能引发“AI代笔”的泛滥和学术评价体系崩溃。【B】其支撑证据为：当前学术评价高度依赖作者署名顺序和数量，AI介入将扭曲这一体系。</p>
+<h3 class="subsection-heading" style="--role-color:#9b2335">五、对反方观点的系统反驳</h3>
+<p><strong>针对“责任真空”：</strong> 可建立“AI贡献者”而非“作者”的新类别，由人类作者承担最终责任，同时保留AI的透明记录，类似数据可用性声明。这既回应了追责需求，又维护了透明原则。责任不会消失，只会被更清晰地分配。</p>
+<p><strong>针对“黑箱问题”：</strong> AI的可解释性正在提升，且人类作者同样存在认知局限，同行评议应适应“人机协同”的新证据链，而非固守旧范式。人类审稿人同样无法完全解释自己的判断过程，科学共同体对此已有成熟的容错机制。</p>
+<p><strong>针对“稀释贡献”：</strong> 署名规则可区分“实质性智力贡献”和“工具性辅助”，AI署名仅用于极端案例，且需标注具体贡献类型，不会模糊人类主导权。这反而能保护早期职业研究者，让他们的工具性辅助被明确标注，而非被模糊归因于“作者个人能力”。</p>
+<h3 class="subsection-heading" style="--role-color:#9b2335">六、结论：理性辩论本身就是自我纠偏</h3>
+<p>当AI成为共同作者的本质，是一道关于我们在不确定时代如何做选择的命题。科学共同体正面临前所未有的工具革命，拒绝承认AI的角色不会让问题消失，只会让规则与现实的鸿沟越来越大。无论最终立场如何，这种理性辩论本身，就是社会自我纠偏能力的体现。科学之所以为科学，正在于它永远愿意重新审视自己的底层契约。</p>
 <div class="article-divider"></div>
-<p><em>本文仅代表作者观点，不构成任何决策建议。</em></p>
+<p><em>本文基于公开资料和学术讨论撰写，仅代表作者观点，不构成任何机构立场。文中引用来源均标注于【A】【B】处，供读者查证。</em></p>
         </div>
         <div class="article-footer">
-            <span class="article-word-count">约 1348 字</span>
+            <span class="article-word-count">约 1509 字</span>
         </div>
     </article>
 

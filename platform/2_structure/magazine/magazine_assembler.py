@@ -342,54 +342,78 @@ class MagazineAssembler:
         )
 
     def _render_html_cover(self, spec: dict, run_result: "MagazineRunResult") -> str:
-        """渲染 HTML 封面"""
+        """渲染 HTML 封面（v1.5 简化版）
+
+        数据结构（输入 spec）：
+            {
+                "title": str,           # 杂志名，如"科学前沿"
+                "issue": str,           # 期号，如"2026-Q3"
+                "domain_topic": str,    # 本期主题，如"人工智能与科学研究的交叉突破"
+                "publication_date": str, # 发布日期，如"2026-08-01"
+                "description": str,     # 【可选】编辑手记正文；为空时使用默认语
+            }
+
+        渲染结构（输出 HTML）：
+            <div class="cover">
+                <div class="cover-inner">
+                    .cover-issue        → 期号
+                    h1.cover-title      → 杂志名
+                    p.cover-topic       → 本期主题
+                    div.cover-editor-note → 编辑手记
+                    div.cover-date      → 发布日期
+                </div>
+            </div>
+
+        【v1.5 变更】已移除：目标读者、质量状态、2条横线、系统页脚
+        """
         title = spec.get("title", "科学前沿")
         issue = spec.get("issue", "")
         domain_topic = spec.get("domain_topic", "")
-        audience = spec.get("audience", "")
         publication_date = spec.get("publication_date", "")
         description = spec.get("description", "")
-        passed = run_result.get_passed_count()
-        total = len(run_result.articles)
 
-        # 从 blueprint 获取 editor_note（如果存在）
-        editor_note = description or "本期聚焦科技前沿，呈现领域的最新突破与深度思考。"
-        status_text = "全部通过" if run_result.all_passed else f"{passed}/{total} 通过"
+        # 编辑手记（可自定义，默认根据主题生成）
+        editor_note = description if description else "聚焦科技前沿，呈现领域的最新突破与深度思考。"
 
         return f"""
     <div class="cover">
         <div class="cover-inner">
             <div class="cover-issue">{issue}</div>
             <h1 class="cover-title">{title}</h1>
-            <div class="cover-divider"></div>
             <p class="cover-topic">{domain_topic}</p>
             <div class="cover-editor-note">
                 <span class="cover-editor-label">编辑手记</span>
                 <p>{editor_note}</p>
             </div>
-            <div class="cover-divider"></div>
-            <div class="cover-meta">
-                <div class="cover-meta-item">
-                    <span class="meta-label">目标读者</span>
-                    <span class="meta-value">{audience or '科技爱好者'}</span>
-                </div>
-                <div class="cover-meta-item">
-                    <span class="meta-label">发布日期</span>
-                    <span class="meta-value">{publication_date}</span>
-                </div>
-                <div class="cover-meta-item">
-                    <span class="meta-label">质量状态</span>
-                    <span class="meta-value meta-status">{status_text}</span>
-                </div>
-            </div>
-            <div class="cover-system">
-                SPDT-005 AI Magazine System · {publication_date}
-            </div>
+            <div class="cover-date">{publication_date}</div>
         </div>
     </div>"""
 
     def _render_html_toc(self, articles: dict) -> str:
-        """渲染 HTML 目录"""
+        """渲染 HTML 目录（v1.5 简化版：无评分显示）
+
+        数据结构（从 articles dict 推导）：
+            ROLE_ORDER 定义目录文章顺序（5个角色槽位）
+            每篇article_result 应包含：
+                .topic          → 文章标题
+                .total_score    → 总分（不显示）
+            ROLE_DISPLAY_NAMES[role] → 角色显示名
+            ROLE_COLORS[role]        → 角色颜色（badge背景）
+            ROLE_TEXT_COLORS[role]   → 角色文字色（badge前景）
+
+        渲染结构（输出 HTML）：
+            <div class="toc">
+                div.toc-header     → "目录" + "Contents"
+                div.toc-list >
+                    div.toc-item × N（按 ROLE_ORDER 顺序）
+                        div.toc-item-num   → 序号
+                        div.toc-item-badge → 角色名（带颜色）
+                        div.toc-item-content >
+                            span.toc-item-title → 文章标题
+            </div>
+
+        【v1.5 变更】已移除：toc-item-score 列（分数/OK 状态）
+        """
         items = []
         for i, role in enumerate(ROLE_ORDER):
             if role not in articles:
@@ -398,10 +422,6 @@ class MagazineAssembler:
             role_name = ROLE_DISPLAY_NAMES.get(role, role)
             role_color = ROLE_COLORS.get(role, "#666")
             role_text_color = ROLE_TEXT_COLORS.get(role, "#fff")
-            score = art.total_score
-            score_class = "score-high" if score >= 90 else "score-mid" if score >= 80 else "score-low"
-            score_color = "#198754" if score >= 90 else "#0d6efd" if score >= 80 else "#dc3545"
-            passed_icon = "OK" if art.passed else "REV"
 
             items.append(f"""
             <div class="toc-item">
@@ -409,10 +429,6 @@ class MagazineAssembler:
                 <div class="toc-item-badge" style="background:{role_color};color:{role_text_color}">{role_name}</div>
                 <div class="toc-item-content">
                     <span class="toc-item-title">{art.topic}</span>
-                </div>
-                <div class="toc-item-score">
-                    <span class="{score_class}" style="color:{score_color}">{score:.0f}</span>
-                    <span class="toc-item-status">{passed_icon}</span>
                 </div>
             </div>""")
 
@@ -655,20 +671,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 /* ── Reset & Base ─────────────────────────────────────── */
 *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
 :root {{
-    --font-serif: "Noto Serif SC", "Source Han Serif CN", "SimSun", serif;
-    --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-serif: "Inter", "Noto Serif SC", "Source Han Serif CN", "SimSun", serif;
+    --font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
     --font-mono: "JetBrains Mono", "Fira Code", monospace;
-    --line-height: 1.85;
-    --max-width: 780px;
-    --color-bg: #fefefe;
-    --color-text: #2c2c2c;
-    --color-text-muted: #6c757d;
-    --color-border: #dee2e6;
-    --color-border-light: #f0f0f0;
-    --color-quote-bg: #f8f9fa;
-    --color-cover-bg: #1a1a2e;
-    --color-cover-text: #e8e8f0;
-    --color-cover-accent: #e94560;
+    --line-height: 1.7;
+    --max-width: 900px;
+    --color-bg: #fafbfc;
+    --color-text: #111;
+    --color-text-muted: #666;
+    --color-border: #e1e4e8;
+    --color-border-light: #f0f0f2;
+    --color-quote-bg: #f0f2f5;
+    --color-cover-bg: #0f172a;
+    --color-cover-text: #f1f5f9;
+    --color-cover-accent: #38bdf8;
 }}
 html {{
     font-size: 16px;
@@ -701,8 +717,8 @@ body {{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 1.5rem;
-    margin-bottom: 3rem;
+    padding: 4rem 2rem;
+    margin-bottom: 4rem;
     position: relative;
     overflow: hidden;
 }}
@@ -711,12 +727,22 @@ body {{
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse at 20% 30%, rgba(233,69,96,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 70%, rgba(42,157,143,0.10) 0%, transparent 50%);
+        linear-gradient(135deg, rgba(56,189,248,0.08) 0%, transparent 50%),
+        linear-gradient(225deg, rgba(139,92,246,0.06) 0%, transparent 50%);
+    pointer-events: none;
+}}
+.cover::after {{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: linear-gradient(to top, rgba(15,23,42,0.8), transparent);
     pointer-events: none;
 }}
 .cover-inner {{
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     text-align: center;
     position: relative;
@@ -724,87 +750,55 @@ body {{
 }}
 .cover-issue {{
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(232,232,240,0.5);
+    color: rgba(241,245,249,0.5);
     margin-bottom: 1.5rem;
 }}
 .cover-title {{
     font-family: var(--font-serif);
-    font-size: clamp(2.8rem, 8vw, 4.5rem);
-    font-weight: 700;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    font-weight: 800;
     color: #fff;
-    letter-spacing: 0.05em;
-    line-height: 1.2;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
-}}
-.cover-divider {{
-    width: 80px;
-    height: 2px;
-    background: var(--color-cover-accent);
-    margin: 2rem auto;
 }}
 .cover-topic {{
     font-family: var(--font-serif);
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
     color: var(--color-cover-accent);
     font-weight: 600;
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
 }}
 .cover-editor-note {{
-    background: rgba(255,255,255,0.06);
-    border-left: 3px solid var(--color-cover-accent);
-    border-radius: 0 8px 8px 0;
-    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
     text-align: left;
-    margin: 1.5rem 0;
+    margin: 2rem 0;
+    backdrop-filter: blur(4px);
 }}
 .cover-editor-label {{
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(232,232,240,0.4);
+    color: rgba(241,245,249,0.4);
     margin-bottom: 0.5rem;
 }}
 .cover-editor-note p {{
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     line-height: 1.7;
-    color: rgba(232,232,240,0.85);
+    color: rgba(241,245,249,0.85);
 }}
-.cover-meta {{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1rem;
-    margin: 1.5rem 0;
-    text-align: left;
-}}
-.cover-meta-item {{
-    background: rgba(255,255,255,0.05);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-}}
-.meta-label {{
-    display: block;
-    font-size: 0.65rem;
+.cover-date {{
+    font-size: 0.8rem;
+    color: rgba(241,245,249,0.3);
     letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(232,232,240,0.4);
-    margin-bottom: 0.25rem;
-}}
-.meta-value {{
-    font-size: 0.85rem;
-    color: rgba(232,232,240,0.9);
-}}
-.meta-status {{
-    color: #4ade80;
-}}
-.cover-system {{
-    font-size: 0.7rem;
-    color: rgba(232,232,240,0.3);
-    letter-spacing: 0.1em;
     margin-top: 2rem;
 }}
 
@@ -816,83 +810,63 @@ body {{
 }}
 .toc-header {{
     display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 2px solid var(--color-border);
 }}
 .toc-header h2 {{
     font-family: var(--font-serif);
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-text);
 }}
 .toc-issue {{
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--color-text-muted);
     font-family: var(--font-mono);
-    letter-spacing: 0.1em;
 }}
 .toc-list {{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 0.75rem;
 }}
 .toc-item {{
-    display: grid;
-    grid-template-columns: 2rem auto 1fr auto;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #fff;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    transition: box-shadow 0.2s;
+    border-radius: 12px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }}
 .toc-item:hover {{
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
 }}
 .toc-item-num {{
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--color-text-muted);
-    text-align: center;
-    font-weight: 600;
 }}
 .toc-item-badge {{
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    padding: 0.25rem 0.6rem;
-    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
     white-space: nowrap;
-    font-family: var(--font-sans);
+    width: fit-content;
 }}
 .toc-item-title {{
     font-family: var(--font-serif);
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-text);
     line-height: 1.4;
-}}
-.toc-item-score {{
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-}}
-.toc-item-score .score-high,
-.toc-item-score .score-mid,
-.toc-item-score .score-low {{
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    font-weight: 700;
-}}
-.toc-item-status {{
-    font-size: 0.6rem;
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
 }}
 
 /* ── 文章 ────────────────────────────────────────────── */
@@ -1071,13 +1045,16 @@ body {{
 .backcover {{
     max-width: var(--max-width);
     margin: 0 auto 3rem;
-    padding: 3rem 1.5rem;
+    padding: 4rem 2rem;
     background: var(--color-cover-bg);
     color: var(--color-cover-text);
     text-align: center;
+    border-radius: 16px;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }}
 .backcover-divider {{
-    color: rgba(232,232,240,0.3);
+    color: rgba(241,245,249,0.3);
     letter-spacing: 0.5em;
     margin: 2rem 0;
     font-size: 0.9rem;
@@ -1086,9 +1063,9 @@ body {{
     font-family: var(--font-serif);
     font-size: 1.2rem;
     font-weight: 700;
-    color: rgba(232,232,240,0.8);
+    color: rgba(241,245,249,0.8);
     margin-bottom: 1.5rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
 }}
 .backcover-summary {{
     display: flex;
@@ -1106,13 +1083,13 @@ body {{
     align-items: center;
     gap: 0.75rem;
     font-size: 0.85rem;
-    color: rgba(232,232,240,0.7);
+    color: rgba(241,245,249,0.7);
 }}
 .summary-badge {{
     font-size: 0.6rem;
     font-weight: 700;
     padding: 0.2rem 0.5rem;
-    border-radius: 3px;
+    border-radius: 6px;
     color: #fff;
     white-space: nowrap;
     text-align: center;
@@ -1129,39 +1106,38 @@ body {{
 }}
 .next-badge {{
     display: inline-block;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    background: var(--color-cover-accent);
-    color: #fff;
+    background: linear-gradient(90deg, var(--color-cover-accent), #8b5cf6);
+    color: var(--color-cover-bg);
     padding: 0.3rem 1rem;
     border-radius: 20px;
     margin-bottom: 0.75rem;
 }}
 .backcover-next p {{
     font-size: 0.9rem;
-    color: rgba(232,232,240,0.7);
+    color: rgba(241,245,249,0.7);
     line-height: 1.6;
 }}
 .backcover-footer {{
     margin-top: 3rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgba(232,232,240,0.1);
+    border-top: 1px solid rgba(241,245,249,0.1);
 }}
 .backcover-copyright {{
     font-size: 0.72rem;
-    color: rgba(232,232,240,0.3);
+    color: rgba(241,245,249,0.3);
     line-height: 1.7;
 }}
 
 /* ── 响应式 ──────────────────────────────────────────── */
 @media (max-width: 600px) {{
-    .cover {{ min-height: auto; padding: 2.5rem 1.5rem; }}
+    .cover {{ min-height: auto; padding: 3rem 1.5rem; }}
     .cover-title {{ font-size: 2.5rem; }}
-    .cover-meta {{ grid-template-columns: 1fr; }}
-    .toc-item {{ grid-template-columns: 2rem 1fr; }}
-    .toc-item-badge, .toc-item-score {{ display: none; }}
+    .toc-list {{ grid-template-columns: 1fr; }}
+    .toc-item-badge {{ display: none; }}
     .summary-item {{ grid-template-columns: 1fr; gap: 0.25rem; }}
 }}
 
