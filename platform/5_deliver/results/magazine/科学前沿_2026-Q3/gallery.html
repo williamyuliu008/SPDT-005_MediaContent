@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科学前沿 2026-Q3 — 风格对比画廊</title>
+<style>
+/* ── Gallery Base ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.gallery-header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 100%);
+    border-bottom: 1px solid #2a2a3a;
+}
+.gallery-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+.gallery-header p {
+    color: #888;
+    font-size: 0.95rem;
+}
+
+/* ── Variant Tabs ─────────────────────────────────────────── */
+.variant-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem;
+    background: #0f0f18;
+    border-bottom: 1px solid #1a1a2a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+}
+.tab-btn {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #2a2a3a;
+    border-radius: 8px;
+    background: transparent;
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.tab-btn:hover {
+    background: #1a1a2a;
+    color: #fff;
+    border-color: #3a3a4a;
+}
+.tab-btn.active {
+    background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+    color: #fff;
+    border-color: transparent;
+}
+.tab-btn .tab-name {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 0.15rem;
+}
+
+/* ── Preview Container ────────────────────────────────────── */
+.preview-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+.preview-frame {
+    display: none;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid #2a2a3a;
+}
+.preview-frame.active {
+    display: block;
+}
+.preview-frame iframe {
+    width: 100%;
+    height: 85vh;
+    border: none;
+    display: block;
+}
+
+/* ── Side-by-Side Comparison ─────────────────────────────── */
+.comparison-section {
+    padding: 2rem;
+    background: #0f0f18;
+}
+.comparison-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.comparison-header h2 {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+.comparison-header p {
+    color: #666;
+    font-size: 0.85rem;
+}
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+@media (max-width: 1200px) {
+    .comparison-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+}
+.comparison-card {
+    background: #1a1a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2a2a3a;
+    transition: all 0.2s;
+}
+.comparison-card:hover {
+    border-color: #3a3a5a;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.comparison-preview {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+.comparison-preview iframe {
+    width: 250%;
+    height: 720px;
+    border: none;
+    transform: scale(0.4);
+    transform-origin: top left;
+    pointer-events: none;
+}
+.comparison-info {
+    padding: 1rem;
+}
+.comparison-info h3 {
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+.comparison-info p {
+    font-size: 0.75rem;
+    color: #666;
+}
+.comparison-info .benchmark {
+    font-size: 0.7rem;
+    color: #38bdf8;
+    margin-top: 0.5rem;
+    font-family: monospace;
+}
+
+/* ── Design Analysis Table ───────────────────────────────── */
+.analysis-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.analysis-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.analysis-header h2 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+.analysis-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0f0f18;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.analysis-table th, .analysis-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #1a1a2a;
+}
+.analysis-table th {
+    background: #1a1a2a;
+    color: #888;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+.analysis-table td {
+    font-size: 0.85rem;
+    color: #ccc;
+}
+.analysis-table tr:hover td {
+    background: #1a1a2a;
+}
+.variant-col {
+    color: #38bdf8 !important;
+    font-weight: 600;
+}
+.color-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.gallery-footer {
+    text-align: center;
+    padding: 2rem;
+    color: #444;
+    font-size: 0.8rem;
+    border-top: 1px solid #1a1a2a;
+}
+.gallery-footer a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+.gallery-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ── Feature Tags ─────────────────────────────────────────── */
+.feature-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    margin: 0.1rem;
+    font-weight: 500;
+}
+.feature-tag.pro { background: rgba(74,222,128,0.15); color: #4ade80; }
+.feature-tag.con { background: rgba(248,113,113,0.15); color: #f87171; }
+.feature-tag.neutral { background: rgba(251,191,36,0.15); color: #fbbf24; }
+</style>
+</head>
+<body>
+
+<!-- Gallery Header -->
+<div class="gallery-header">
+    <h1>科学前沿 2026-Q3</h1>
+    <p>杂志风格对比画廊 — SPDT-005 AI Magazine System</p>
+</div>
+
+<!-- Variant Tabs -->
+<div class="variant-tabs">
+    <button class="tab-btn active" onclick="showVariant('classic')">
+        学术经典
+        <span class="tab-name">Nature / Scientific American</span>
+    </button>
+    <button class="tab-btn" onclick="showVariant('modern')">
+        现代数字
+        <span class="tab-name">MIT Technology Review</span>
+    </button>
+    <button class="tab-btn" onclick="showVariant('print')">
+        印刷杂志
+        <span class="tab-name">Quanta</span>
+    </button>
+    <button class="tab-btn" onclick="showVariant('dark')">
+        暗色模式
+        <span class="tab-name">Wired</span>
+    </button>
+</div>
+
+<!-- Preview Frames -->
+<div class="preview-container">
+    <div id="frame-classic" class="preview-frame active">
+        <iframe src="variants/magazine_2026-Q3_classic.html" title="学术经典"></iframe>
+    </div>
+    <div id="frame-modern" class="preview-frame">
+        <iframe src="variants/magazine_2026-Q3_modern.html" title="现代数字"></iframe>
+    </div>
+    <div id="frame-print" class="preview-frame">
+        <iframe src="variants/magazine_2026-Q3_print.html" title="印刷杂志"></iframe>
+    </div>
+    <div id="frame-dark" class="preview-frame">
+        <iframe src="variants/magazine_2026-Q3_dark.html" title="暗色模式"></iframe>
+    </div>
+</div>
+
+<!-- Side-by-Side Comparison -->
+<div class="comparison-section">
+    <div class="comparison-header">
+        <h2>四宫格预览</h2>
+        <p>快速对比所有风格</p>
+    </div>
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <div class="comparison-preview">
+                <iframe src="variants/magazine_2026-Q3_classic.html" title="学术经典"></iframe>
+            </div>
+            <div class="comparison-info">
+                <h3>学术经典</h3>
+                <p>衬线字体 / 权威感 / 学术风</p>
+                <div class="benchmark">→ Nature / Scientific American</div>
+            </div>
+        </div>
+        <div class="comparison-card">
+            <div class="comparison-preview">
+                <iframe src="variants/magazine_2026-Q3_modern.html" title="现代数字"></iframe>
+            </div>
+            <div class="comparison-info">
+                <h3>现代数字</h3>
+                <p>无衬线 / 卡片布局 / 科技感</p>
+                <div class="benchmark">→ MIT Technology Review</div>
+            </div>
+        </div>
+        <div class="comparison-card">
+            <div class="comparison-preview">
+                <iframe src="variants/magazine_2026-Q3_print.html" title="印刷杂志"></iframe>
+            </div>
+            <div class="comparison-info">
+                <h3>印刷杂志</h3>
+                <p>传统排版 / 强调字体 / 经典感</p>
+                <div class="benchmark">→ Quanta</div>
+            </div>
+        </div>
+        <div class="comparison-card">
+            <div class="comparison-preview">
+                <iframe src="variants/magazine_2026-Q3_dark.html" title="暗色模式"></iframe>
+            </div>
+            <div class="comparison-info">
+                <h3>暗色模式</h3>
+                <p>深色背景 / 强对比 / 科技感</p>
+                <div class="benchmark">→ Wired</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Design Analysis -->
+<div class="analysis-section">
+    <div class="analysis-header">
+        <h2>设计特征对比</h2>
+        <p>各风格的关键设计维度分析</p>
+    </div>
+    <table class="analysis-table">
+        <thead>
+            <tr>
+                <th>设计维度</th>
+                <th class="variant-col">学术经典</th>
+                <th class="variant-col">现代数字</th>
+                <th class="variant-col">印刷杂志</th>
+                <th class="variant-col">暗色模式</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>参考标杆</strong></td>
+                <td>Nature / Scientific American</td>
+                <td>MIT Technology Review</td>
+                <td>Quanta</td>
+                <td>Wired</td>
+            </tr>
+            <tr>
+                <td><strong>主字体</strong></td>
+                <td>Noto Serif SC (衬线)</td>
+                <td>Inter (无衬线)</td>
+                <td>Noto Serif SC (衬线)</td>
+                <td>Noto Sans SC (无衬线)</td>
+            </tr>
+            <tr>
+                <td><strong>行高</strong></td>
+                <td>1.9 (宽松)</td>
+                <td>1.7 (适中)</td>
+                <td>1.75 (适中)</td>
+                <td>1.8 (宽松)</td>
+            </tr>
+            <tr>
+                <td><strong>正文字号</strong></td>
+                <td>1.05rem</td>
+                <td>1rem</td>
+                <td>1rem</td>
+                <td>1rem</td>
+            </tr>
+            <tr>
+                <td><strong>背景色</strong></td>
+                <td><span class="color-swatch" style="background:#ffffff"></span>#ffffff 纯白</td>
+                <td><span class="color-swatch" style="background:#fafbfc"></span>#fafbfc 浅灰</td>
+                <td><span class="color-swatch" style="background:#fdfcfa"></span>#fdfcfa 米白</td>
+                <td><span class="color-swatch" style="background:#0d0d0d"></span>#0d0d0d 深黑</td>
+            </tr>
+            <tr>
+                <td><strong>封面主色</strong></td>
+                <td><span class="color-swatch" style="background:#1c3a5f"></span>#1c3a5f 深蓝</td>
+                <td><span class="color-swatch" style="background:#0f172a"></span>#0f172a 极深蓝</td>
+                <td><span class="color-swatch" style="background:#2d3436"></span>#2d3436 炭灰</td>
+                <td><span class="color-swatch" style="background:#000000"></span>#000000 纯黑</td>
+            </tr>
+            <tr>
+                <td><strong>强调色</strong></td>
+                <td><span class="color-swatch" style="background:#c9a227"></span>金色 #c9a227</td>
+                <td><span class="color-swatch" style="background:#38bdf8"></span>天蓝 #38bdf8</td>
+                <td><span class="color-swatch" style="background:#d63031"></span>红色 #d63031</td>
+                <td><span class="color-swatch" style="background:#ff3c00"></span>橙红 #ff3c00</td>
+            </tr>
+            <tr>
+                <td><strong>目录布局</strong></td>
+                <td>线性列表</td>
+                <td>卡片网格</td>
+                <td>线性列表</td>
+                <td>线性列表</td>
+            </tr>
+            <tr>
+                <td><strong>首行缩进</strong></td>
+                <td>2em (传统)</td>
+                <td>无</td>
+                <td>2em (传统)</td>
+                <td>无</td>
+            </tr>
+            <tr>
+                <td><strong>章节标题</strong></td>
+                <td>左侧竖线装饰</td>
+                <td>底部横条</td>
+                <td>左侧竖线装饰</td>
+                <td>底部短横线</td>
+            </tr>
+            <tr>
+                <td><strong>分栏宽度</strong></td>
+                <td>720px (窄幅)</td>
+                <td>900px (宽幅)</td>
+                <td>680px (窄幅)</td>
+                <td>800px (中幅)</td>
+            </tr>
+            <tr>
+                <td><strong>段落对齐</strong></td>
+                <td>两端对齐</td>
+                <td>左对齐</td>
+                <td>两端对齐</td>
+                <td>左对齐</td>
+            </tr>
+            <tr>
+                <td><strong>适用场景</strong></td>
+                <td>学术 / 研究报告</td>
+                <td>数字媒体 / 网站</td>
+                <td>印刷品 / 电子书</td>
+                <td>夜间阅读 / 开发者</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Feature Comparison -->
+<div class="analysis-section">
+    <div class="analysis-header">
+        <h2>功能特性对比</h2>
+    </div>
+    <table class="analysis-table">
+        <thead>
+            <tr>
+                <th>特性</th>
+                <th class="variant-col">学术经典</th>
+                <th class="variant-col">现代数字</th>
+                <th class="variant-col">印刷杂志</th>
+                <th class="variant-col">暗色模式</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>阅读舒适度</strong></td>
+                <td><span class="feature-tag pro">极高</span></td>
+                <td><span class="feature-tag pro">高</span></td>
+                <td><span class="feature-tag pro">高</span></td>
+                <td><span class="feature-tag neutral">视环境</span></td>
+            </tr>
+            <tr>
+                <td><strong>学术权威感</strong></td>
+                <td><span class="feature-tag pro">强</span></td>
+                <td><span class="feature-tag neutral">中</span></td>
+                <td><span class="feature-tag pro">强</span></td>
+                <td><span class="feature-tag con">弱</span></td>
+            </tr>
+            <tr>
+                <td><strong>科技现代感</strong></td>
+                <td><span class="feature-tag neutral">中</span></td>
+                <td><span class="feature-tag pro">强</span></td>
+                <td><span class="feature-tag neutral">中</span></td>
+                <td><span class="feature-tag pro">极强</span></td>
+            </tr>
+            <tr>
+                <td><strong>打印友好度</strong></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag con">差</span></td>
+            </tr>
+            <tr>
+                <td><strong>移动端适配</strong></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+            </tr>
+            <tr>
+                <td><strong>品牌辨识度</strong></td>
+                <td><span class="feature-tag neutral">中</span></td>
+                <td><span class="feature-tag pro">高</span></td>
+                <td><span class="feature-tag neutral">中</span></td>
+                <td><span class="feature-tag pro">高</span></td>
+            </tr>
+            <tr>
+                <td><strong>内容可读性</strong></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag pro">优</span></td>
+                <td><span class="feature-tag neutral">良</span></td>
+            </tr>
+            <tr>
+                <td><strong>适合读者</strong></td>
+                <td>研究者 / 学生</td>
+                <td>从业者 / 爱好者</td>
+                <td>深度读者</td>
+                <td>开发者 / 夜间阅读</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Benchmark Research Summary -->
+<div class="analysis-section">
+    <div class="analysis-header">
+        <h2>标杆杂志调研摘要</h2>
+    </div>
+    <table class="analysis-table">
+        <thead>
+            <tr>
+                <th>杂志</th>
+                <th>设计特点</th>
+                <th>字体系统</th>
+                <th>布局特征</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>MIT Technology Review</strong></td>
+                <td>卡片式布局、分类颜色编码、清晰层级结构</td>
+                <td>无衬线字体、粗体标题、强调色区分</td>
+                <td>多栏网格、响应式设计、现代感强</td>
+            </tr>
+            <tr>
+                <td><strong>Scientific American</strong></td>
+                <td>长文风格、权威学术感、专业排版</td>
+                <td>经典衬线、正文字号适中、行高宽松</td>
+                <td>单栏为主、段落分明、引用块装饰</td>
+            </tr>
+            <tr>
+                <td><strong>Nature</strong></td>
+                <td>学术极简、大量留白、严谨克制</td>
+                <td>衬线为主、层级分明、灰色调</td>
+                <td>极简布局、内容优先、装饰克制</td>
+            </tr>
+            <tr>
+                <td><strong>Wired</strong></td>
+                <td>深色背景、编辑风格、强烈视觉冲击</td>
+                <td>无衬线为主、大字号标题、对比鲜明</td>
+                <td>打破常规、强调视觉层级、图片驱动</td>
+            </tr>
+            <tr>
+                <td><strong>Quanta</strong></td>
+                <td>浅色背景、粗体彩色强调、数学严谨</td>
+                <td>衬线为主、彩色装饰、学术与大众平衡</td>
+                <td>清晰分区、步骤引导、图形辅助</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<div class="gallery-footer">
+    <p>SPDT-005 AI Magazine System · 科学前沿 2026-Q3</p>
+    <p>Generated by SPDT-005 Magazine Generator · <a href="variants/magazine_2026-Q3_classic.html">学术经典</a> · <a href="variants/magazine_2026-Q3_modern.html">现代数字</a> · <a href="variants/magazine_2026-Q3_print.html">印刷杂志</a> · <a href="variants/magazine_2026-Q3_dark.html">暗色模式</a></p>
+</div>
+
+<script>
+function showVariant(variant) {
+    // Hide all frames
+    document.querySelectorAll('.preview-frame').forEach(f => f.classList.remove('active'));
+    // Show selected frame
+    document.getElementById('frame-' + variant).classList.add('active');
+    // Update tabs
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    event.target.closest('.tab-btn').classList.add('active');
+}
+</script>
+
+</body>
+</html>
