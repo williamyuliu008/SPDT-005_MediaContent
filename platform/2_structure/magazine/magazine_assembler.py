@@ -444,14 +444,17 @@ class MagazineAssembler:
     </div>"""
 
     def _render_html_article(self, role: str, article_result: "ArticleRunResult") -> str:
-        """渲染单篇 HTML 文章"""
+        """渲染单篇 HTML 文章
+
+        【v1.5 变更】已移除：
+        - article-meta（总分 88.8/100 + readability/depth 等维度标签）
+        - article-notice（KnownLimitation 灰区提示）
+        内部质量元数据不对读者展示。
+        """
         role_name = ROLE_DISPLAY_NAMES.get(role, role)
         role_color = ROLE_COLORS.get(role, "#666")
         role_text_color = ROLE_TEXT_COLORS.get(role, "#fff")
         topic = article_result.topic
-        total_score = article_result.total_score
-        dims = article_result.scorecard.get("dimensions", {}) if isinstance(article_result.scorecard, dict) else {}
-        gray_zones = article_result.gray_zones or []
 
         # 提取 Markdown
         if isinstance(article_result.article, dict):
@@ -462,30 +465,11 @@ class MagazineAssembler:
         # 解析 Markdown 为 HTML
         body_html = self._parse_markdown_to_html(md, role_color)
 
-        # 维度字符串
-        dims_parts = []
-        for k, v in list(dims.items())[:5]:
-            val = v.get("score", v) if isinstance(v, dict) else v
-            dims_parts.append(f'<span class="dim-chip">{k}={val}</span>')
-
-        dims_html = "".join(dims_parts)
-
-        # 注意
-        notice_html = ""
-        if gray_zones:
-            notices = [str(g)[:80] for g in gray_zones[:2]]
-            notice_html = f'<div class="article-notice">{" ".join(["<span>"+n+"</span>" for n in notices])}</div>'
-
         return f"""
     <article class="article role-{role}">
         <header class="article-header" style="--role-color:{role_color}">
             <div class="article-role-badge" style="background:{role_color};color:{role_text_color}">{role_name}</div>
             <h1 class="article-title">{topic}</h1>
-            <div class="article-meta">
-                <span class="article-score">{total_score:.1f}<small>/100</small></span>
-                <div class="article-dims">{dims_html}</div>
-            </div>
-            {notice_html}
         </header>
         <div class="article-body">
             {body_html}
@@ -516,10 +500,9 @@ class MagazineAssembler:
             art = run_result.articles[role]
             role_name = ROLE_DISPLAY_NAMES.get(role, role)
             role_color = ROLE_COLORS.get(role, "#666")
-            score = art.total_score
             article_summary.append(
                 f'<div class="summary-item"><span class="summary-badge" style="background:{role_color}">{role_name}</span>'
-                f'<span>{art.topic[:30]}</span><span class="summary-score">{score:.0f}</span></div>'
+                f'<span>{art.topic[:36]}</span></div>'
             )
 
         return f"""
@@ -853,10 +836,10 @@ body {{
     color: var(--color-text-muted);
 }}
 .toc-item-badge {{
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    padding: 0.2rem 0.5rem;
+    padding: 0.3rem 0.75rem;
     border-radius: 6px;
     white-space: nowrap;
     width: fit-content;
@@ -1079,7 +1062,7 @@ body {{
 }}
 .summary-item {{
     display: grid;
-    grid-template-columns: 5rem 1fr auto;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: 0.75rem;
     font-size: 0.85rem;
@@ -1139,6 +1122,7 @@ body {{
     .toc-list {{ grid-template-columns: 1fr; }}
     .toc-item-badge {{ display: none; }}
     .summary-item {{ grid-template-columns: 1fr; gap: 0.25rem; }}
+    .summary-item .summary-badge {{ display: none; }}
 }}
 
 /* ── 打印优化 ────────────────────────────────────────── */
