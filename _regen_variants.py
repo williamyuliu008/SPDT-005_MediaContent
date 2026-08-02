@@ -95,7 +95,7 @@ body {
 .toc-item { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; background: #fff; border: 1px solid var(--color-border); border-radius: 12px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .toc-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-2px); }
 .toc-item-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
-.toc-item-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.2rem 0.5rem; border-radius: 6px; white-space: nowrap; width: fit-content; }
+.toc-item-badge { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 6px; white-space: nowrap; width: fit-content; }
 .toc-item-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 600; color: var(--color-text); line-height: 1.4; }
 
 /* 文章 */
@@ -195,7 +195,7 @@ body { font-family: var(--font-serif); background: var(--color-bg); color: var(-
 .toc-item { display: grid; grid-template-columns: 2.5rem 5rem 1fr; align-items: start; gap: 0.75rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border-light); }
 .toc-item:last-child { border-bottom: none; }
 .toc-item-num { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-text-muted); padding-top: 0.2rem; }
-.toc-item-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.2rem 0.5rem; border-radius: 2px; white-space: nowrap; font-family: var(--font-sans); }
+.toc-item-badge { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 2px; white-space: nowrap; font-family: var(--font-sans); }
 .toc-item-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 400; color: var(--color-text); line-height: 1.4; }
 
 .article { max-width: var(--max-width); margin: 0 auto 3.5rem; padding: 0 2rem; }
@@ -290,7 +290,7 @@ body { font-family: var(--font-sans); background: var(--color-bg); color: var(--
 .toc-item { display: grid; grid-template-columns: 2.5rem 1fr; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border-light); }
 .toc-item:hover { background: rgba(255,255,255,0.02); margin: 0 -0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; border-radius: 4px; }
 .toc-item-num { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-cover-accent); text-align: center; font-weight: 700; }
-.toc-item-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.25rem 0.6rem; border-radius: 2px; white-space: nowrap; }
+.toc-item-badge { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 2px; white-space: nowrap; }
 .toc-item-title { font-family: var(--font-serif); font-size: 1rem; font-weight: 500; color: #ccc; line-height: 1.4; }
 
 .article { max-width: var(--max-width); margin: 0 auto 3rem; padding: 0 1.5rem; }
@@ -389,7 +389,7 @@ body { font-family: var(--font-serif); background: var(--color-bg); color: var(-
 .toc-item { display: grid; grid-template-columns: 2rem 5rem 1fr; align-items: start; gap: 0.75rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border-light); }
 .toc-item:last-child { border-bottom: none; }
 .toc-item-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); padding-top: 0.2rem; }
-.toc-item-badge { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.2rem 0.4rem; border-radius: 1px; white-space: nowrap; font-family: var(--font-sans); }
+.toc-item-badge { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 1px; white-space: nowrap; font-family: var(--font-sans); }
 .toc-item-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 400; color: var(--color-text); line-height: 1.4; }
 
 .article { max-width: var(--max-width); margin: 0 auto 3.5rem; padding: 0 1.5rem; }
