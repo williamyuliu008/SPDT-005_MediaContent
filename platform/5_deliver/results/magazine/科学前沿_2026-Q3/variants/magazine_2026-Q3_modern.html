@@ -82,11 +82,11 @@ body {
 .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--color-border); }
 .toc-header h2 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--color-text); }
 .toc-issue { font-size: 0.7rem; color: var(--color-text-muted); font-family: var(--font-mono); }
-.toc-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; }
-.toc-item { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; background: #fff; border: 1px solid var(--color-border); border-radius: 12px; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-.toc-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-2px); }
-.toc-item-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
-.toc-item-badge { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 6px; white-space: nowrap; width: fit-content; }
+.toc-list { display: flex; flex-direction: column; gap: 0; }
+.toc-item { display: grid; grid-template-columns: 2rem auto 1fr; align-items: center; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid var(--color-border-light); }
+.toc-item:last-child { border-bottom: none; }
+.toc-item-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); text-align: center; }
+.toc-item-badge { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.25rem 0.6rem; border-radius: 4px; white-space: nowrap; }
 .toc-item-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 600; color: var(--color-text); line-height: 1.4; }
 
 /* 文章 */
@@ -134,7 +134,8 @@ body {
 @media (max-width: 600px) {
     .cover { min-height: auto; padding: 3rem 1.5rem; }
     .cover-title { font-size: 2.5rem; }
-    .toc-list { grid-template-columns: 1fr; }
+    .toc-item { grid-template-columns: 2rem 1fr; }
+    .toc-item-badge { display: none; }
 }
 @media print {
     body { background: #fff; color: #000; }
